@@ -7,13 +7,26 @@
 
 export const hero = {
   pill: 'AI-NATIVE PHARMACOVIGILANCE · BUILT IN INDIA',
-  headline: ['Every case.', 'Every journal.', 'Every check.'],
-  lead: 'Vyom runs pharmacovigilance with AI agents and qualified safety physicians. Pay per case, not per head, and see the proof on your own data before you commit.',
+  /**
+   * One sentence that wraps naturally. Split so `highlight` can take the
+   * accent colour and the underline without the component hardcoding the
+   * phrase — change the wording here and the emphasis follows.
+   */
+  headline: {
+    before: 'The AI-native engine for ',
+    highlight: 'drug safety',
+    after: '.',
+  },
+  subline:
+    'Every case, every journal, every check, handled by AI agents and signed off by qualified safety physicians. Pay per outcome, and see the proof on your own data before you commit.',
   primaryCta: { label: 'Get a free benchmark', href: '/contact' },
   secondaryCta: { label: 'See how it works', href: '/platform' },
   footnote:
     'Free benchmark: we re-run one quarter of your past cases or literature. No integration needed to start.',
 } as const;
+
+/** The headline as one string, for metadata and anywhere plain text is needed. */
+export const heroHeadlineText = `${hero.headline.before}${hero.headline.highlight}${hero.headline.after}`;
 
 /** The hero case-run panel. Sample data, fictional identifiers only. */
 export const caseRun = {
