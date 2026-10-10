@@ -9,9 +9,11 @@ the source of truth for content, structure and rules. If the two conflict, ask.
 
 ## Stack
 
-- **Next.js** (App Router) with `output: 'export'` — static export, hosted free on
-  Cloudflare Pages. No server runtime: no route handlers, no middleware, no ISR,
-  no `next/image` loader that needs a server (`images.unoptimized: true`).
+- **Next.js** (App Router) with `output: 'export'` — static export, deployed on
+  Vercel (see `DEPLOY.md`). The output is a plain static site, so it would run
+  unchanged on Cloudflare Pages or any static host. No server runtime: no route
+  handlers, no middleware, no ISR, no `next/image` loader that needs a server
+  (`images.unoptimized: true`).
 - **TypeScript**, strict.
 - **Tailwind CSS** v4 — tokens defined once in `@theme`, mirrored as CSS variables.
 - **Fonts** via `next/font/google`: Instrument Sans (400, 500, 600, 700),

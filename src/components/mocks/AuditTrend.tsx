@@ -62,7 +62,7 @@ export function AuditTrend() {
         {auditTrend.points.map((point) => (
           <li key={point.month} className="flex flex-col items-center gap-0.5">
             <span className="font-mono text-[12px] text-secondary">{point.value}</span>
-            <span className="font-mono text-[10.5px] tracking-[0.08em] text-meta">
+            <span className="font-mono text-[11px] tracking-[0.08em] text-meta">
               {point.month}
             </span>
           </li>

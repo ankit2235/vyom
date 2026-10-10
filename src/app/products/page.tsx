@@ -97,7 +97,7 @@ export default function ProductsPage() {
                           {product.name.replace('Vyom ', '').toUpperCase()}
                         </span>
                         {product.status === 'roadmap' ? (
-                          <span className="font-mono text-[10px] tracking-[0.08em] text-meta">
+                          <span className="font-mono text-[11px] tracking-[0.08em] text-meta">
                             ROADMAP
                           </span>
                         ) : null}
@@ -131,7 +131,7 @@ export default function ProductsPage() {
                           ) : planned ? (
                             <span className="inline-flex flex-col items-center gap-1 text-meta">
                               <CheckIcon size={18} className="opacity-45" />
-                              <span className="font-mono text-[9.5px] tracking-[0.08em]">
+                              <span className="font-mono text-[11px] tracking-[0.08em]">
                                 {productsIndex.plannedLabel.toUpperCase()}
                               </span>
                               <span className="sr-only">Planned for {product.name}</span>

@@ -183,7 +183,7 @@ export function BenchmarkForm() {
             className="flex flex-wrap items-center gap-2 text-[14px] font-medium text-secondary"
           >
             {form.fields.interest.label}
-            <span className="font-mono text-[10.5px] tracking-[0.08em] text-meta">
+            <span className="font-mono text-[11px] tracking-[0.08em] text-meta">
               {form.optional.toUpperCase()}
             </span>
           </label>
@@ -211,7 +211,7 @@ export function BenchmarkForm() {
           className="flex flex-wrap items-center gap-2 text-[14px] font-medium text-secondary"
         >
           {form.fields.message.label}
-          <span className="font-mono text-[10.5px] tracking-[0.08em] text-meta">
+          <span className="font-mono text-[11px] tracking-[0.08em] text-meta">
             {form.optional.toUpperCase()}
           </span>
         </label>
@@ -272,7 +272,7 @@ function Field({
       >
         {label}
         {!required ? (
-          <span className="font-mono text-[10.5px] tracking-[0.08em] text-meta">
+          <span className="font-mono text-[11px] tracking-[0.08em] text-meta">
             {contactPage.form.optional.toUpperCase()}
           </span>
         ) : null}

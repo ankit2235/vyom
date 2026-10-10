@@ -15,7 +15,7 @@ const tones: Record<ChipTone, string> = {
 const sizes: Record<ChipSize, string> = {
   md: 'px-[9px] py-[5px] text-[11px]',
   sm: 'px-2 py-1 text-[11px]',
-  xs: 'px-1.5 py-0.5 text-[10px]',
+  xs: 'px-1.5 py-0.5 text-[11px]',
 };
 
 /** Mono uppercase label, 6px radius. */
