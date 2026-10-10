@@ -1,9 +1,14 @@
 import { vendorScorecard } from '@/content/home';
 import { ProgressBar, SampleDataChip } from '@/components/ui';
 import { cn } from '@/lib/cn';
+import { AuditTrend } from './AuditTrend';
 
-/** Vendor A is fictional and labelled as such. Every figure is sample data. */
-export function VendorScorecard() {
+/**
+ * Vendor A is fictional and labelled as such. Every figure is sample data.
+ *
+ * The product page adds the six-month trend; the home page does not.
+ */
+export function VendorScorecard({ trend = false }: { readonly trend?: boolean }) {
   return (
     <div className="overflow-hidden rounded-panel border border-strong bg-panel shadow-panel">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-panel-header px-[22px] py-[18px]">
@@ -50,6 +55,8 @@ export function VendorScorecard() {
           </div>
         ))}
       </div>
+
+      {trend ? <AuditTrend /> : null}
 
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line bg-panel-header px-[22px] py-4">
         <span className="font-mono text-[11px] tracking-[0.1em] text-meta">

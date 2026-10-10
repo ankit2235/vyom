@@ -4,5 +4,6 @@ export { Chip, SampleDataChip } from './Chip';
 export { Container } from './Container';
 export { Eyebrow } from './Eyebrow';
 export { ProgressBar } from './ProgressBar';
+export { ScrollableTable } from './ScrollableTable';
 export { Section } from './Section';
 export { StatCard } from './StatCard';

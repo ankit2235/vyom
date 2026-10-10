@@ -1,5 +1,5 @@
 import { comparison } from '@/content/home';
-import { Eyebrow, Section } from '@/components/ui';
+import { Eyebrow, ScrollableTable, Section } from '@/components/ui';
 
 const cell = 'border-t border-line px-6 py-5 align-top';
 
@@ -19,12 +19,9 @@ export function Comparison() {
           <p className="m-0 text-[18px] leading-[1.6] text-pretty text-muted">{comparison.lead}</p>
         </div>
 
-        <div
-          data-reveal
-          tabIndex={0}
-          role="region"
-          aria-label={comparison.heading}
-          className="overflow-x-auto rounded-panel border border-line bg-surface"
+        <ScrollableTable
+          label={comparison.heading}
+          className="rounded-panel border border-line bg-surface"
         >
           <table className="w-full min-w-[760px] border-collapse text-[15px] leading-[1.5]">
             <thead>
@@ -69,7 +66,7 @@ export function Comparison() {
               ))}
             </tbody>
           </table>
-        </div>
+        </ScrollableTable>
       </div>
     </Section>
   );
