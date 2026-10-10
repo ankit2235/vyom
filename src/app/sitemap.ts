@@ -10,6 +10,12 @@ const routes = [
   '/',
   '/products',
   ...products.map((product) => `/products/${product.slug}`),
+  '/platform',
+  '/how-we-start',
+  '/company',
+  '/contact',
+  '/privacy',
+  '/terms',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

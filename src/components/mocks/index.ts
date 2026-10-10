@@ -1,4 +1,5 @@
-export { ArchitectureDiagram } from './ArchitectureDiagram';
+export { ArchitectureDiagram, ArchitectureFlow } from './ArchitectureDiagram';
+export { AuditRecord } from './AuditRecord';
 export { AuditTrend } from './AuditTrend';
 export { CaseDetailPane } from './CaseDetailPane';
 export { CaseQueue } from './CaseQueue';

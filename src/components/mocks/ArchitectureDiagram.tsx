@@ -12,13 +12,23 @@ const flowTone = {
 /**
  * The five-stage pipeline over the four things that hold it up.
  *
- * Drawn with boxes and borders rather than SVG so it reflows on a phone and
- * the labels stay selectable text.
+ * Drawn with HTML/CSS boxes rather than SVG so it reflows on a phone and the
+ * labels stay selectable text.
+ *
+ * On the Vyom OS product page this is a sample screen and carries the chip.
+ * On /platform it is the real architecture, so it is shown unframed.
  */
 export function ArchitectureDiagram() {
   return (
     <MockPanel title="Vyom OS" subtitle="ENGINE ARCHITECTURE">
-      <div className="flex flex-col gap-5 px-[22px] py-6">
+      <ArchitectureFlow />
+    </MockPanel>
+  );
+}
+
+export function ArchitectureFlow() {
+  return (
+    <div className="flex flex-col gap-5 px-[22px] py-6">
         <ol className="m-0 flex list-none flex-wrap items-stretch gap-2 p-0">
           {architecture.flow.map((stage, index) => (
             <li key={stage.title} className="flex min-w-0 flex-[1_1_120px] items-center gap-2">
@@ -53,7 +63,6 @@ export function ArchitectureDiagram() {
             ))}
           </ul>
         </div>
-      </div>
-    </MockPanel>
+    </div>
   );
 }

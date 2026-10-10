@@ -84,6 +84,14 @@ export function DashedCircleIcon({ size = 20, ...props }: IconProps) {
   );
 }
 
+export function PlusIcon({ size = 16, ...props }: IconProps) {
+  return (
+    <Icon size={size} strokeWidth={2} {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Icon>
+  );
+}
+
 export function CloseIcon({ size = 22, ...props }: IconProps) {
   return (
     <Icon size={size} strokeWidth={2} {...props}>
@@ -211,6 +219,41 @@ export const productIcons = {
   reports: ReportsIcon,
   signal: SignalIcon,
   os: OsIcon,
+} as const;
+
+export function ShieldIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M12 3.5l7 2.8v5.4c0 4.3-2.9 7.6-7 8.8-4.1-1.2-7-4.5-7-8.8V6.3l7-2.8z" />
+    </Icon>
+  );
+}
+
+export function BanIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M6 18L18 6" />
+    </Icon>
+  );
+}
+
+export function ClockIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.2V12l3 1.8" />
+    </Icon>
+  );
+}
+
+export const securityIcons = {
+  pin: PinIcon,
+  lock: LockIcon,
+  shield: ShieldIcon,
+  ban: BanIcon,
+  clock: ClockIcon,
+  list: ListIcon,
 } as const;
 
 export const assuranceIcons = {
