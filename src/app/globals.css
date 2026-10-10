@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Defined once here; everything else refers to them.
+   Change --color-accent and the whole site follows.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  /* Surfaces */
+  --color-page: #070b14;
+  --color-alt: #0a0f1c;
+  --color-surface: #0d1324;
+  --color-raised: #111a2e;
+  --color-panel: #0b1120;
+  --color-panel-header: #0e1526;
+
+  /* Borders. Named so they never collide with Tailwind's border-style
+     utilities (border-dashed, border-solid) or with a surface token. */
+  --color-hairline: #141c30;
+  --color-line: #1d2842;
+  --color-strong: #263355;
+  --color-button: #2b3a5c;
+  --color-dash: #3a4a70;
+
+  /* Text */
+  --color-primary: #eaf0fa;
+  --color-secondary: #c9d2e3;
+  --color-muted: #a7b2c6;
+  --color-meta: #8290a8;
+
+  /* Accent — AI activity. Change this one value and the site follows.
+     Alternatives: #4cc3b5, #9c93f2 */
+  --color-accent: #62aef2;
+  --color-accent-tint: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --color-accent-line: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  --color-on-accent: #06101f;
+
+  /* Amber — a human or physician decision. Never used for AI. */
+  --color-amber: #f2b866;
+  --color-amber-line: #5a4321;
+  --color-amber-soft: #241a0c;
+  --color-amber-highlight: #2a1e0d;
+
+  /* Type */
+  --font-sans: var(--font-instrument-sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Shape */
+  --radius-chip: 6px;
+  --radius-control: 8px;
+  --radius-button: 10px;
+  --radius-nested: 12px;
+  --radius-card: 14px;
+  --radius-panel: 16px;
+
+  /* The two mock panels, and nothing else, carry a shadow. */
+  --shadow-panel: 0 48px 96px -48px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* A single, visible focus ring everywhere. */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: var(--color-accent-line);
+    color: var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+      animation-delay: 0ms !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — a subtle fade-and-rise as a section enters, once. Nothing loops.
+   Elements start visible and are only hidden once JS has confirmed it will
+   animate them, so the page is fully readable without JS.
+   --------------------------------------------------------------------------- */
+
+@layer utilities {
+  [data-reveal] {
+    opacity: 1;
+  }
+
+  [data-reveal][data-reveal-armed='true'] {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  [data-reveal][data-reveal-shown='true'] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    [data-reveal][data-reveal-armed='true'] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The hero case-run steps appear in sequence, once, on load. Pure CSS, so the
+   panel stays a server component and there is no flash of the finished state.
+   `backwards` fill keeps each step hidden during its delay.
+   --------------------------------------------------------------------------- */
+
+@layer utilities {
+  @keyframes case-step-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .case-step {
+    animation: case-step-in 420ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+    animation-delay: calc(var(--step-index) * 110ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-step {
+      animation: none !important;
+    }
+  }
+}

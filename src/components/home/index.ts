@@ -1,0 +1,9 @@
+export { AuditSection } from './AuditSection';
+export { CallToAction } from './CallToAction';
+export { Comparison } from './Comparison';
+export { Hero } from './Hero';
+export { HowWeStart } from './HowWeStart';
+export { Platform } from './Platform';
+export { Problem } from './Problem';
+export { ProductSuite } from './ProductSuite';
+export { Standards } from './Standards';
