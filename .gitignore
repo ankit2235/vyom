@@ -5,3 +5,6 @@ out/
 *.tsbuildinfo
 .env*.local
 /.idea
+.vercel
+.env*
+!.env.example

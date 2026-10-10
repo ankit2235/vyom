@@ -53,6 +53,7 @@ In **Project → Settings → Environment Variables**, add:
 | Name | Value | Environments |
 | --- | --- | --- |
 | `NEXT_PUBLIC_API_URL` | *(empty)* | Production, Preview, Development |
+| `NEXT_PUBLIC_SITE_URL` | *(empty, until a custom domain is live)* | Production, Preview, Development |
 
 While it is empty, `submitBenchmarkRequest()` in `src/lib/api.ts` builds a
 pre-filled `mailto:` link and nothing is transmitted or stored. When the backend
@@ -118,9 +119,15 @@ CI if you want lint to block a merge.
 3. Add both, and set one as primary with the other redirecting to it. Vercel
    issues and renews the TLS certificate automatically once DNS resolves —
    usually minutes, occasionally up to a few hours.
-4. **Update `siteConfig.url` in `site.config.ts` to the live origin** and
-   redeploy. It is the base for canonical URLs, `sitemap.xml` and the Open Graph
-   image URL, so if it is wrong those all point at the wrong host.
+4. **Set `NEXT_PUBLIC_SITE_URL` to the live origin** (no trailing slash, e.g.
+   `https://vyom.health`) and redeploy. It is the base for canonical URLs,
+   `sitemap.xml` and the Open Graph image URL, so if it is wrong those all point
+   at a host that is not the site.
+
+   Until you set it, the build falls back to the project's production
+   `vercel.app` domain, which is correct for a preview. It is never hardcoded —
+   a guessed domain produces broken share images and a sitemap search engines
+   cannot follow.
 
 ---
 
@@ -155,7 +162,7 @@ Before flipping the switch, clear these:
       `src/content/company.ts`.
 - [ ] Have a lawyer review `/privacy` and `/terms`, then remove the draft notice
       in `src/content/legal.ts` and update the "Last updated" dates.
-- [ ] Set `siteConfig.url` to the live origin (§6).
+- [ ] Set `NEXT_PUBLIC_SITE_URL` to the live origin (§6).
 - [ ] Decide whether the "Concept preview" bar should stay. It is
       `showNotice` in `site.config.ts`.
 - [ ] Re-check that every figure on the site is still a sourced fact, a labelled
