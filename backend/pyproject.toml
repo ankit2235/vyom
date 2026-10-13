@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vyom-literature-prototype"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+	"anthropic>=0.60,<1",
+	"psycopg[binary]>=3.2,<4",
+	"python-dotenv>=1,<2",
+]
+
+[project.scripts]
+vyom-fetch = "vyom_literature.fetch:main"
+
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
