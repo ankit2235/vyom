@@ -1,0 +1,931 @@
+
+2. Multi-Container Orchestration (docker-compose.yml)
+
+Following standard container orchestration patterns for FastAPI, PostgreSQL, and Ollama, this setup isolates your database and runs a local System One container so hospital PHI never leaves your server:
+Set `DATABASE_URL` in `.env` with reserved password characters percent-encoded. Do not derive a URI by string-concatenating the raw password.
+yaml
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vyom_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vyom_admin}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-vyom_os}
+    ports:
+            - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vyom_admin} -d ${POSTGRES_DB:-vyom_os}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    # Local inference service. Pin OLLAMA_IMAGE to a tested version/digest.
+  ollama_sys1:
+        image: ${OLLAMA_IMAGE:?Set OLLAMA_IMAGE to a tested image digest}
+    container_name: vyom_ollama_sys1
+    restart: unless-stopped
+    ports:
+            - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama_weights:/root/.ollama
+
+  # FastAPI Ingestion & Decision Plane Worker
+  vyom_worker:
+    build: ./app
+    container_name: vyom_worker
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama_sys1:
+        condition: service_started
+    env_file:
+      - .env
+    environment:
+            DATABASE_URL: ${DATABASE_URL:?Set URL-encoded DATABASE_URL in .env}
+      LOCAL_SYS1_BASE_URL: http://ollama_sys1:11434/v1
+    ports:
+            - "127.0.0.1:8000:8000"
+
+volumes:
+  pgdata:
+  ollama_weights:
+Use code with caution.
+
+3. The Cloud Jev \(\leftrightarrow \) Local Ollama Router (app/sys1_router.py)
+
+This module routes only public PV literature to Jev; hospital records and identifiable ICSRs stay local. Verify that the selected local service actually implements the TypeSafe SDK's `system_one` contract: a plain Ollama `/v1` URL is not, by itself, proof of compatibility. Add a contract test before sending PHI. Prices and latency are configuration/benchmark inputs, not guarantees.
+python
+import os
+import time
+import hashlib
+import json
+from typing import Dict, Any
+from typesafe_sdk import TypeSafeClient, Noul, Choice, Score
+
+# Pin exact versions for 21 CFR Part 11 & NHCX audit reproducibility
+QUESTION_SCHEMA_VERSION = 2
+THRESHOLD_POLICY_VERSION = 4
+
+def _cloud_client() -> TypeSafeClient:
+    api_key = os.environ.get("TYPESAFE_API_KEY")
+    if not api_key:
+        raise RuntimeError("TYPESAFE_API_KEY is required for public-literature routing")
+    return TypeSafeClient(api_key=api_key, base_url="https://typesafe.ai")
+
+LOCAL_PHI_CLIENT = TypeSafeClient(
+    api_key=os.environ.get("LOCAL_SYS1_API_KEY", ""),
+    base_url=os.environ["LOCAL_SYS1_BASE_URL"]
+)
+
+# 1. Public Literature Schema (6 parallel primitives)
+PV_LIT_SCHEMA = {
+    "has_identifiable_patient": Noul("Does the text describe one or more identifiable human patients (age, sex, count, or clinical course) rather than animal/in-vitro data or general review statements?"),
+    "has_identifiable_reporter": Noul("Does the source identify a reporter who can be followed up, rather than only an anonymous aggregate statement?"),
+    "has_suspect_drug": Noul("Is the target drug explicitly administered prior to the untoward clinical event?"),
+    "has_adverse_event": Noul("Does a patient experience a suspected adverse drug reaction, toxicity, abnormal lab finding, fatal outcome, or lack of efficacy?"),
+    "is_serious_event": Noul("Does the event result in death, life-threatening risk, inpatient hospitalisation, disability, congenital anomaly, or medically significant intervention?"),
+    "study_design": Choice(
+        "Classify the publication type:",
+        options=["CASE_REPORT_OR_SERIES", "CLINICAL_TRIAL", "OBSERVATIONAL_COHORT", "IN_VITRO_OR_ANIMAL_ONLY", "REVIEW_NO_NEW_CASES"]
+    ),
+    "triage_priority": Score(
+        "Rate regulatory ICSR triage urgency:",
+        levels=["1_EXCLUDE", "2_LOW_AGGREGATE", "3_STANDARD_NON_SERIOUS", "4_EXPEDITED_15D_SERIOUS", "5_CRITICAL_7D_FATAL"]
+    )
+}
+
+# 2. Hospital RCM Pre-Auth & Clause 4.1 Firewall Schema (6 core primitives)
+HOSPITAL_RCM_SCHEMA = {
+    "active_inpatient_intervention": Noul("Does the clinical note explicitly document active inpatient treatment (IV medications, IV fluids, oxygen, surgery, or continuous vital monitoring) justifying admission under TPA Clause 4.1?"),
+    "diagnostic_proof_attached": Noul("Is objective diagnostic evidence (lab report, ECG, Echo, X-ray, CT/MRI) confirming the primary diagnosis present in the state?"),
+    "medication_bill_match": Noul("Do the high-cost medications and procedures billed in the financial summary match the treatment chart in the discharge summary?"),
+    "non_payable_consumables_flag": Noul("Does the itemized bill contain unbundled IRDAI non-payable consumables (gloves, sanitizer, nebulization kit, diapers) billed separately?"),
+    "claim_submission_route": Choice(
+        "Select immediate hospital TPA desk action:",
+        options=["READY_FOR_HUMAN_RELEASE", "HOLD_MISSING_LAB_PROOF", "HOLD_CLAUSE_4_1_RISK", "HOLD_CONSUMABLES_UNBUNDLED", "ESCALATE_SENIOR_CPC_CODER"]
+    ),
+    "tpa_denial_risk_score": Score(
+        "Rate probability of TPA query or short-payment deduction:",
+        levels=["1_CLEAN_FIRST_PASS", "2_MINOR_ADMIN", "3_MODERATE_QUERY_RISK", "4_HIGH_DEDUCTION_RISK", "5_CRITICAL_REJECTION_RISK"]
+    )
+}
+
+def evaluate_state(domain: str, normalized_state: Dict[str, Any]) -> Dict[str, Any]:
+    """Routes public literature to Cloud Jev and Hospital/ICSR PHI to Local Ollama System One."""
+    if domain not in {"pv_literature", "pv_icsr", "hospital_rcm"}:
+        raise ValueError(f"Unsupported domain: {domain}")
+    start_ns = time.perf_counter_ns()
+
+    if domain == "pv_literature":
+        client = _cloud_client()
+        model_id = os.environ["CLOUD_SYS1_MODEL"]
+        schema = PV_LIT_SCHEMA
+    else:
+        # Strict Zero-Egress for Hospital RCM & Identifiable Patient ICSRs
+        client = LOCAL_PHI_CLIENT
+        model_id = os.environ["LOCAL_SYS1_MODEL"]
+        schema = HOSPITAL_RCM_SCHEMA if domain == "hospital_rcm" else PV_LIT_SCHEMA
+
+    res = client.system_one(state=normalized_state, questions=schema, model=model_id)
+    latency_ms = int((time.perf_counter_ns() - start_ns) / 1_000_000)
+
+    if domain in ("pv_literature", "pv_icsr"):
+        validity_gates = {
+            key: float(res[key].probability)
+            for key in (
+                "has_identifiable_patient",
+                "has_identifiable_reporter",
+                "has_suspect_drug",
+                "has_adverse_event",
+            )
+        }
+        p_risk = round(res["is_serious_event"].probability, 4)
+
+        # Marginal gate probabilities are not a joint case-validity probability.
+        # Auto-close only when every validity gate is low and design is clearly negative.
+        if all(value < 0.04 for value in validity_gates.values()) and res["study_design"].choice in ("IN_VITRO_OR_ANIMAL_ONLY", "REVIEW_NO_NEW_CASES"):
+            band = "GREEN_CLOSE"
+        elif p_risk >= 0.50 or res["triage_priority"].score >= 4:
+            band = "RED_ESCALATE"
+        else:
+            band = "YELLOW_REVIEW"
+    else:
+        # Hospital RCM 3-Band Policy
+        readiness_gates = {
+            key: float(res[key].probability)
+            for key in (
+                "active_inpatient_intervention",
+                "diagnostic_proof_attached",
+                "medication_bill_match",
+            )
+        }
+        p_risk = round(res["non_payable_consumables_flag"].probability, 4)
+
+        if all(value >= 0.92 for value in readiness_gates.values()) and p_risk < 0.20 and res["tpa_denial_risk_score"].score == 1:
+            band = "GREEN_PASS"
+        elif res["tpa_denial_risk_score"].score >= 4 or p_valid < 0.50:
+            band = "RED_ESCALATE"
+        else:
+            band = "YELLOW_REVIEW"
+
+    return {
+        "model_id": model_id,
+        "question_schema_version": QUESTION_SCHEMA_VERSION,
+        "threshold_policy_version": THRESHOLD_POLICY_VERSION,
+        "latency_ms": latency_ms,
+        # No joint probability is claimed until a separately validated joint head exists.
+        "p_valid_case": None,
+        "p_serious_or_denial": p_risk,
+        "confidence_band": band,
+        "gate_probabilities": validity_gates if domain != "hospital_rcm" else readiness_gates,
+        "state_sha256": hashlib.sha256(
+            json.dumps(normalized_state, sort_keys=True, ensure_ascii=False).encode("utf-8")
+        ).hexdigest(),
+        "answers": res.to_dict()
+    }
+Use code with caution.
+
+4. PubMed & Europe PMC Rate-Limited Fetcher (app/ingest_literature.py)
+
+As documented in CASRAI's PubMed E-utilities benchmark and NCBI's API Guidelines, NCBI strictly enforces 3 requests/sec without an API key and 10 requests/sec with an API key, blocking IPs that omit tool and email parameters. For Europe PMC, pagination uses cursorMark with format=json:
+python
+import os
+import time
+import hashlib
+import json
+import httpx
+import xml.etree.ElementTree as ET
+from typing import List, Dict, Any
+
+NCBI_API_KEY = os.getenv("NCBI_API_KEY", "")
+NCBI_TOOL = os.getenv("NCBI_TOOL")
+NCBI_EMAIL = os.getenv("NCBI_EMAIL")
+
+# Enforce 0.11s sleep with API key (~9 req/s) or 0.35s without key (<3 req/s)
+NCBI_SLEEP_SEC = 0.11 if NCBI_API_KEY else 0.35
+
+def make_dedup_key(doi: str | None, pmid: str | None, title: str) -> str:
+    if doi and doi.strip():
+        return f"doi:{doi.strip().lower()}"
+    if pmid and pmid.strip():
+        return f"pmid:{pmid.strip()}"
+    slug = "".join(ch for ch in title.lower() if ch.isalnum())[:120]
+    return f"title_sha:{hashlib.sha256(slug.encode()).hexdigest()[:24]}"
+
+def fetch_pubmed_articles(query: str, max_results: int = 200) -> List[Dict[str, Any]]:
+    """Fetches PubMed records via ESearch + EFetch with mandatory tool, email, and rate limiting."""
+    if not NCBI_TOOL or not NCBI_EMAIL:
+        raise RuntimeError("NCBI_TOOL and NCBI_EMAIL must be configured")
+    if not 1 <= max_results <= 10_000:
+        raise ValueError("max_results must be between 1 and 10,000")
+    base = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
+    common_params = {"tool": NCBI_TOOL, "email": NCBI_EMAIL}
+    if NCBI_API_KEY:
+        common_params["api_key"] = NCBI_API_KEY
+
+    with httpx.Client(timeout=30.0) as client:
+        # Step 1: ESearch to get PMIDs
+        esearch_resp = client.get(
+            f"{base}/esearch.fcgi",
+            params={**common_params, "db": "pubmed", "term": query, "retmax": max_results, "retmode": "json"}
+        )
+        esearch_resp.raise_for_status()
+        id_list = esearch_resp.json().get("esearchresult", {}).get("idlist", [])
+        if not id_list:
+            return []
+
+        time.sleep(NCBI_SLEEP_SEC)
+
+        # Step 2: EFetch XML in chunks of 100 PMIDs
+        records = []
+        for i in range(0, len(id_list), 100):
+            chunk_ids = ",".join(id_list[i:i+100])
+            efetch_resp = client.get(
+                f"{base}/efetch.fcgi",
+                params={**common_params, "db": "pubmed", "id": chunk_ids, "retmode": "xml"}
+            )
+            efetch_resp.raise_for_status()
+            root = ET.fromstring(efetch_resp.text)
+
+            for article in root.findall(".//PubmedArticle"):
+                pmid = article.findtext(".//MedlineCitation/PMID") or ""
+                title = article.findtext(".//ArticleTitle") or ""
+                abstract_parts = [elem.text for elem in article.findall(".//Abstract/AbstractText") if elem.text]
+                abstract = "\n".join(abstract_parts)
+                doi = article.findtext(".//ArticleIdList/ArticleId[@IdType='doi']")
+
+                state_obj = {"source": "pubmed", "pmid": pmid, "doi": doi, "title": title, "abstract": abstract}
+                records.append({
+                    "source": "pubmed",
+                    "source_uid": pmid,
+                    "dedup_key": make_dedup_key(doi, pmid, title),
+                    "title": title,
+                    "normalized_state": state_obj,
+                    "state_sha256": hashlib.sha256(json.dumps(state_obj, sort_keys=True).encode()).hexdigest(),
+                    "raw_payload": ET.tostring(article, encoding="unicode")
+                })
+            if i + 100 < len(id_list):
+                time.sleep(NCBI_SLEEP_SEC)
+        return records
+
+def fetch_europepmc_articles(query: str, page_size: int = 100, max_results: int = 1000) -> List[Dict[str, Any]]:
+    """Fetches Europe PMC JSON records using cursorMark pagination."""
+    if page_size < 1 or max_results < 1:
+        raise ValueError("page_size and max_results must be positive")
+    url = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
+    cursor = "*"
+    records = []
+
+    with httpx.Client(timeout=30.0) as client:
+        while len(records) < max_results:
+            resp = client.get(
+                url,
+                params={
+                    "query": query,
+                    "resultType": "core",
+                    "cursorMark": cursor,
+                    "pageSize": min(page_size, max_results - len(records)),
+                    "format": "json",
+                },
+            )
+            resp.raise_for_status()
+            payload = resp.json()
+            results = payload.get("resultList", {}).get("result", [])
+            for item in results:
+                source_uid = item.get("id", "")
+                pmid = item.get("pmid")
+                doi = item.get("doi")
+                title = item.get("title", "")
+                abstract = item.get("abstractText", "")
+
+                state_obj = {"source": "europepmc", "id": source_uid, "pmid": pmid, "doi": doi, "title": title, "abstract": abstract}
+                records.append({
+                    "source": "europepmc",
+                    "source_uid": source_uid,
+                    "dedup_key": make_dedup_key(doi, pmid, title),
+                    "title": title,
+                    "normalized_state": state_obj,
+                    "state_sha256": hashlib.sha256(json.dumps(state_obj, sort_keys=True).encode()).hexdigest(),
+                    "raw_payload": item
+                })
+            next_cursor = payload.get("nextCursorMark")
+            if len(records) >= max_results or not next_cursor or next_cursor == cursor:
+                break
+            cursor = next_cursor
+        return records
+Use code with caution.
+
+5. Weekly Recall Report & Hospital TPA Audit SQL (app/reports.sql)
+
+This single SQL script generates two executive scorecards every week:
+1. Query 1 measures recall only on a frozen, independently labelled gold set. It does not infer truth from workflow actions.
+2. Query 2 reports model routing flags in a shadow audit. It does not claim denials were prevented; that requires observed payer outcomes and a counterfactual evaluation.
+sql
+-- Prerequisite: populate once from an independently adjudicated, frozen gold set.
+-- Never use this set for prompt/rule tuning. Keep pool labels in a separate table.
+CREATE TABLE gold_labels (
+    state_id BIGINT PRIMARY KEY REFERENCES clinical_states(id),
+    is_valid_case BOOLEAN NOT NULL,
+    adjudicated_by TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE FUNCTION reject_gold_label_mutation() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+    RAISE EXCEPTION 'gold_labels are immutable; create a new versioned gold set';
+END;
+$$;
+
+CREATE TRIGGER gold_labels_immutable
+    BEFORE UPDATE OR DELETE ON gold_labels
+    FOR EACH ROW EXECUTE FUNCTION reject_gold_label_mutation();
+
+-- ============================================================================
+-- REPORT 1: WEEKLY PHARMACOVIGILANCE LITERATURE RECALL & WORKLOAD REPORT
+-- Evaluate only held-out gold rows; latest decision per pinned version/state.
+-- ============================================================================
+WITH latest_decisions AS (
+    SELECT DISTINCT ON (
+        s1.state_id, s1.model_id, s1.question_schema_version, s1.threshold_policy_version
+    )
+        s1.state_id,
+        s1.model_id,
+        s1.question_schema_version,
+        s1.threshold_policy_version,
+        s1.latency_ms,
+        s1.confidence_band,
+        s1.created_at
+    FROM sys1_decisions s1
+    ORDER BY s1.state_id, s1.model_id, s1.question_schema_version,
+             s1.threshold_policy_version, s1.created_at DESC
+),
+gold_cohort AS (
+    SELECT
+        gd.state_id,
+        ld.model_id,
+        ld.question_schema_version,
+        ld.threshold_policy_version,
+        ld.latency_ms,
+        ld.confidence_band,
+        gd.is_valid_case,
+        CASE
+            WHEN gd.is_valid_case AND ld.confidence_band <> 'GREEN_CLOSE' THEN 'TP'
+            WHEN gd.is_valid_case AND ld.confidence_band = 'GREEN_CLOSE' THEN 'FN'
+            WHEN NOT gd.is_valid_case AND ld.confidence_band <> 'GREEN_CLOSE' THEN 'FP'
+            ELSE 'TN'
+        END AS confusion_cell
+    FROM gold_labels gd
+    JOIN clinical_states cs ON cs.id = gd.state_id
+    JOIN latest_decisions ld ON ld.state_id = gd.state_id
+    WHERE cs.domain = 'pv_literature'
+      AND ld.created_at >= date_trunc('week', now() - interval '1 week')
+)
+SELECT
+    model_id,
+    question_schema_version AS schema_v,
+    threshold_policy_version AS policy_v,
+    COUNT(DISTINCT state_id) AS gold_articles_scored,
+    COUNT(*) FILTER (WHERE confidence_band = 'GREEN_CLOSE') AS ai_auto_closed,
+    COUNT(*) FILTER (WHERE confidence_band <> 'GREEN_CLOSE') AS flagged_for_review,
+    COUNT(*) FILTER (WHERE confusion_cell = 'TP') AS true_positives,
+    COUNT(*) FILTER (WHERE confusion_cell = 'FP') AS false_positives,
+    COUNT(*) FILTER (WHERE confusion_cell = 'FN') AS missed_by_ai_fn,
+    COUNT(*) FILTER (WHERE confusion_cell = 'TN') AS true_negatives,
+    ROUND(
+        100.0 * COUNT(*) FILTER (WHERE confusion_cell = 'TP')
+        / NULLIF(COUNT(*) FILTER (WHERE confusion_cell IN ('TP', 'FN')), 0),
+        2
+    ) AS measured_recall_pct,
+    ROUND(
+        100.0 * COUNT(*) FILTER (WHERE confusion_cell = 'TP')
+        / NULLIF(COUNT(*) FILTER (WHERE confusion_cell IN ('TP', 'FP')), 0),
+        2
+    ) AS measured_precision_pct,
+    ROUND(AVG(latency_ms), 1) AS avg_sys1_latency_ms
+FROM gold_cohort
+GROUP BY model_id, question_schema_version, threshold_policy_version;
+
+
+-- ============================================================================
+-- REPORT 2: HOSPITAL SHADOW-AUDIT ROUTING SUMMARY (NOT DENIALS PREVENTED)
+-- These are model flags only; compare with observed payer outcomes separately.
+-- ============================================================================
+SELECT
+    st.target_key AS tpa_or_scheme,
+    COUNT(DISTINCT cs.id) AS total_discharge_packets_scored,
+    COUNT(DISTINCT cs.id) FILTER (WHERE s1.confidence_band = 'GREEN_PASS') AS ready_for_human_release,
+    COUNT(DISTINCT cs.id) FILTER (WHERE s1.answers->'claim_submission_route'->>'choice' = 'HOLD_CLAUSE_4_1_RISK') AS clause_4_1_flags,
+    COUNT(DISTINCT cs.id) FILTER (WHERE s1.answers->'claim_submission_route'->>'choice' = 'HOLD_MISSING_LAB_PROOF') AS missing_lab_flags,
+    COUNT(DISTINCT cs.id) FILTER (WHERE s1.answers->'claim_submission_route'->>'choice' = 'HOLD_CONSUMABLES_UNBUNDLED') AS unbundled_consumable_flags,
+    ROUND(AVG(s1.latency_ms), 1) AS avg_firewall_latency_ms
+FROM clinical_states cs
+JOIN sys1_decisions s1 ON s1.state_id = cs.id
+LEFT JOIN source_records sr ON sr.state_id = cs.id
+LEFT JOIN strategies st ON st.id = sr.strategy_id
+WHERE cs.domain = 'hospital_rcm'
+  AND s1.created_at >= now() - interval '14 days'
+GROUP BY st.target_key
+ORDER BY total_discharge_packets_audited DESC;
+Use code with caution.
+
+6. FastAPI Worker Entrypoint (app/main.py)
+
+This lightweight API exposes two endpoints so you can demo both tracks from a single deployment:
+• POST /v1/literature/sweep: Triggers a live PubMed + Europe PMC sweep for a molecule (e.g., "Atorvastatin"), deduplicates records into clinical_states, evaluates all new abstracts with Jev in parallel, and inserts the audit rows.
+• POST /v1/rcm/pre-flight: Receives a hospital discharge & billing JSON packet from the TPA desk, runs the configured local System One adapter, records the state and decision, and returns the decision band plus per-gate scores for human review. Measure latency on the deployed model and workload; this example makes no latency guarantee.
+python
+import os
+import json
+import secrets
+import psycopg
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from pydantic import BaseModel
+from typing import Dict, Any
+from ingest_literature import fetch_pubmed_articles, fetch_europepmc_articles
+from sys1_router import evaluate_state
+
+app = FastAPI(title="Vyom OS — System One Clinical Decision Worker", version="2.0.0")
+DB_URL = os.environ["DATABASE_URL"]
+bearer = HTTPBearer(auto_error=False)
+
+def require_bearer_token(credentials: HTTPAuthorizationCredentials = Depends(bearer)) -> None:
+    expected = os.environ.get("API_BEARER_TOKEN")
+    if not expected:
+        raise HTTPException(status_code=503, detail="API_BEARER_TOKEN is not configured")
+    if credentials is None or not secrets.compare_digest(credentials.credentials, expected):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+class LiteratureSweepRequest(BaseModel):
+    molecule: str
+    query: str
+    max_results: int = 50
+
+class HospitalPacketRequest(BaseModel):
+    admission_uid: str
+    payer_code: str
+    discharge_and_bill_state: Dict[str, Any]
+
+@app.post("/v1/literature/sweep")
+def run_literature_sweep(req: LiteratureSweepRequest, _: None = Depends(require_bearer_token)):
+    raw_hits = fetch_pubmed_articles(req.query, req.max_results) + fetch_europepmc_articles(req.query, req.max_results)
+    screened_count = 0
+
+    with psycopg.connect(DB_URL) as conn:
+        with conn.cursor() as cur:
+            for hit in raw_hits:
+                # 1. Idempotent upsert into canonical clinical_states
+                cur.execute(
+                    """
+                    INSERT INTO clinical_states (domain, dedup_key, title_or_header, normalized_state, state_sha256)
+                    VALUES ('pv_literature', %s, %s, %s, %s)
+                    ON CONFLICT (dedup_key) DO NOTHING
+                    RETURNING id;
+                    """,
+                    (hit["dedup_key"], hit["title"], json.dumps(hit["normalized_state"]), hit["state_sha256"])
+                )
+                row = cur.fetchone()
+                should_screen = row is not None
+                if row:
+                    state_id = row[0]
+                else:
+                    cur.execute(
+                        "SELECT id FROM clinical_states WHERE dedup_key = %s",
+                        (hit["dedup_key"],)
+                    )
+                    state_id = cur.fetchone()[0]
+
+                cur.execute(
+                    """
+                    INSERT INTO source_records (source, source_uid, raw_payload, state_id)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (source, source_uid) DO NOTHING;
+                    """,
+                    (hit["source"], hit["source_uid"], json.dumps(hit["raw_payload"]), state_id)
+                )
+                if not should_screen:
+                    continue  # Preserve the second source record without screening the same state again.
+
+                # 2. Evaluate via System One (Jev Cloud API)
+                decision = evaluate_state("pv_literature", hit["normalized_state"])
+
+                # 3. Append immutable decision record
+                cur.execute(
+                    """
+                    INSERT INTO sys1_decisions (
+                        state_id, model_id, question_schema_version, threshold_policy_version,
+                        latency_ms, answers, p_valid_case, p_serious_or_denial, confidence_band
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                    """,
+                    (
+                        state_id, decision["model_id"], decision["question_schema_version"],
+                        decision["threshold_policy_version"], decision["latency_ms"],
+                        json.dumps(decision["answers"]), decision["p_valid_case"],
+                        decision["p_serious_or_denial"], decision["confidence_band"]
+                    )
+                )
+                screened_count += 1
+        conn.commit()
+
+    return {"molecule": req.molecule, "raw_hits": len(raw_hits), "newly_screened": screened_count}
+
+@app.post("/v1/rcm/pre-flight")
+def evaluate_hospital_claim(req: HospitalPacketRequest, _: None = Depends(require_bearer_token)):
+    decision = evaluate_state("hospital_rcm", req.discharge_and_bill_state)
+    state_hash = decision["state_sha256"]
+    dedup_key = f"hospital-admission:{req.admission_uid}:{state_hash}"
+    source_uid = f"{req.admission_uid}:{state_hash[:16]}"
+    title = f"Hospital admission {req.admission_uid}"
+    with psycopg.connect(DB_URL) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                INSERT INTO clinical_states
+                  (domain, dedup_key, title_or_header, normalized_state, state_sha256)
+                VALUES ('hospital_rcm', %s, %s, %s, %s)
+                ON CONFLICT (dedup_key) DO NOTHING
+                RETURNING id;
+                """,
+                (dedup_key, title, json.dumps(req.discharge_and_bill_state), state_hash)
+            )
+            row = cur.fetchone()
+            if row:
+                state_id = row[0]
+            else:
+                cur.execute("SELECT id FROM clinical_states WHERE dedup_key = %s", (dedup_key,))
+                state_id = cur.fetchone()[0]
+            cur.execute(
+                """
+                INSERT INTO source_records (source, source_uid, raw_payload, state_id)
+                VALUES ('hospital_his', %s, %s, %s)
+                ON CONFLICT (source, source_uid) DO NOTHING;
+                """,
+                (source_uid, json.dumps(req.discharge_and_bill_state), state_id)
+            )
+            cur.execute(
+                """
+                INSERT INTO sys1_decisions (
+                    state_id, model_id, question_schema_version, threshold_policy_version,
+                    latency_ms, answers, p_valid_case, p_serious_or_denial, confidence_band
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                """,
+                (
+                    state_id, decision["model_id"], decision["question_schema_version"],
+                    decision["threshold_policy_version"], decision["latency_ms"],
+                    json.dumps(decision["answers"]), decision["p_valid_case"],
+                    decision["p_serious_or_denial"], decision["confidence_band"]
+                )
+            )
+        conn.commit()
+    return {
+        "admission_uid": req.admission_uid,
+        "payer_code": req.payer_code,
+        "confidence_band": decision["confidence_band"],
+        "latency_ms": decision["latency_ms"],
+        "gate_probabilities": decision["gate_probabilities"],
+        "consumables_flag_probability": decision["p_serious_or_denial"],
+        "recommended_route": decision["answers"]["claim_submission_route"]["choice"],
+        "decisions": decision["answers"]
+    }
+Use code with caution.
+
+
+The following scripts are internal evaluation examples, not production-ready training or validation pipelines. Run them only after reviewing dataset rights, privacy, and model governance.
+
+1. Friday-Night Contrastive LoRA Exporter (app/export_lora_pairs.py)
+
+Do not assume fine-tuning improves accuracy; benchmark every candidate on a frozen gold set first. This example exports eligible corrections only from public PV literature, excludes frozen gold rows, and creates a pair only when a separately accepted answer differs. Keep the export on the approved local training host.
+python
+"""
+Friday-Night Contrastive LoRA Exporter for Vyom OS
+Queries append-only `human_labels` (where action = 'CORRECT'), pairs each human override
+with a separately accepted, differing reference answer when one is available, and exports local System One training candidates.
+"""
+
+import os
+import json
+import hashlib
+from datetime import datetime, timezone
+import psycopg
+
+DB_URL = os.environ["DATABASE_URL"]
+OUTPUT_DIR = os.getenv("LORA_EXPORT_DIR", "./lora_exports")
+
+# Exact System One prompt templates matching Bespoke Nimble / Qwen3.5-9B token scoring format
+SYSTEM_PROMPT = (
+    "You are a System One clinical decision engine. Evaluate the provided JSON state "
+    "against the typed question and output ONLY the exact allowed answer token."
+)
+
+def format_nimble_training_example(
+    record_id: str,
+    domain: str,
+    state_json: dict,
+    question_key: str,
+    model_wrong_answer: str,
+    human_gold_answer: str,
+    rationale: str,
+    contrastive_group_id: str
+) -> dict:
+    """Formats a single decision into the Bespoke Nimble / Qwen3.5 LoRA training schema."""
+    return {
+        "id": record_id,
+        "contrastive_group_id": contrastive_group_id,
+        "domain": domain,
+        "question_id": question_key,
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {
+                "role": "user",
+                "content": json.dumps(
+                    {"state": state_json, "question_id": question_key},
+                    ensure_ascii=False,
+                    sort_keys=True
+                )
+            },
+            {"role": "assistant", "content": str(human_gold_answer)}
+        ],
+        "metadata": {
+            "prior_model_prediction": str(model_wrong_answer),
+            "reviewer_rationale": rationale,
+            "exported_at": datetime.now(timezone.utc).isoformat()
+        }
+    }
+
+def export_weekly_contrastive_pairs(days_back: int = 7) -> str:
+    if os.getenv("ENABLE_TRAINING_EXPORT") != "true":
+        raise RuntimeError("Set ENABLE_TRAINING_EXPORT=true only on the approved local training host")
+    if days_back < 1:
+        raise ValueError("days_back must be positive")
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+    out_path = os.path.join(OUTPUT_DIR, f"vyom_nimble_lora_{stamp}.jsonl")
+
+    query = """
+    WITH corrections AS (
+        SELECT
+            hl.id AS label_id,
+            cs.id AS state_id,
+            cs.domain,
+            cs.normalized_state,
+            cs.state_sha256,
+            s1.answers AS model_answers,
+            hl.override_patch,
+            hl.rationale_note,
+            hl.reviewer_role,
+            hl.created_at
+        FROM human_labels hl
+        JOIN clinical_states cs ON cs.id = hl.state_id
+        JOIN sys1_decisions s1 ON s1.id = hl.sys1_decision_id
+        WHERE hl.action = 'CORRECT'
+          AND hl.override_patch IS NOT NULL
+                    AND cs.domain = 'pv_literature'
+                    AND NOT EXISTS (SELECT 1 FROM gold_labels gl WHERE gl.state_id = cs.id)
+          AND hl.created_at >= now() - (%s || ' days')::interval
+    ),
+    -- Latest accepted reference answer; this is not a nearest-neighbor/hard-negative search.
+    accepted_neighbors AS (
+        SELECT DISTINCT ON (cs.domain)
+            cs.domain,
+            cs.id AS neighbor_state_id,
+            cs.normalized_state AS neighbor_state,
+            s1.answers AS neighbor_answers
+        FROM human_labels hl
+        JOIN clinical_states cs ON cs.id = hl.state_id
+        JOIN sys1_decisions s1 ON s1.id = hl.sys1_decision_id
+        WHERE hl.action = 'ACCEPT'
+                    AND cs.domain = 'pv_literature'
+                    AND NOT EXISTS (SELECT 1 FROM gold_labels gl WHERE gl.state_id = cs.id)
+        ORDER BY cs.domain, hl.created_at DESC
+    )
+    SELECT
+        c.label_id,
+        c.state_id,
+        c.domain,
+        c.normalized_state,
+        c.model_answers,
+        c.override_patch,
+        c.rationale_note,
+        an.neighbor_state_id,
+        an.neighbor_state,
+        an.neighbor_answers
+    FROM corrections c
+    LEFT JOIN accepted_neighbors an ON an.domain = c.domain
+    ORDER BY c.created_at ASC;
+    """
+
+    exported_rows = 0
+    with psycopg.connect(DB_URL) as conn:
+        with conn.cursor() as cur:
+            cur.execute(query, (days_back,))
+            rows = cur.fetchall()
+
+            with open(out_path, "w", encoding="utf-8") as f:
+                for row in rows:
+                    (
+                        label_id, state_id, domain, norm_state, model_ans,
+                        override_patch, rationale, neigh_id, neigh_state, neigh_ans
+                    ) = row
+
+                    # override_patch is a JSON dict: e.g. {"has_adverse_event": "YES", "triage_priority": "4_EXPEDITED_15D_SERIOUS"}
+                    for q_key, gold_val in override_patch.items():
+                        prior_pred = model_ans.get(q_key, {})
+                        group_hash = hashlib.sha256(f"{label_id}:{q_key}".encode()).hexdigest()[:12]
+
+                        # 1. Write the Human-Corrected Anchor Example
+                        anchor_rec = format_nimble_training_example(
+                            record_id=f"corr_{label_id}_{q_key}",
+                            domain=domain,
+                            state_json=norm_state,
+                            question_key=q_key,
+                            model_wrong_answer=json.dumps(prior_pred),
+                            human_gold_answer=gold_val,
+                            rationale=rationale or "Human clinical override",
+                            contrastive_group_id=group_hash
+                        )
+                        f.write(json.dumps(anchor_rec, ensure_ascii=False) + "\n")
+                        exported_rows += 1
+
+                        # 2. Write the Contrastive Accepted Neighbor (if available) to anchor calibration
+                        if neigh_state and neigh_ans and q_key in neigh_ans:
+                            neigh_val = (
+                                neigh_ans[q_key].get("choice")
+                                or neigh_ans[q_key].get("score")
+                                or ("YES" if neigh_ans[q_key].get("probability", 0) >= 0.5 else "NO")
+                            )
+                            if str(neigh_val) != str(gold_val):
+                                contrast_rec = format_nimble_training_example(
+                                    record_id=f"contrast_{neigh_id}_{label_id}_{q_key}",
+                                    domain=domain,
+                                    state_json=neigh_state,
+                                    question_key=q_key,
+                                    model_wrong_answer="NONE_ACCEPTED",
+                                    human_gold_answer=neigh_val,
+                                    rationale="Separately human-accepted, differing reference example",
+                                    contrastive_group_id=group_hash
+                                )
+                                f.write(json.dumps(contrast_rec, ensure_ascii=False) + "\n")
+                                exported_rows += 1
+
+    print(f"[Vyom LoRA Exporter] Exported {exported_rows} contrastive System One training rows -> {out_path}")
+    return out_path
+
+if __name__ == "__main__":
+    export_weekly_contrastive_pairs(days_back=7)
+Use code with caution.
+
+2. ADE Sentence-Level Smoke-Test Script (app/benchmark_ade.py)
+
+ADE Corpus V2 is sentence-level and its licence is unclear. Use it only for internal smoke testing after resolving usage rights; it cannot establish abstract-level ICSR recall, production calibration, or workload savings. Never fabricate sample size by repeating synthetic examples.
+python
+"""Internal sentence-level ADE smoke test; not an ICSR recall or release gate.
+The output measures only the adverse-event primitive against sentence labels.
+"""
+
+import os
+import time
+import json
+from typing import List, Dict, Tuple
+from sys1_router import evaluate_state
+
+def load_ade_sample(sample_size: int = 300) -> List[Dict]:
+    """
+    Loads a deterministic balanced sample from the sentence-level ADE dataset.
+    Does not substitute synthetic examples when the dataset is unavailable.
+    """
+    if sample_size < 2 or sample_size % 2:
+        raise ValueError("sample_size must be a positive even number")
+    try:
+        from datasets import load_dataset
+        from random import Random
+        print(f"[Benchmark] Fetching {sample_size} rows from SetFit/ade_corpus_v2_classification...")
+        ds = load_dataset("SetFit/ade_corpus_v2_classification", split="test")
+        positives = [r for r in ds if r["label"] == 1]
+        negatives = [r for r in ds if r["label"] == 0]
+        if len(positives) < sample_size // 2 or len(negatives) < sample_size // 2:
+            raise ValueError("dataset does not contain enough examples for a balanced sample")
+        sampler = Random(2026)
+        positives = sampler.sample(positives, sample_size // 2)
+        negatives = sampler.sample(negatives, sample_size // 2)
+        combined = positives + negatives
+        return [
+            {
+                "id": f"ade_{i}",
+                "text": row["text"],
+                "gold_is_ade": int(row["label"])
+            }
+            for i, row in enumerate(combined)
+        ]
+    except Exception as error:
+        raise RuntimeError(
+            "ADE dataset unavailable; refusing to create smoke-test metrics from synthetic data"
+        ) from error
+
+def compute_ece(predictions: List[Tuple[float, int]], num_bins: int = 10) -> float:
+    """Computes Expected Calibration Error (ECE) across probability bins."""
+    bins = [[] for _ in range(num_bins)]
+    for prob, gold in predictions:
+        idx = min(int(prob * num_bins), num_bins - 1)
+        bins[idx].append((prob, gold))
+
+    total = len(predictions)
+    ece = 0.0
+    for b in bins:
+        if not b:
+            continue
+        avg_conf = sum(x[0] for x in b) / len(b)
+        avg_acc = sum(x[1] for x in b) / len(b)
+        ece += (len(b) / total) * abs(avg_conf - avg_acc)
+    return round(ece, 4)
+
+def run_benchmark(sample_size: int = 300):
+    dataset = load_ade_sample(sample_size=sample_size)
+    results: List[Tuple[float, int, int]] = []  # (event-gate probability, sentence label, latency_ms)
+
+    print(f"[Benchmark] Evaluating {len(dataset)} clinical passages via System One...")
+    start_time = time.time()
+
+    for idx, item in enumerate(dataset, 1):
+        state = {
+            "source": "benchmark_ade_v2",
+            "title": "Clinical Passage Evaluation",
+            "abstract": item["text"]
+        }
+        decision = evaluate_state("pv_literature", state)
+        p_ade = float(decision["answers"]["has_adverse_event"]["probability"])
+        results.append((p_ade, item["gold_is_ade"], decision["latency_ms"]))
+
+        if idx % 50 == 0 or idx == len(dataset):
+            print(f"  Processed {idx}/{len(dataset)} (last latency: {decision['latency_ms']}ms)")
+
+    total_sec = round(time.time() - start_time, 2)
+    avg_lat = round(sum(r[2] for r in results) / len(results), 1)
+    ece = compute_ece([(r[0], r[1]) for r in results])
+
+    print("\n" + "=" * 86)
+    print(f"SENTENCE-LEVEL ADE SMOKE TEST (N={len(dataset)} | Avg Latency: {avg_lat}ms | Dataset ECE: {ece})")
+    print("=" * 86)
+    print(f"{'Threshold':<12} | {'Sentence recall':<15} | {'Sentence precision':<20} | {'Below-threshold (%)':<20} | {'False negatives':<16}")
+    print("-" * 86)
+
+    thresholds = [0.02, 0.04, 0.06, 0.10, 0.15, 0.25, 0.50]
+    for thresh in thresholds:
+        tp = sum(1 for p, g, _ in results if p >= thresh and g == 1)
+        fp = sum(1 for p, g, _ in results if p >= thresh and g == 0)
+        fn = sum(1 for p, g, _ in results if p < thresh and g == 1)
+        tn = sum(1 for p, g, _ in results if p < thresh and g == 0)
+
+        recall = round(100.0 * tp / max(tp + fn, 1), 2)
+        precision = round(100.0 * tp / max(tp + fp, 1), 2)
+        below_threshold_pct = round(100.0 * (tn + fn) / len(results), 2)
+
+        print(f"{thresh:<12.2f} | {recall:<15.2f} | {precision:<20.2f} | {below_threshold_pct:<20.2f} | {fn:<16}")
+
+    print("=" * 86)
+    print(f"Total Wall Time: {total_sec}s | Output saved to ./benchmark_calibration_latest.json")
+
+    with open("benchmark_calibration_latest.json", "w", encoding="utf-8") as f:
+        json.dump(
+            {
+                "n_samples": len(dataset),
+                "avg_latency_ms": avg_lat,
+                "expected_calibration_error": ece,
+                "raw_scores": [{"p_ade": r[0], "gold": r[1], "latency_ms": r[2]} for r in results]
+            },
+            f,
+            indent=2
+        )
+
+if __name__ == "__main__":
+    run_benchmark(sample_size=int(os.getenv("BENCHMARK_SIZE", "300")))
+Use code with caution.
+
+3. Add requirements.txt and Run Both Commands
+
+Drop this into vyom-os-engine/app/requirements.txt:
+text
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+psycopg[binary]==3.2.1
+httpx==0.27.2
+pydantic==2.9.2
+typesafe-sdk>=0.1.0
+datasets>=3.0.0
+Use code with caution.
+Then run your calibration and weekly export directly inside your container:
+bash
+# 1. Start Postgres, Local Ollama System One node, and the FastAPI worker
+docker compose up -d --build
+
+# 2. Run the 300-row ADE threshold calibration benchmark
+docker exec -it vyom_worker python benchmark_ade.py
+
+# 3. Run the Friday-night contrastive LoRA exporter
+docker exec -it vyom_worker python export_lora_pairs.py
+Use code with caution.

@@ -23,7 +23,7 @@ export function Hero() {
             One sentence, wrapping naturally. `text-balance` keeps the last
             line from stranding a single word.
           */}
-          <h1 className="m-0 text-[clamp(52px,8vw,116px)] leading-[0.98] font-semibold tracking-[-0.042em] text-balance text-primary">
+          <h1 className="m-0 text-[clamp(44px,6vw,88px)] leading-[0.98] font-semibold tracking-[-0.042em] text-balance text-primary">
             {before}
             <span className="text-accent underline decoration-accent-line decoration-[0.055em] underline-offset-[0.16em] [text-decoration-skip-ink:none]">
               {highlight}

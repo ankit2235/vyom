@@ -6,19 +6,19 @@
  */
 
 export const hero = {
-  pill: 'AI-NATIVE PHARMACOVIGILANCE · BUILT IN INDIA',
+  pill: 'SYSTEM ONE CLINICAL DECISION ENGINE · BUILT IN INDIA',
   /**
    * One sentence that wraps naturally. Split so `highlight` can take the
    * accent colour and the underline without the component hardcoding the
    * phrase — change the wording here and the emphasis follows.
    */
   headline: {
-    before: 'The AI-native engine for ',
-    highlight: 'drug safety',
-    after: '.',
+    before: 'The AI-native decision engine for ',
+    highlight: 'Hospital RCM',
+    after: ' & Drug Safety.',
   },
   subline:
-    'Every case, every journal, every check, handled by AI agents and signed off by qualified safety physicians. Pay per outcome, and see the proof on your own data before you commit.',
+    'Design target: evaluate every insurance claim, discharge chart, and adverse-event report in under 100ms. System One probabilities support clinical expert sign-off. Pay per outcome.',
   primaryCta: { label: 'Get a free benchmark', href: '/contact' },
   secondaryCta: { label: 'See how it works', href: '/platform' },
   footnote:
@@ -66,6 +66,27 @@ export const caseRun = {
   actionNote: 'AI PROPOSES · PHYSICIAN DECIDES',
 } as const;
 
+export const claimRun = {
+  heading: 'Claim run VY-CASE-0891 · VENDOR A (FICTIONAL) · CARDIOLOGY · <85ms',
+  passageLabel: 'SOURCE PASSAGE · SAMPLE DISCHARGE CHART',
+  passage:
+    '58M admitted with Acute Anterior Wall MI. Primary PCI with DES performed. Echo LVEF 38%. IV Heparin & dual antiplatelets given.',
+  steps: [
+    { name: 'Pre-Auth Gate', primitive: 'NOUL · 0.99', detail: 'Mandatory Echo & ECG proof attached' },
+    { name: 'Clause 4.1 Check', primitive: 'NOUL · 0.96', detail: 'Active inpatient IV intervention verified' },
+    { name: 'Coding', primitive: 'CHOICE · 0.94', detail: 'ICD-10 I21.09 · PM-JAY / TPA Package matched' },
+    { name: 'Consumables Audit', primitive: 'NOUL · 0.88', detail: '₹1,450 non-payable items flagged for unbundling' },
+    { name: 'Denial Risk', primitive: 'SCORE · 1/5', detail: 'Clean first-pass · Ready for NHCX FHIR export' },
+  ],
+} as const;
+
+export const caseRunPills = [
+  { name: 'Validity', primitive: 'NOUL · 0.98', detail: 'Patient, reporter, drug and event' },
+  { name: 'Event', primitive: 'CHOICE · 0.94', detail: 'elevated liver enzymes (verbatim)' },
+  { name: 'Seriousness', primitive: 'NOUL · 0.97', detail: 'Hospitalisation · physician review' },
+  { name: 'Timeline', primitive: 'SCORE · 4/5', detail: '15-Day Expedited' },
+] as const;
+
 export const standards = {
   label: 'DESIGNED FOR',
   ariaLabel: 'Standards Vyom is designed for',
@@ -78,6 +99,9 @@ export const standards = {
     'CDSCO · PvPI',
     'CIOMS AI in PV',
     'India DPDP Act',
+    'ABDM · NHCX',
+    'ICD-10 / CPT',
+    'TPA Pre-Auth Rules',
   ],
 } as const;
 
@@ -101,6 +125,44 @@ export const productsSection = {
   heading: 'One safety system. Six products.',
   lead: 'Start with one workflow and add the rest as trust grows. Every product shares the same agents, rules and evidence trail.',
   osCta: { label: 'Talk to us about licensing', href: '/contact' },
+  cards: [
+    {
+      name: 'Vyom Pre-Auth & Claims',
+      description: 'Pre-submission TPA firewall & Clause 4.1 check',
+      icon: 'cases',
+      badge: null,
+    },
+    {
+      name: 'Vyom Autonomous Coding',
+      description: 'ICD-10, CPT & package mapping with confidence scores',
+      icon: 'audit',
+      badge: null,
+    },
+    {
+      name: 'Vyom Cases (ICSR)',
+      description: 'End-to-end adverse event intake to E2B(R3)',
+      icon: 'cases',
+      badge: null,
+    },
+    {
+      name: 'Vyom Literature',
+      description: 'Weekly medical journal screening',
+      icon: 'literature',
+      badge: null,
+    },
+    {
+      name: 'Vyom Audit',
+      description: 'QA check across claims & safety vendor cases',
+      badge: '100% · DESIGN TARGET',
+      icon: 'audit',
+    },
+    {
+      name: 'Vyom OS',
+      description: 'Self-hosted System One decision engine for hospitals & CROs',
+      badge: 'ROADMAP',
+      icon: 'os',
+    },
+  ] as const,
 } as const;
 
 /** Sample data for the flagship card's queue. */
