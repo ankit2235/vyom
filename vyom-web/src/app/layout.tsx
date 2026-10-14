@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Mono, Instrument_Sans } from 'next/font/google';
 import { siteConfig } from '~/site.config';
-import { Footer, Header, NoticeBar } from '@/components/site';
-import { Reveal } from '@/components/site/Reveal';
 import './globals.css';
 
 const instrumentSans = Instrument_Sans({
@@ -54,11 +52,7 @@ export default function RootLayout({ children }: { readonly children: React.Reac
         >
           Skip to content
         </a>
-        <NoticeBar />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <Reveal />
+        {children}
       </body>
     </html>
   );

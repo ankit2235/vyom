@@ -1,15 +1,16 @@
 # Deploying Vyom
 
-The site is a **static export**. `npm run build` writes a complete, self-contained
-site to `out/` — no server runtime, no Node process, no serverless functions. That
-makes it cheap and portable: Vercel is set up below, but the same `out/` directory
-would work on Cloudflare Pages, Netlify or S3 unchanged.
+The public site and the signed-in app live in **`vyom-web/`**. Set Vercel’s
+**Root Directory** to `vyom-web`. Middleware (auth + `x-tenant-id`) needs a
+server runtime, so this is a standard Next.js deploy — not a static `out/`
+export.
 
 ---
 
 ## 1. Before you start
 
 ```bash
+cd vyom-web
 npm install
 npm run check    # typecheck + lint + build, all must pass
 ```
@@ -26,19 +27,16 @@ fail on Vercel.
    the repository.
 3. **Add New… → Project**, then **Import** the `vyom` repository. Grant Vercel
    access to the repository if prompted.
-4. Vercel detects Next.js and fills in the build settings. Confirm they read:
+4. Set **Root Directory** to `vyom-web`. Vercel detects Next.js. Confirm:
 
    | Setting | Value |
    | --- | --- |
+   | Root Directory | `vyom-web` |
    | Framework Preset | Next.js |
    | Build Command | `npm run build` |
    | Output Directory | *(leave as the Next.js default)* |
    | Install Command | `npm install` |
    | Node.js Version | 22.x |
-
-   Do **not** override the output directory to `out`. Next.js tells Vercel where
-   the export landed; overriding it can break the routing for
-   `trailingSlash: true`.
 5. Add the environment variable in §3 **before** the first deploy.
 6. Click **Deploy**.
 
@@ -46,7 +44,7 @@ fail on Vercel.
 
 ## 3. Environment variables
 
-One variable, and it stays empty until the backend exists.
+Leave these empty until each service exists.
 
 In **Project → Settings → Environment Variables**, add:
 
@@ -55,11 +53,13 @@ In **Project → Settings → Environment Variables**, add:
 | `NEXT_PUBLIC_API_URL` | *(empty)* | Production, Preview, Development |
 | `NEXT_PUBLIC_SITE_URL` | *(empty, until a custom domain is live)* | Production, Preview, Development |
 
-While it is empty, `submitBenchmarkRequest()` in `src/lib/api.ts` builds a
-pre-filled `mailto:` link and nothing is transmitted or stored. When the backend
-lands, set it to the API's base URL (no trailing slash) and that one function
-starts POSTing to `${NEXT_PUBLIC_API_URL}/benchmark-requests` instead. **No other
-file needs to change.**
+While it is empty, `submitBenchmarkRequest()` in `vyom-web/src/lib/api.ts` builds a
+   pre-filled `mailto:` link and nothing is transmitted or stored. When the form
+   backend lands, set it to the API's base URL (no trailing slash) and that one function
+   starts POSTing to `${NEXT_PUBLIC_API_URL}/benchmark-requests` instead.
+
+   Add `NEXT_PUBLIC_VYOM_OS_URL` when the FastAPI service in `vyom-os` is reachable
+   (used by `vyom-web/src/lib/gateway/api-client.ts`).
 
 `NEXT_PUBLIC_` variables are inlined into the client bundle at build time, so
 they are public by definition. Never put a secret behind this prefix, and
@@ -157,18 +157,18 @@ and sample data.
 
 Before flipping the switch, clear these:
 
-- [ ] Replace `email: '[YOUR EMAIL]'` in `site.config.ts`.
+- [ ] Replace `email: '[YOUR EMAIL]'` in `vyom-web/site.config.ts`.
 - [ ] Replace `[BIO PLACEHOLDER]` and `[ADVISERS PLACEHOLDER]` in
-      `src/content/company.ts`.
+      `vyom-web/src/content/company.ts`.
 - [ ] Have a lawyer review `/privacy` and `/terms`, then remove the draft notice
-      in `src/content/legal.ts` and update the "Last updated" dates.
+      in `vyom-web/src/content/legal.ts` and update the "Last updated" dates.
 - [ ] Set `NEXT_PUBLIC_SITE_URL` to the live origin (§6).
 - [ ] Decide whether the "Concept preview" bar should stay. It is
       `showNotice` in `site.config.ts`.
 - [ ] Re-check that every figure on the site is still a sourced fact, a labelled
       Target, or Sample data.
 
-Then, in `site.config.ts`:
+Then, in `vyom-web/site.config.ts`:
 
 ```ts
 indexable: true,
@@ -191,9 +191,9 @@ though search engines take time to drop pages that are already indexed.
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Local dev server |
-| `npm run build` | Static export to `out/` |
-| `npm run start` | Serve the built `out/` locally |
+| `npm run dev` | Local dev server (from `vyom-web/`) |
+| `npm run build` | Production Next.js build |
+| `npm run start` | Serve the production build |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run lint` | ESLint |
 | `npm run check` | All three, in order |

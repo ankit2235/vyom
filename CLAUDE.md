@@ -1,19 +1,33 @@
-# Vyom — public marketing website
+# Vyom
 
-Frontend only. A separate backend service comes later and should need to touch
-**only** `src/lib/api.ts`.
+Two applications, docs at the repo root.
 
-Read `DESIGN.md` before changing anything visual. The design file
-`design/Vyom Home Screen.html` is the source of truth for the look; the build brief is
-the source of truth for content, structure and rules. If the two conflict, ask.
+```
+vyom-web/          Next.js frontend (marketing + auth + tenant app + ops)
+vyom-os/           FastAPI (Vyom OS)
+BRD-v2             Product brief
+system-design.md   Architecture
+DESIGN.md          Visual rules — read before changing anything visual
+design/            Source-of-truth HTML mock
+sample-code.txt
+DEPLOY.md          How to ship vyom-web
+```
 
-## Stack
+A later backend change for the marketing form should need to touch **only**
+`vyom-web/src/lib/api.ts`. Tenant-app calls to FastAPI go through
+`vyom-web/src/lib/gateway/api-client.ts`.
 
-- **Next.js** (App Router) with `output: 'export'` — static export, deployed on
-  Vercel (see `DEPLOY.md`). The output is a plain static site, so it would run
-  unchanged on Cloudflare Pages or any static host. No server runtime: no route
-  handlers, no middleware, no ISR, no `next/image` loader that needs a server
-  (`images.unoptimized: true`).
+The design file `design/Vyom Home Screen.html` is the source of truth for the
+look; the build brief is the source of truth for content, structure and rules.
+If the two conflict, ask.
+
+## Stack — vyom-web
+
+- **Next.js** (App Router). Marketing, login, `/{tenant}` and `/ops` share one
+  app. Middleware is the edge gateway (skip marketing; require auth and
+  `x-tenant-id` on tenant routes). This is **not** a static export: middleware
+  needs a server runtime. Deploy on Vercel with Root Directory `vyom-web`
+  (see `DEPLOY.md`). `images.unoptimized: true`.
 - **TypeScript**, strict.
 - **Tailwind CSS** v4 — tokens defined once in `@theme`, mirrored as CSS variables.
 - **Fonts** via `next/font/google`: Instrument Sans (400, 500, 600, 700),
@@ -22,36 +36,45 @@ the source of truth for content, structure and rules. If the two conflict, ask.
 - **Charts** are plain SVG/CSS. No chart library.
 - **Radix UI** primitives only where accessibility needs them (navigation menu, dialog).
 - **Ask before adding any other dependency.**
-- No analytics, cookies, trackers or third-party form services. Ever.
+- No analytics, cookies, trackers or third-party form services on the **public**
+  site. The signed-in stub uses first-party session cookies only.
 
 ## Commands
 
 ```
+cd vyom-web
 npm run dev        # local dev server
-npm run build      # static export to ./out — must pass with zero errors
+npm run build      # production build — must pass with zero errors
 npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
 npm run check      # typecheck + lint + build
+
+cd vyom-os
+python -m pip install -e '.[test]'
 ```
 
-## Folder structure
+## Folder structure — vyom-web
 
 ```
 src/
-  app/                    routes only; page.tsx files stay thin
-    products/[slug]/      cases, literature, audit, reports, signal, os
+  middleware.ts                 EDGE GATEWAY
+  app/
+    (marketing)/                Public site — Navbar + Footer
+      page.tsx                  /
+      pricing/                  /pricing
+      book-demo/                /book-demo
+      products/[slug]/          existing product pages
+    (auth)/login/               /login
+    (platform)/[tenant_slug]/   Auth + TenantProvider
+      dashboard/ console/ settings/
+    (internal)/ops/             /ops
   components/
-    ui/                   Button, Chip, Eyebrow, Card, Section, Container,
-                          StatCard, ProgressBar
-    site/                 Header, MegaMenu, Footer, NoticeBar, Logo,
-                          StarfieldBackground
-    mocks/                CaseRunPanel, CaseQueue, LiteratureFunnel,
-                          VendorScorecard, ReportOutline, SignalBoard,
-                          ArchitectureDiagram
-    icons/                inline SVG icon components
-  content/                site.ts, home.ts, products.ts, platform.ts, company.ts
-  lib/                    api.ts, utils
-site.config.ts            flags and placeholders
+  content/                      All copy lives here
+  lib/
+    api.ts                      Marketing form boundary
+    gateway/api-client.ts       JWT + X-Tenant-ID → vyom-os
+    tenant/TenantContext.tsx
+site.config.ts
 ```
 
 ## Content rules — non-negotiable
@@ -66,6 +89,7 @@ site.config.ts            flags and placeholders
    A number that is none of these does not belong on the site.
 3. **Sample screens use only fictional identifiers**: drug codes `VY-201`, `VY-305`,
    `VY-412`, case ids `VY-CASE-xxxx`, and `Vendor A`. Vendor A is marked `(FICTIONAL)`.
+   Sample tenants are `demo-hospital` and `demo-tpa`, marked `(FICTIONAL)`.
 4. **Never name a competitor.** Compare against "services firms" and
    "software platforms" only.
 5. **The Concept preview notice bar** is controlled by one flag in `site.config.ts`
@@ -91,7 +115,9 @@ site.config.ts            flags and placeholders
 - SEO: per-page title and description, Open Graph image, `sitemap.xml`, `robots.txt`.
   **While `site.config.ts` has `indexable: false` (the default), every page emits
   `<meta name="robots" content="noindex">` and `robots.txt` disallows everything.**
-- `npm run build`, `npm run typecheck` and `npm run lint` pass with zero errors.
+  Login, tenant app and `/ops` stay `noindex` even after that flag flips.
+- `npm run build`, `npm run typecheck` and `npm run lint` in `vyom-web` pass with
+  zero errors.
 
 ## Working agreement
 

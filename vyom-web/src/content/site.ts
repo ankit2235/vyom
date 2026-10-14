@@ -13,14 +13,14 @@ export const notice = {
 export const primaryNav: readonly NavLink[] = [
   { label: 'Products', href: '/products' },
   { label: 'Platform', href: '/platform' },
-  { label: 'Vyom Audit', href: '/products/audit' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'How we start', href: '/how-we-start' },
   { label: 'Company', href: '/company' },
 ];
 
 export const headerActions = {
-  secondary: { label: 'Talk to the founder', href: '/contact' },
-  primary: { label: 'Get a free benchmark', href: '/contact' },
+  secondary: { label: 'Sign in', href: '/login' },
+  primary: { label: 'Book a demo', href: '/book-demo' },
 } as const;
 
 export const footer = {
@@ -51,7 +51,10 @@ export const footer = {
       links: [
         { label: 'About Vyom', href: '/company' },
         { label: 'Careers', href: '/company#careers' },
+        { label: 'Pricing', href: '/pricing' },
+        { label: 'Book a demo', href: '/book-demo' },
         { label: 'Contact', href: '/contact' },
+        { label: 'Sign in', href: '/login' },
       ],
     },
   ],

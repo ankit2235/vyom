@@ -1,6 +1,6 @@
 # Vyom OS Engine
 
-This backend now contains two distinct paths:
+This directory is **vyom-os** (FastAPI). It contains two distinct paths:
 
 - **v1 prototype:** the earlier PubMed/Europe PMC fetcher and Claude batch flow (`vyom-fetch`).
 - **v2 foundation:** System One routing, an append-only decision ledger, and a public-literature sweep (`vyom-sweep`).

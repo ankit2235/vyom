@@ -2,7 +2,6 @@ import type { MetadataRoute } from 'next';
 import { products } from '@/content/products';
 import { siteConfig } from '~/site.config';
 
-// Required by output: 'export' — these are generated once at build time.
 export const dynamic = 'force-static';
 
 /** Routes live here as they are built. */
@@ -11,6 +10,8 @@ const routes = [
   '/products',
   ...products.map((product) => `/products/${product.slug}`),
   '/platform',
+  '/pricing',
+  '/book-demo',
   '/how-we-start',
   '/company',
   '/contact',
