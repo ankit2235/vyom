@@ -39,7 +39,7 @@ class FakeConnection:
         return False
 
 
-def _client(monkeypatch, *, runner=None, already_exists=False):
+def _client(monkeypatch, *, runner=None):
     router = FakeRouter()
     writes = {"states": 0, "decisions": 0}
 
@@ -54,15 +54,19 @@ def _client(monkeypatch, *, runner=None, already_exists=False):
             normalized_state=state,
         )
 
-    def fake_has_decision(connection, *, state_id, decision):
-        return already_exists or writes["decisions"] > 0
+
+    saved_decisions = {}
 
     def fake_append_decision(connection, *, state_id, decision):
-        writes["decisions"] += 1
-        return 71
+        # Like the real ledger: a repeat of the same decision is not saved again;
+        # the number of the one already saved is returned instead.
+        key = (state_id, decision["state_sha256"])
+        if key not in saved_decisions:
+            writes["decisions"] += 1
+            saved_decisions[key] = 70 + writes["decisions"]
+        return saved_decisions[key]
 
     monkeypatch.setattr("vyom_literature.api.record_state_and_source", fake_record_state)
-    monkeypatch.setattr("vyom_literature.api.has_sys1_decision", fake_has_decision)
     monkeypatch.setattr("vyom_literature.api.append_sys1_decision", fake_append_decision)
     app = create_app(
         router=router,
@@ -112,23 +116,22 @@ def test_rcm_route_requires_token_and_persists_ledger(monkeypatch):
     assert router.calls[0][1]["domain"] == "hospital_rcm"
 
 
-def test_rcm_retry_does_not_append_duplicate_decision(monkeypatch):
-    client, _, writes = _client(monkeypatch, already_exists=True)
+def test_rcm_retry_returns_existing_decision_without_duplicate(monkeypatch):
+    client, _, writes = _client(monkeypatch)
     body = {
         "admission_uid": "mock-admission-2",
         "payer_code": "mock-payer",
         "normalized_state": {"diagnosis": "mock"},
     }
+    headers = {"Authorization": "Bearer unit-test-token"}
 
-    response = client.post(
-        "/v1/rcm/preflight",
-        json=body,
-        headers={"Authorization": "Bearer unit-test-token"},
-    )
+    first = client.post("/v1/rcm/preflight", json=body, headers=headers)
+    retry = client.post("/v1/rcm/preflight", json=body, headers=headers)
 
-    assert response.status_code == 200
-    assert response.json()["decision_id"] is None
-    assert writes["decisions"] == 0
+    assert first.status_code == 200
+    assert retry.status_code == 200
+    assert retry.json()["decision_id"] == first.json()["decision_id"]
+    assert writes["decisions"] == 1
 
 
 def test_rcm_rejects_oversized_normalized_state_before_model_call(monkeypatch):
