@@ -1,28 +1,1801 @@
-# Vyom OS — milestone build prompts (v2)
+
+no update ui prompt earlier one to add real previous cases also
+Use this as an add-on prompt to your earlier Lovable UI prompt. It preserves the existing design and adds a real, source-backed case intelligence section.
+
+Update Existing Vyom UI — Real-World Drug Safety Cases
+Update the existing Vyom UI without redesigning or rebuilding the entire application. Keep the current design system, navigation, dark enterprise aesthetic, typography, and components.
+
+1. Add a “Live Safety Intelligence” section
+Create a premium, Bloomberg-style drug safety intelligence dashboard showing real historical cases, official drug alerts, product-quality incidents, and newly published safety reports.
+
+Make the interface feel like an operational patient-safety command centre—not a generic analytics dashboard.
+
+Include:
+
+Search by drug name, brand, active ingredient, manufacturer, batch number, location, or incident.
+
+Filters for India, state/city, drug quality, adverse events, recalls, regulatory alerts, and literature.
+
+A timeline of reported events and regulatory actions.
+
+Source links, publication dates, last-verified timestamps, and evidence status.
+
+A case-detail workspace with product information, known facts, unresolved questions, evidence gaps, and suggested human-review steps.
+
+A prominent distinction between historical cases, newly published reports, official alerts, and genuinely live hospital data.
+
+2. Seed the interface with real historical cases
+Use these verified public examples as initial case records. Do not invent case IDs, batch numbers, patient details, live feeds, or investigation outcomes.
+
+CASE A — Rajasthan / Kota: TOCIN oxytocin quality incident, 2026
+
+Product: TOCIN oxytocin injection.
+
+Location: Kota, Rajasthan.
+
+Reported finding: A tested sample was reported to contain no detectable oxytocin.
+
+Reported actions: Regulatory action against the product supply chain and cancellation of a Kota distributor's wholesale licence.
+
+Investigation context: Separate investigations identified clinical monitoring and documentation deficiencies.
+
+Critical caveat: Investigations reported by The Indian Express did not establish that the ineffective oxytocin caused the maternal deaths.
+
+Sources:
+
+https://indianexpress.com/article/india/rajasthan-kota-spurious-oxytocin-injections-pharma-license-maternal-deaths-10758736/
+
+https://indianexpress.com/article/health-wellness/rajasthan-maternal-deaths-kota-oxytocin-probe-10773003/
+
+https://timesofindia.indiatimes.com/city/jaipur/raj-bans-tocin-injection-after-sample-fails-quality-tests-3500-vials-seized-in-kota/articleshow/131313505.cms
+
+CASE B — India: Contaminated oral liquid medicines, 2025
+
+Products reported in the WHO medical product alert: COLDRIF, Respifresh TR, and ReLife.
+
+Reported issue: Diethylene glycol contamination in specific products/batches.
+
+Context: WHO reported that Indian authorities had identified contamination following reports of localized clusters of acute illness and child fatalities.
+
+UI treatment: Show the official alert, affected products, dates, and source-backed status. Never imply every batch or product was affected.
+
+Source: https://www.who.int/news/item/13-10-2025-medical-product-alert-n-5-2025--substandard-%28contaminated%29-oral-liquid-medicines
+
+CASE C — India: Official drug-quality surveillance
+
+Add an official-alert feed view based on the Central Drugs Standard Control Organisation (CDSCO) drug-quality and Not of Standard Quality alerts.
+
+Display the actual alert title, publication date, affected product details, and link to the original government document.
+
+Do not fabricate alert records if a source document cannot be retrieved.
+
+Source: https://cdsco.gov.in/opencms/opencms/en/Notifications/Alerts/
+
+3. Make every case feel actionable
+Each case card should display:
+
+Product / active ingredient
+
+Location and event date
+
+Alert category
+
+Evidence status: Official alert, Reported by media, Under investigation, or Historical case
+
+Source count and clickable source links
+
+A concise “Why this matters” explanation
+
+A “Review case” action
+
+Inside the case-detail page, add:
+
+Verified facts
+
+Reported claims
+
+Unknown / not established
+
+Timeline of events
+
+Product and batch traceability
+
+Potential evidence gaps
+
+Recommended next review steps
+
+Source documents and audit trail
+
+AI may summarize evidence and suggest questions for qualified reviewers. It must not independently declare causality, diagnose patients, or present an unverified hypothesis as fact.
+
+4. Show what Vyom adds
+For each historical case, include a clearly labelled “How Vyom could support a review” panel. For the Kota case, illustrate how a safety team could connect product identity, batch information, storage and distribution records, administration records, clinical chronology, and official findings—where those records are available.
+
+This is a retrospective demonstration of potential capabilities. Never claim Vyom actually detected, investigated, or prevented the historical incident.
+
+5. Design and data requirements
+Use a polished dark navy interface with restrained teal accents, clear status chips, readable typography, elegant timelines, and evidence panels.
+
+Make the case-detail view the visual centrepiece.
+
+Use realistic data density without overwhelming hospital administrators.
+
+Make the dashboard responsive and preserve existing application functionality.
+
+Keep historical case data separate from any future hospital-integrated case workspace.
+
+Use real source URLs and publication dates.
+
+Show “Last verified” only when the source was actually checked.
+
+If data is static, label it Historical demo data. Never simulate a live feed or claim real-time monitoring without a functioning data integration.
+
+Keep all patient-identifiable information out of public-source examples.
+
+Primary objective: When a hospital director or pharmacovigilance lead opens Vyom, they should immediately understand how the platform can organize real-world drug safety evidence, help trace product-quality concerns, surface missing information, and support accountable human review.
+
+The Kota case is especially relevant to a hospital pitch because it illustrates both drug-quality traceability and clinical documentation—without making the unsupported claim that one caused the other. The WHO alert provides a second real example, while CDSCO can serve as the foundation for an official-source feed. 
+
+The Indian Express
++3
+
+One important product distinction: call it “Live Safety Intelligence” as the feature name, but label these seed records as historical cases. The interface should only show a case as live when Vyom is actually receiving current data from a verified source.
+
+merge this 2 prompts
+The reality of pharma supply chains is that a drug company never manufactures a batch exclusively for one hospital or one city. If a contaminated or substandard batch of a medication like oxytocin is discovered in Kota, it has almost certainly been distributed to other cities and states.
+In the real-world Jackson Laboratories case, investigators confirmed this exact fear. While the first catastrophic cluster of deaths was flagged between May 5 and May 17 in Kota, subsequent investigations and safety tracking revealed that the crisis had already leaked further:
+• The Cross-State Spread: Vials from the same compromised supply chains were actively found in circulation in Jaipur, Bikaner, Rampur, and parts of New Delhi and Uttar Pradesh.
+• Delayed Discoveries: In June, two additional maternal deaths linked to the exact same safety probe were recorded at PBM Hospital in Bikaner, Rajasthan. Because data systems are fragmented, it took weeks to connect the Bikaner deaths to the initial tragedy in Kota
+Here’s a merged prompt that combines the real historical drug-safety cases with the stronger cross-city, cross-state traceability story. It makes the Kota oxytocin incident the central demonstration of why Vyom needs to connect product, batch, distribution, and clinical evidence across locations.
+
+One important distinction: the prompt should verify the alleged spread and links to subsequent deaths against reliable sources before presenting them as established facts. A shared investigation or supply chain alone does not prove that a particular batch caused a death.
+
+Lovable Prompt: Upgrade Vyom into a Real-World Drug Safety Intelligence Platform
+Update the existing Vyom application. Do not rebuild the app or replace its existing UI. Preserve the current design system, navigation, dark enterprise aesthetic, typography, components, and working functionality.
+
+The goal is to make Vyom feel like a real pharmacovigilance and drug-safety intelligence platform that hospitals, pharmaceutical companies, regulators, and clinical safety teams can use to investigate drug-quality incidents, connect evidence across locations, and identify potential safety concerns earlier.
+
+1. Core Product Concept
+Build a premium Live Safety Intelligence workspace inspired by a Bloomberg-style intelligence terminal, combined with a modern hospital safety command centre.
+
+The central idea:
+
+One drug. Many batches. Many hospitals. One connected evidence trail.
+
+A drug may travel through manufacturers, distributors, wholesalers, pharmacies, and hospitals across multiple cities and states. When a product-quality concern emerges, investigators need to understand where the affected product went, which batches were involved, which institutions received it, what clinical events were reported, and which questions remain unresolved.
+
+Vyom should help organize this information into a connected, evidence-backed investigation workspace.
+
+Do not assume that all hospitals receive the same batch or that a product used in one city was distributed everywhere. Establish geographic spread through verified batch, distribution, procurement, and regulatory records.
+
+2. Main Dashboard: Live Safety Intelligence
+Create a high-quality dashboard with the following sections:
+
+A. Safety signal overview
+Show:
+
+Recently published drug-safety reports.
+
+Official drug-quality alerts and recalls.
+
+Historical drug-quality incidents.
+
+Adverse-event reports from permitted sources.
+
+Product and batch investigations.
+
+Cross-city and cross-state distribution investigations.
+
+Literature and regulatory updates.
+
+Use a compact summary strip for:
+
+New reports discovered.
+
+Cases awaiting review.
+
+Product-quality alerts.
+
+Investigations with unresolved evidence gaps.
+
+Verified affected locations.
+
+Only calculate these values from actual loaded records. Never use invented counts to make the dashboard look active.
+
+B. Search and filtering
+Provide fast search across:
+
+Brand and generic drug name.
+
+Active pharmaceutical ingredient.
+
+Manufacturer.
+
+Batch or lot number.
+
+Distributor and supplier.
+
+Hospital or healthcare institution.
+
+City, state, and country.
+
+Incident category.
+
+Publication date and investigation status.
+
+Filters:
+
+Drug quality / substandard products.
+
+Suspected counterfeit products.
+
+Adverse events.
+
+Recalls and regulatory actions.
+
+Literature and clinical safety signals.
+
+Historical cases.
+
+Newly published reports.
+
+Officially confirmed findings versus allegations or unverified leads.
+
+C. Case cards
+Every card should display:
+
+Product name and ingredient.
+
+Incident location.
+
+Event date and publication date, shown separately.
+
+Manufacturer or distributor, only when verified.
+
+Batch number, only when supported by the source.
+
+Current investigation status.
+
+Evidence classification.
+
+Source links.
+
+Last-verified timestamp, only when the source was actually checked.
+
+A prominent Review Case action.
+
+Use restrained status colours and a clear visual distinction between confirmed facts, reported allegations, and unresolved questions.
+
+3. Featured Investigation: Rajasthan / Kota Oxytocin Incident, 2026
+Make this the flagship demonstration case on the dashboard.
+
+Case title: Rajasthan Oxytocin Quality Investigation
+
+Product: TOCIN oxytocin injection, associated with Jackson Laboratories in public reporting.
+
+Initial location: Kota, Rajasthan.
+
+Reported timeline:
+
+May 2026: Maternal deaths and severe complications were reported at hospitals in Kota.
+
+May 26, 2026: Rajasthan authorities announced action after a tested sample was reported to lack the required oxytocin ingredient.
+
+June 2026: Further regulatory actions and investigations examined the product supply chain and distributor records.
+
+June–July 2026: Additional reporting described investigations into clinical complications, product distribution, monitoring, and medical documentation.
+
+Sources:
+
+The Times of India: https://timesofindia.indiatimes.com/city/jaipur/raj-bans-tocin-injection-after-sample-fails-quality-tests-3500-vials-seized-in-kota/articleshow/131313505.cms
+
+The Indian Express: https://indianexpress.com/article/india/rajasthan-kota-spurious-oxytocin-injections-pharma-license-maternal-deaths-10758736/
+
+The Indian Express: https://indianexpress.com/article/health-wellness/rajasthan-maternal-deaths-kota-oxytocin-probe-10773003/
+
+The Indian Express: https://indianexpress.com/article/health-wellness/rajasthan-c-sec-deaths-centre-seeks-report-after-who-asks-for-info-10759490/
+
+Essential clinical and evidentiary distinction
+The tested sample was reported to lack oxytocin, and regulatory action followed. However, subsequent investigations reported by The Indian Express did not establish that the ineffective oxytocin caused the maternal deaths. The investigations also identified significant deficiencies in patient monitoring and documentation.
+
+The UI must display these facts together. Never turn a temporal association into a proven causal relationship.
+
+4. The Cross-City Investigation Workspace
+This is a key differentiator for Vyom. Design an interactive workspace that helps investigators examine whether a drug-quality issue extends beyond the location where it was first reported.
+
+A. Geographic distribution map
+Display an interactive India map with:
+
+The initial incident location.
+
+Cities where the product was reportedly supplied.
+
+Hospitals or distributors associated with verified records.
+
+Locations where the same batch was confirmed, suspected, or ruled out.
+
+Regulatory alert and recall coverage.
+
+Use distinct markers:
+
+Verified batch presence
+
+Reported distribution
+
+Potential exposure — unverified
+
+Investigation pending
+
+Batch not established
+
+Never mark a city as affected merely because it is near the original incident or uses the same medicine.
+
+For the Kota case, allow the interface to show Jaipur, Bikaner, Rampur, New Delhi, Uttar Pradesh, and other locations as searchable investigation leads only where supporting records or reliable reporting justify their inclusion.
+
+Do not claim that all these locations received the same compromised batch unless the evidence establishes it.
+
+B. Product journey and supply-chain graph
+Create a visual relationship graph:
+
+Manufacturer → Batch / Lot → Distributor → Wholesaler → Hospital → Administration record → Safety report.
+
+Each node should show its evidence source and verification status.
+
+Allow reviewers to:
+
+Open a batch or product node.
+
+Inspect linked distribution records.
+
+See where source documents conflict.
+
+Identify missing invoices or procurement records.
+
+Compare reported quantities with documented quantities.
+
+Identify institutions that may require further verification.
+
+Export an evidence-linked investigation report.
+
+Distinguish between a confirmed relationship and a possible relationship inferred from incomplete records.
+
+C. Cross-hospital case comparison
+Allow reviewers to compare cases from different hospitals and locations using:
+
+Drug and batch identity.
+
+Manufacturer and distributor.
+
+Administration dates.
+
+Clinical chronology.
+
+Reported symptoms and outcomes.
+
+Laboratory and product-quality findings.
+
+Other medications and relevant clinical context.
+
+Investigation findings and unresolved questions.
+
+The system should highlight similarities and differences for expert review. Similar symptoms or dates alone must not be presented as proof of a shared cause.
+
+D. Timeline and investigation milestones
+Show a clear timeline of:
+
+Initial public report.
+
+Laboratory testing.
+
+Regulatory notices.
+
+Distribution and recall actions.
+
+Additional reports.
+
+Hospital investigation findings.
+
+Follow-up testing.
+
+Final or pending conclusions.
+
+Show the source for each milestone. Do not invent missing dates or imply that an investigation is complete when its status is unknown.
+
+5. Additional Real Historical Case: Contaminated Oral Medicines, 2025
+Add a second case card based on the WHO medical product alert concerning contaminated oral liquid medicines.
+
+Products named in the alert:
+
+COLDRIF.
+
+Respifresh TR.
+
+ReLife.
+
+Reported issue: Diethylene glycol contamination in specific products or batches.
+
+Official source:
+https://www.who.int/news/item/13-10-2025-medical-product-alert-n-5-2025--substandard-%28contaminated%29-oral-liquid-medicines
+
+Display:
+
+The official WHO alert.
+
+Affected products and batch information, exactly as stated in the source.
+
+Publication date.
+
+Reported health concerns.
+
+Regulatory actions, where documented.
+
+Source-backed status and unresolved information.
+
+Do not imply that every batch or every product bearing a brand name was affected.
+
+6. Official Drug-Quality Alert Feed
+Create a separate Official Alerts tab using source-backed records from CDSCO and other relevant regulatory authorities.
+
+CDSCO source:
+https://cdsco.gov.in/opencms/opencms/en/Notifications/Alerts/
+
+Show:
+
+Actual alert title.
+
+Issuing authority.
+
+Publication date.
+
+Product and batch details.
+
+Reported quality issue.
+
+Regulatory action.
+
+Original document link.
+
+Date the source was last checked.
+
+Use a real source integration where available. If automated fetching is not yet implemented, create a clearly labelled historical demo dataset and a working manual import workflow. Do not present static records as a live feed.
+
+7. Case Detail Page
+When a user clicks Review Case, open a polished investigation workspace with these sections:
+
+Executive Summary — concise overview of the reported safety concern.
+
+Verified Facts — findings explicitly supported by sources.
+
+Reported Claims — statements attributed to media, institutions, manufacturers, or authorities.
+
+Unknown / Not Established — unresolved questions and limitations.
+
+Product & Batch Traceability — verified product identity, batch, distribution, and recall details.
+
+Geographic Spread — evidence-backed locations and possible exposure leads.
+
+Clinical Timeline — chronology of reported events, with patient-identifiable information excluded from public examples.
+
+Evidence Library — source links, documents, publication dates, and provenance.
+
+Evidence Gaps — missing batch records, conflicting dates, unverified distribution links, or incomplete findings.
+
+Suggested Review Steps — actions a qualified safety, pharmacy, or regulatory professional may consider.
+
+Audit Trail — review actions, corrections, approvals, and exports.
+
+Include a visible How Vyom Could Help panel explaining how the platform could organize the investigation, not claiming that Vyom actually detected or prevented the historical incident.
+
+8. AI-Assisted Investigation
+Design an AI assistant panel that can answer questions such as:
+
+Where has this batch been documented?
+
+Which locations have verified distribution records?
+
+Which reports mention the same product?
+
+What evidence supports this relationship?
+
+Which claims remain unverified?
+
+What documents are missing?
+
+What changed since the previous source review?
+
+Which regulatory actions have been documented?
+
+Every material answer must link to its supporting source.
+
+When evidence is insufficient, the assistant should explicitly say that it cannot establish the connection.
+
+AI may summarize records, identify potential relationships, detect inconsistencies, and recommend questions for review. It must not independently establish clinical causality, diagnose patients, or make unsupported claims about preventable deaths.
+
+9. Live Data and Source Integrity
+Implement the distinction between:
+
+Live source monitoring: a functioning connection that checks current sources.
+
+Recently published: a source discovered during a recent successful check.
+
+Historical case: a previously reported incident used for analysis or demonstration.
+
+Hospital-integrated case: data received through an approved institutional integration.
+
+Manual entry: information added by an authorized user.
+
+Never fabricate live alerts, source timestamps, patient cases, batch numbers, hospital integrations, or verification results.
+
+Each record should retain:
+
+Original source URL.
+
+Publication date.
+
+Retrieval or verification timestamp.
+
+Extracted statements.
+
+Evidence classification.
+
+Reviewer corrections.
+
+Record history.
+
+If a source cannot be accessed or verified, display that limitation clearly.
+
+10. UI and Visual Design
+Preserve Vyom's existing dark enterprise design, but elevate the case intelligence experience.
+
+Use:
+
+Deep navy backgrounds.
+
+Restrained teal accents.
+
+High-contrast typography.
+
+Clean data tables and evidence panels.
+
+Interactive geographic maps.
+
+Supply-chain relationship graphs.
+
+Timeline visualizations.
+
+Expandable source citations.
+
+Clearly distinguishable evidence-status chips.
+
+Smooth, purposeful transitions.
+
+Make the case-detail workspace the centrepiece. The cross-location investigation should be visually understandable within seconds to a hospital director, pharmacist, or pharmacovigilance professional.
+
+Avoid generic AI chat layouts, excessive gradients, fake KPI cards, and decorative charts without meaningful data.
+
+11. Implementation Requirements
+Extend the existing application and preserve current routes and components.
+
+Reuse existing backend services, database models, and integrations where appropriate.
+
+Keep public-source historical cases separate from private hospital data.
+
+Implement working search, filters, case navigation, source links, and timeline interactions.
+
+Clearly label any demo data.
+
+Keep patient-identifiable information out of public case records.
+
+Do not invent a backend, data connection, or monitoring capability that is not implemented.
+
+Ensure responsive layouts and production-quality loading, empty, and error states.
+
+Final Product Goal
+When a hospital or regulator opens Vyom, they should understand that a safety concern may require investigation beyond the first reported location—and that the platform can help organize evidence across products, batches, suppliers, hospitals, locations, and time.
+
+The core value proposition: Connect the evidence. Trace the product. Surface the gaps. Support faster, accountable safety review.
+
+Build the experience around real, source-backed cases and transparent uncertainty—not sensationalized claims or unsupported causal conclusions.
+
+I verified an important nuance while combining the prompts: reporting did describe additional serious cases in Bikaner and Jodhpur, but the Rajasthan government said the Bikaner cases were unrelated to Kota, and later reporting said investigations did not establish the oxytocin as the cause of the Kota deaths. 
+
+India News - The Indian Express
++3
+
+That nuance actually strengthens the product pitch: Vyom should help investigators connect evidence across locations while making it equally easy to see when a suspected connection has not been established.
+
+sorry merge these 2 prompts
+fe prompt:-
+# Task: Reposition the Vyom Black Website as an AI-Native Patient Safety OS
+
+Website: https://vyom-black.vercel.app/
+
+Reference: https://graphsafety.ai/
+
+## Objective
+
+Transform the existing Vyom Black website into a premium, enterprise-grade AI healthcare platform focused on pharmacovigilance (PV), drug safety, adverse event processing, and regulatory operations.
+
+Use Graph Safety's positioning as inspiration, particularly the concept of an AI-native operating system for patient safety. Do not copy its exact content, branding, graphics, or proprietary design. Create an original brand narrative and preserve the existing Vyom Black identity unless changing it is necessary for consistency.
+
+## 1. First inspect the codebase
+
+Before making changes:
+
+- Identify the framework, routing structure, styling system, components, assets, and existing pages.
+- Inspect the current homepage and all relevant sections.
+- Identify existing reusable components, animations, responsive layouts, metadata, and working functionality.
+- Locate the source files responsible for page content rather than blindly replacing files.
+- Preserve the current architecture and use the libraries already installed.
+- Do not introduce a new framework or unnecessary dependencies.
+
+Then implement the redesign directly in the codebase.
+
+## 2. New positioning
+
+Position the product as an AI-native patient safety and pharmacovigilance operating system for pharmaceutical companies, biotech companies, and contract research organizations (CROs).
+
+Core message:
+
+**The AI-native operating system for patient safety.**
+
+Supporting headline:
+
+**From fragmented safety data to connected, audit-ready pharmacovigilance.**
+
+Supporting description:
+
+Unify adverse event intake, case processing, safety intelligence, medical writing, and regulatory workflows in one intelligent system—with traceable evidence, continuous validation, and expert oversight.
+
+Primary CTA: Book a Demo
+
+Secondary CTA: Explore the Platform
+
+Do not claim that Vyom is the first, market-leading, clinically validated, or regulator-approved platform unless those claims are independently established.
+
+## 3. Redesign the homepage content
+
+Replace the existing generic content with the following product narrative.
+
+### Section A — Hero
+
+Eyebrow:
+AI-NATIVE PATIENT SAFETY
+
+Headline:
+The operating system for modern pharmacovigilance.
+
+Subheadline:
+Turn fragmented safety data and manual workflows into connected, intelligent, and traceable safety operations.
+
+Primary CTA: Book a Demo
+
+Secondary CTA: Explore the Platform
+
+Visual direction:
+Create a premium, dark enterprise dashboard preview showing a connected safety case workflow, incoming adverse-event reports, case status, validation alerts, and an audit timeline. Use realistic dummy data only. Make the product UI the visual focus.
+
+### Section B — The problem
+
+Heading:
+Patient safety should not depend on fragmented workflows.
+
+Explain the challenges:
+
+- Safety information scattered across emails, documents, literature, spreadsheets, and other systems.
+- Manual case intake, duplicate checks, data entry, and medical coding.
+- Repeated quality checks and disconnected review workflows.
+- Slow preparation of regulatory documentation.
+- Limited traceability across evidence, decisions, and downstream reporting.
+
+Use a clean editorial layout with restrained icons and concise copy.
+
+### Section C — The platform
+
+Heading:
+One intelligent system across the safety lifecycle.
+
+Introduce these capabilities as product modules. Present them as proposed capabilities unless they already exist in the codebase or product.
+
+1. **Intake — Intelligent Safety Intake**
+   Ingest safety information from supported sources, extract relevant details, identify potential duplicates, and route cases for review.
+
+2. **Case Processing — Structured Case Intelligence**
+   Organize patient, product, event, reporter, and supporting evidence into structured safety cases. Highlight missing information and inconsistencies.
+
+3. **Reporting — Regulatory Documentation**
+   Assist with drafting, validating, and preparing safety documentation against configured regional requirements. Keep qualified human review and submission authorization explicit.
+
+4. **Signal Intelligence — Emerging Safety Patterns**
+   Help qualified safety teams investigate potential patterns across cases and products. Clearly distinguish detected associations from confirmed causal conclusions.
+
+5. **Quality & Compliance — Continuous Assurance**
+   Track validation findings, review history, audit events, regulatory timelines, and outstanding quality issues.
+
+Do not imply that integrations, regulatory submissions, or automated capabilities are operational if they have not been implemented.
+
+### Section D — How the system works
+
+Heading:
+Intelligence connected by evidence. Controlled by experts.
+
+Present four steps:
+
+1. Ingest — Bring supported safety information into a structured workflow.
+2. Understand — Extract relevant information and connect evidence to its source.
+3. Validate — Identify missing fields, inconsistencies, duplicates, and review requirements.
+4. Review & Act — Let authorized professionals approve, correct, and advance the workflow.
+
+Visually connect these steps using a clear process diagram or an elegant interactive workflow.
+
+### Section E — Why AI-native
+
+Heading:
+Built around the safety workflow, not bolted onto it.
+
+Feature blocks:
+
+- Context-aware processing across connected case information.
+- Traceability from generated output back to source evidence.
+- Continuous validation throughout the workflow.
+- Human oversight, review, and override.
+- Explainable workflow decisions and versioned audit records.
+- Configurable controls for regulated environments.
+
+Avoid absolute guarantees such as zero errors, perfect accuracy, or automatic regulatory compliance.
+
+### Section F — Enterprise trust
+
+Heading:
+Designed for accountable safety operations.
+
+Show the following design principles:
+
+- Evidence-linked outputs.
+- Role-based access and permissions.
+- Traceable changes and review history.
+- Configurable validation and approval workflows.
+- Data protection and access controls.
+- Support for customer validation and applicable regulatory requirements.
+
+Do not display certifications, customer logos, compliance badges, or security claims unless supported by actual evidence.
+
+### Section G — Final CTA
+
+Heading:
+Give your safety team more time for decisions that matter.
+
+Description:
+See how an intelligent, connected pharmacovigilance workflow could fit your organization's safety operations.
+
+Primary CTA: Book a Demo
+
+Secondary CTA: Talk to Our Team
+
+## 4. Visual direction
+
+Use Graph Safety as a reference for positioning, product storytelling, and enterprise presentation—not as a template to clone.
+
+Aim for:
+
+- Premium healthcare AI enterprise software.
+- Sophisticated dark visual language consistent with Vyom Black.
+- High-contrast typography with clear hierarchy.
+- Restrained accent colors and subtle gradients.
+- Generous whitespace and carefully aligned content.
+- Product dashboards, connected workflow diagrams, and evidence-linked case details.
+- Subtle motion that supports understanding rather than distracting.
+- Consistent card radius, spacing, borders, shadows, and button styles.
+
+Avoid:
+- Generic AI landing-page layouts.
+- Excessive glassmorphism and glowing effects.
+- Random stock images of doctors.
+- Excessive floating cards and decorative animations.
+- Tiny text and low-contrast gray content.
+- Unsupported performance statistics or fabricated testimonials.
+
+## 5. Product dashboard preview
+
+Create a polished, realistic interface mockup using local components and dummy data.
+
+Include:
+- Safety case ID and workflow status.
+- Seriousness and event classification fields.
+- Source evidence panel.
+- Missing-information and validation alerts.
+- Review assignment and approval status.
+- Audit timeline showing actions and timestamps.
+
+Use fictional patient and product data. Do not use real patient information.
+
+Make the preview look like an actual enterprise product rather than a generic illustration.
+
+## 6. Functional requirements
+
+- Preserve working navigation and existing routes.
+- Make all CTA buttons lead to meaningful destinations or functional contact/demo flows.
+- Ensure responsive layouts for mobile, tablet, and desktop.
+- Preserve existing forms and integrations where they work.
+- Add accessible labels, keyboard focus states, and semantic markup.
+- Maintain or improve page loading performance.
+- Update page title, description, Open Graph metadata, and favicon references if appropriate.
+- Reuse existing components and assets where useful.
+- Do not add fake integrations, fake customer logos, fake testimonials, or fabricated statistics.
+
+## 7. Implementation requirements
+
+Make actual code changes; do not merely return a design proposal.
+
+Before finishing:
+
+1. Review the changed files.
+2. Run the available lint, type-check, and build commands.
+3. Fix errors introduced by the changes.
+4. Check the responsive layout and CTA destinations.
+5. Summarize what changed and identify any remaining placeholders or capabilities that require real product implementation.
+
+The finished website should communicate one coherent idea:
+
+**Vyom is building an AI-native system for connected, traceable, expert-governed patient safety operations.**
+
+Prioritize clear positioning, credible product storytelling, and an exceptional enterprise experience over adding unnecessary features.
+
+## Update Existing Vyom UI — Real-World Drug Safety Cases
+
+
+
+Update the existing Vyom UI without redesigning or rebuilding the entire application. Keep the current design system, navigation, dark enterprise aesthetic, typography, and components.
+
+### 1. Add a “Live Safety Intelligence” section
+
+Create a premium, Bloomberg-style drug safety intelligence dashboard showing **real historical cases, official drug alerts, product-quality incidents, and newly published safety reports**.
+
+Make the interface feel like an operational patient-safety command centre—not a generic analytics dashboard.
+
+Include:
+- Search by drug name, brand, active ingredient, manufacturer, 
+…
+Here’s the merged, copy-paste-ready Lovable prompt. It combines the Vyom Black website repositioning with the real-world drug-safety intelligence dashboard, while preserving the existing codebase and making the Kota oxytocin investigation the flagship product demonstration.
+
+Task: Transform Vyom Black into an AI-Native Patient Safety OS with Real-World Safety Intelligence
+Website: https://vyom-black.vercel.app/
+Positioning reference: https://graphsafety.ai/
+
+Objective
+Transform the existing Vyom Black website into a premium, enterprise-grade AI-native patient safety and pharmacovigilance platform.
+
+Use Graph Safety as inspiration for positioning and product storytelling, not as a design or content template. Preserve Vyom Black's identity, existing architecture, reusable components, and working functionality.
+
+The website should communicate two connected capabilities:
+
+AI-Native Pharmacovigilance OS: Help pharmaceutical companies, biotech companies, CROs, hospitals, and safety teams manage adverse-event intake, case processing, regulatory documentation, quality checks, and evidence-linked review.
+
+Live Safety Intelligence: Help users explore real-world drug-quality incidents, official alerts, historical safety cases, product distribution evidence, and potential cross-location safety concerns.
+
+The most compelling demonstration should show how a drug-quality concern first reported in one location can be investigated across products, batches, distributors, hospitals, and regions—without assuming that a suspected relationship is proven.
+
+Core message:
+
+The AI-native operating system for patient safety.
+
+Supporting message:
+
+Connect fragmented safety evidence. Trace products across the supply chain. Support faster, accountable safety review.
+
+Do not claim Vyom is market-leading, regulator-approved, clinically validated, or capable of preventing adverse events unless those claims are independently established.
+
+1. Inspect the Existing Codebase First
+Before changing the website:
+
+Identify the framework, routing, styling system, components, assets, animations, and existing pages.
+
+Inspect the current homepage and relevant product pages.
+
+Identify reusable components and existing backend integrations.
+
+Locate the actual files responsible for content and navigation.
+
+Preserve existing functionality and working routes.
+
+Reuse installed libraries and avoid unnecessary dependencies.
+
+Do not rebuild the application from scratch.
+
+Then implement the changes directly in the codebase.
+
+2. Homepage: Position Vyom Clearly
+Section A — Hero
+Eyebrow:
+
+AI-NATIVE PATIENT SAFETY
+
+Headline:
+
+The operating system for modern pharmacovigilance.
+
+Subheadline:
+
+Turn fragmented safety data and manual workflows into connected, intelligent, and traceable safety operations.
+
+Primary CTA: Book a Demo
+
+Secondary CTA: Explore the Platform
+
+Visual direction:
+
+Create a premium dark enterprise interface preview showing a safety case, incoming reports, product-quality alerts, evidence links, review status, and an audit timeline.
+
+The product UI should be the visual focus. Use realistic fictional records for ordinary dashboard elements and clearly labelled public-source historical records for real incidents.
+
+Section B — The Problem
+Heading:
+
+Patient safety should not depend on fragmented workflows.
+
+Explain the operational problems:
+
+Safety information scattered across emails, documents, literature, spreadsheets, and disconnected systems.
+
+Manual case intake, transcription, duplicate checks, and medical coding.
+
+Repeated completeness and quality checks.
+
+Disconnected clinical, pharmacy, regulatory, and distribution records.
+
+Difficult reconstruction of product, batch, and clinical timelines.
+
+Limited visibility into whether a reported product-quality concern requires investigation elsewhere.
+
+Use concise editorial layouts and restrained icons rather than generic healthcare stock imagery.
+
+Section C — The Platform
+Heading:
+
+One intelligent system across the safety lifecycle.
+
+Introduce the following modules. Present capabilities as proposed or available according to what the codebase and actual product support.
+
+1. Intelligent Safety Intake
+
+Ingest information from supported sources.
+
+Extract relevant details.
+
+Identify potential duplicates.
+
+Route records for review.
+
+2. Structured Case Intelligence
+
+Organize patient, product, event, reporter, and supporting evidence.
+
+Highlight missing fields and conflicting information.
+
+Preserve source links.
+
+3. Regulatory Documentation
+
+Assist with drafting and validating safety documentation.
+
+Support configured regional requirements.
+
+Keep human review and submission authorization explicit.
+
+4. Live Safety Intelligence
+
+Explore public drug-quality alerts and historical safety incidents.
+
+Connect product and batch information to documented distribution records.
+
+Investigate potential geographic spread.
+
+Compare reports across locations and timelines.
+
+Identify evidence gaps and unresolved questions.
+
+5. Signal Intelligence
+
+Surface potential patterns across cases, products, and locations.
+
+Show supporting evidence and uncertainty.
+
+Distinguish statistical associations from established causality.
+
+6. Quality & Audit
+
+Track validation findings, review history, regulatory timelines, and outstanding quality issues.
+
+Preserve traceable changes and approval records.
+
+Do not imply that integrations, regulatory submissions, automated monitoring, or clinical workflows are operational if they have not been implemented.
+
+Section D — How It Works
+Heading:
+
+Intelligence connected by evidence. Controlled by experts.
+
+Show four visually connected steps:
+
+Ingest — Bring supported safety information into a structured workflow.
+
+Connect — Link relevant product, batch, distribution, clinical, and source records.
+
+Validate — Highlight missing information, inconsistencies, duplicates, and uncertain relationships.
+
+Review & Act — Let authorized professionals assess evidence, approve actions, and document decisions.
+
+Make the workflow diagram interactive if practical.
+
+Section E — Why AI-Native
+Heading:
+
+Built around the safety workflow, not bolted onto it.
+
+Highlight:
+
+Context-aware processing across connected safety records.
+
+Traceability from generated outputs to source evidence.
+
+Continuous validation throughout the workflow.
+
+Human review, correction, and override.
+
+Explainable findings and versioned audit history.
+
+Configurable controls for regulated environments.
+
+Avoid promises of zero errors, perfect accuracy, guaranteed compliance, or automatic clinical decisions.
+
+Section F — Enterprise Trust
+Heading:
+
+Designed for accountable safety operations.
+
+Show:
+
+Evidence-linked outputs.
+
+Role-based permissions.
+
+Traceable changes and review history.
+
+Configurable validation and approval workflows.
+
+Data protection and controlled access.
+
+Support for customer validation and applicable regulatory requirements.
+
+Do not fabricate certifications, customer logos, security badges, or compliance claims.
+
+3. Build a Product-Grade Live Safety Intelligence Dashboard
+This is the key product differentiator and should be a major part of the website—not a small decorative section.
+
+Create a premium, Bloomberg-style safety intelligence workspace with the visual quality of a serious enterprise investigation platform.
+
+A. Dashboard Overview
+Include:
+
+Recently published drug-safety reports.
+
+Official drug-quality alerts.
+
+Historical drug-quality incidents.
+
+Product and batch investigations.
+
+Adverse-event reports from permitted sources.
+
+Literature and regulatory updates.
+
+Cases awaiting human review.
+
+Investigations with unresolved evidence gaps.
+
+Display counts only when calculated from actual loaded records. Never invent live activity, case counts, or affected locations.
+
+B. Search and Filters
+Support search by:
+
+Drug and brand name.
+
+Active ingredient.
+
+Manufacturer.
+
+Batch or lot number.
+
+Distributor or supplier.
+
+Hospital or institution.
+
+City, state, and country.
+
+Incident category.
+
+Publication date and investigation status.
+
+Filters should include:
+
+Drug quality.
+
+Substandard or suspected counterfeit products.
+
+Adverse events.
+
+Recalls and regulatory actions.
+
+Literature and safety signals.
+
+Official alerts.
+
+Historical cases.
+
+Newly published reports.
+
+Verified findings versus unverified leads.
+
+C. Case Cards
+Each case card should show:
+
+Product and active ingredient.
+
+Location and event date.
+
+Publication date, separately from event date.
+
+Manufacturer or distributor, only when verified.
+
+Batch details, only when supported by evidence.
+
+Evidence status.
+
+Source count and clickable source links.
+
+A concise explanation of why the case matters.
+
+A Review Case action.
+
+Use clear status labels such as:
+
+Official alert
+
+Reported by media
+
+Historical case
+
+Under investigation
+
+Distribution verified
+
+Potential link — unverified
+
+Causality not established
+
+These labels must accurately reflect each record's evidence status.
+
+4. Flagship Case: Rajasthan / Kota Oxytocin Investigation, 2026
+Make the reported TOCIN oxytocin quality incident the main case study in the website's product preview.
+
+Case details
+Title: Rajasthan Oxytocin Quality Investigation
+
+Product: TOCIN oxytocin injection, associated with Jackson Laboratories in public reporting.
+
+Initial location: Kota, Rajasthan.
+
+Reported context:
+
+Maternal deaths and severe complications were reported in Kota in May 2026.
+
+A tested product sample was reported to lack the required oxytocin ingredient.
+
+Authorities took regulatory action against the product supply chain.
+
+Further investigations examined distribution, clinical monitoring, and documentation.
+
+Subsequent reporting described additional investigations in other locations.
+
+Sources
+The Times of India:
+https://timesofindia.indiatimes.com/city/jaipur/raj-bans-tocin-injection-after-sample-fails-quality-tests-3500-vials-seized-in-kota/articleshow/131313505.cms
+
+The Indian Express:
+https://indianexpress.com/article/india/rajasthan-kota-spurious-oxytocin-injections-pharma-license-maternal-deaths-10758736/
+
+The Indian Express:
+https://indianexpress.com/article/health-wellness/rajasthan-maternal-deaths-kota-oxytocin-probe-10773003/
+
+Essential evidentiary caveat
+Investigations reported by The Indian Express did not establish that the ineffective oxytocin caused the maternal deaths. Reporting also described deficiencies in clinical monitoring and documentation.
+
+Display this distinction prominently in the case interface. Do not convert an association, reported allegation, or shared investigation into a proven causal relationship.
+
+The product demonstration
+Create a polished case-detail workspace containing:
+
+Executive summary.
+
+Verified facts.
+
+Reported claims.
+
+Unknown or unestablished findings.
+
+Timeline of reports and regulatory actions.
+
+Product and batch traceability.
+
+Distribution evidence.
+
+Geographic investigation map.
+
+Clinical chronology, where supported by records.
+
+Evidence gaps.
+
+Source documents.
+
+Suggested human-review steps.
+
+Audit trail.
+
+Add a prominent panel titled:
+
+How Vyom Could Support This Investigation
+
+Explain how Vyom could help investigators assemble available product identity, batch, distribution, storage, administration, clinical, and regulatory records into a connected evidence trail.
+
+Clearly label this as a retrospective illustration of potential capabilities. Never claim Vyom actually detected, investigated, or prevented the historical incident.
+
+5. Cross-City and Cross-State Traceability
+Make this the most distinctive interaction within the Kota case.
+
+A product-quality concern may require investigation beyond the city where it was first reported. However, geographic proximity, use of the same medicine, or a shared manufacturer does not prove that a location received the same affected batch.
+
+Vyom should help users investigate those relationships with evidence.
+
+A. Interactive Geographic Map
+Build a map showing India and, where supported, city-level details.
+
+Display locations only when grounded in source records or clearly labelled as investigation leads.
+
+Potential locations to investigate for the Kota case include Jaipur, Bikaner, Rampur, New Delhi, and Uttar Pradesh, but do not automatically mark all these locations as confirmed recipients of the affected batch.
+
+Use distinct marker states:
+
+Verified batch presence.
+
+Reported distribution.
+
+Potential exposure — unverified.
+
+Investigation pending.
+
+Batch relationship not established.
+
+Ruled out, only where supported by evidence.
+
+Each marker should open a detail panel with the source, date, product or batch evidence, and verification status.
+
+Do not display invented affected-location counts or imply a confirmed cross-state outbreak without supporting evidence.
+
+B. Supply-Chain Relationship Graph
+Create a visual graph connecting:
+
+Manufacturer → Batch / Lot → Distributor → Wholesaler → Hospital → Administration record → Safety report.
+
+Each relationship should show whether it is verified, reported, inferred, or unverified.
+
+Allow users to:
+
+Open product and batch records.
+
+Inspect distribution documents.
+
+Compare documented quantities.
+
+Identify missing invoices and procurement records.
+
+See conflicting product or batch information.
+
+Trace which source supports a relationship.
+
+Export an evidence-linked investigation report.
+
+Never infer batch identity from a brand name alone.
+
+C. Cross-Hospital Comparison
+Where authorized records are available, compare:
+
+Drug and batch identity.
+
+Manufacturer and distributor.
+
+Administration dates.
+
+Clinical chronology.
+
+Reported symptoms and outcomes.
+
+Product-quality test results.
+
+Other medications and relevant clinical context.
+
+Investigation findings.
+
+Highlight similarities, differences, and missing evidence for qualified reviewers. Do not present similar symptoms or timing as proof of a common cause.
+
+D. Investigation Timeline
+Display a chronological timeline of:
+
+Initial report.
+
+Laboratory testing.
+
+Regulatory notices.
+
+Distribution and recall actions.
+
+Additional reports.
+
+Hospital investigation findings.
+
+Follow-up testing.
+
+Final or pending conclusions.
+
+Every milestone must have a source or be explicitly labelled as unverified.
+
+6. Add a Second Real Historical Case
+India — Contaminated Oral Liquid Medicines, 2025
+Use the WHO medical product alert as a second case in the dashboard.
+
+Products named in the alert:
+
+COLDRIF.
+
+Respifresh TR.
+
+ReLife.
+
+Reported issue: Diethylene glycol contamination in specific products or batches.
+
+Official source:
+
+https://www.who.int/news/item/13-10-2025-medical-product-alert-n-5-2025--substandard-%28contaminated%29-oral-liquid-medicines
+
+Display:
+
+The official WHO alert.
+
+Affected products and batches, exactly as specified by the source.
+
+Publication date.
+
+Reported health concerns.
+
+Documented regulatory actions.
+
+Source-backed status and unresolved information.
+
+Never imply every batch or every product bearing a particular brand name was affected.
+
+7. Official Drug-Quality Alert Feed
+Create a separate Official Alerts view based on real records from the Central Drugs Standard Control Organisation (CDSCO).
+
+Source:
+
+https://cdsco.gov.in/opencms/opencms/en/Notifications/Alerts/
+
+Show the actual:
+
+Alert title.
+
+Issuing authority.
+
+Publication date.
+
+Product and batch information.
+
+Reported quality issue.
+
+Regulatory action.
+
+Original document link.
+
+Last-checked timestamp, only when a real check occurred.
+
+Use a functioning source integration where available. If live retrieval is not implemented, provide a clearly labelled historical dataset and a functional manual-import workflow.
+
+Never populate the feed with invented official alerts or present static records as real-time monitoring.
+
+8. AI-Assisted Investigation Panel
+Inside the case-detail view, provide an AI assistant that helps users explore the evidence.
+
+Example questions:
+
+Where has this batch been documented?
+
+Which locations have verified distribution records?
+
+Which reports mention the same product?
+
+What evidence supports this relationship?
+
+Which claims remain unverified?
+
+What documents are missing?
+
+What changed since the last source review?
+
+Which regulatory actions have been documented?
+
+Every material answer should link to supporting evidence.
+
+When evidence is insufficient, explicitly say the connection cannot be established.
+
+AI may summarize records, identify inconsistencies, suggest investigation questions, and surface potential patterns. It must not independently diagnose patients, establish causality, or present an unverified hypothesis as fact.
+
+9. Source Integrity and Data Architecture
+Maintain a clear distinction between:
+
+Live source monitoring: A functioning connection that checks current sources.
+
+Recently published: A report discovered during a successful recent check.
+
+Historical case: A previously reported incident used for analysis or demonstration.
+
+Hospital-integrated case: Data received through an approved institutional integration.
+
+Manual entry: Information added by an authorized user.
+
+Each record should preserve:
+
+Original source URL.
+
+Publication date.
+
+Retrieval or verification timestamp.
+
+Extracted statements.
+
+Evidence classification.
+
+Batch and product details, where available.
+
+Reviewer corrections.
+
+Record history.
+
+If a source cannot be retrieved or verified, display the limitation.
+
+Keep public-source records separate from private hospital records. Do not expose patient-identifiable information in public examples.
+
+Do not fabricate API connections, hospital integrations, source timestamps, case IDs, batch numbers, or real-time monitoring capabilities.
+
+10. Visual Design
+Use a premium dark enterprise design consistent with Vyom Black:
+
+Deep navy backgrounds.
+
+Restrained teal accents.
+
+High-contrast typography.
+
+Carefully aligned layouts.
+
+Refined cards and tables.
+
+Clear evidence-status chips.
+
+Interactive geographic maps.
+
+Supply-chain relationship graphs.
+
+Source-linked timelines.
+
+Expandable evidence panels.
+
+Subtle purposeful animations.
+
+Responsive desktop, tablet, and mobile layouts.
+
+The Live Safety Intelligence case-detail view should be the visual centrepiece.
+
+Avoid generic AI landing-page patterns, excessive glowing effects, decorative charts without real data, low-contrast text, random healthcare stock images, and fabricated KPI statistics.
+
+Use Graph Safety for positioning inspiration only. Create an original Vyom Black experience.
+
+11. Functional Requirements
+Preserve existing routes, navigation, components, and working functionality.
+
+Implement working search, filters, case navigation, source links, and timeline interactions.
+
+Make all CTAs functional.
+
+Ensure responsive layouts.
+
+Preserve working forms and integrations.
+
+Add accessible labels, keyboard navigation, and focus states.
+
+Maintain or improve performance.
+
+Update page metadata and favicon references where appropriate.
+
+Reuse existing dependencies and architecture.
+
+Clearly identify demo data and incomplete capabilities.
+
+Homepage CTA
+Primary: Book a Demo
+
+Secondary: Explore the Platform
+
+The demo CTA should lead to a real contact flow or existing booking destination. Do not create a fake booking success state.
+
+12. Final Implementation Checklist
+Make actual code changes rather than returning only a proposal.
+
+Before finishing:
+
+Review the existing codebase and relevant source files.
+
+Implement the homepage repositioning and product dashboard.
+
+Add the historical case records with source links and evidence labels.
+
+Build the Kota investigation detail view and cross-location traceability interface.
+
+Verify that all case claims are supported by the supplied sources.
+
+Run available lint, type-check, and build commands.
+
+Fix errors introduced by the changes.
+
+Check responsive layouts, accessibility, navigation, and CTA destinations.
+
+Identify any features that still require real integrations or production data.
+
+Summarize the files changed and the remaining implementation work.
+
+Final Product Vision
+Vyom is building an AI-native system for connected, traceable, expert-governed patient safety operations.
+
+Connect the evidence. Trace the product. Surface the gaps. Support faster, accountable safety review.
+
+Prioritize credible product storytelling, real-world case intelligence, transparent uncertainty, and an exceptional enterprise experience over unnecessary features or unsupported claims.
+
+This version gives Lovable one coherent implementation goal: reposition the entire website, then use the real-world case investigation dashboard as the clearest demonstration of what Vyom can do.
+
+
+Pasted markdown.md
+Document
+this was build prompt file
+but now we have decided to update it as per graph safety ai system design using google vertx, gemini services.. will use same infra, lld and hld and pattern, coding languages everything same..
+
+
+
+The existing build prompt is a useful foundation, so I would evolve it rather than rewrite the entire system from scratch.
+
+The key change is to move Vyom toward a Graph Safety–inspired, evidence-connected architecture using Google Cloud Vertex AI and Gemini, while preserving your existing infrastructure, programming languages, HLD/LLD conventions, APIs, testing strategy, and milestone-based delivery plan.
+
+The revised instructions should make three things explicit:
+
+Graph-based safety intelligence: connect products, batches, literature, safety cases, evidence, decisions, and regulatory actions through traceable relationships.
+
+Vertex AI and Gemini: integrate model services behind a reusable provider adapter, with version pinning, structured outputs, source-grounded responses, cost tracking, and human review.
+
+Preserve existing engineering decisions: do not migrate the stack or introduce a separate graph database or new orchestration framework without an explicit architectural decision. Patient-data isolation, the append-only ledger, deterministic routing, and expert approval remain mandatory.
+
+I’ve updated the build prompt and saved it as a new version, preserving the original milestone prompts and acceptance criteria.
+
+Download the revised Vyom build prompt — v3 (Markdown)
+
+What the revised version changes
+Area
+
+Updated direction
+
+AI services
+
+Google Vertex AI with Gemini models behind a reusable provider adapter
+
+System design
+
+Graph-inspired, evidence-connected pharmacovigilance architecture
+
+Data model
+
+Connect safety cases, products, batches, literature, sources, and decisions
+
+Infrastructure
+
+Preserve existing Vyom infrastructure and services
+
+Languages and frameworks
+
+Retain the existing stack and coding conventions
+
+HLD / LLD
+
+Require architecture and detailed-design updates for affected phases
+
+Governance
+
+Preserve tenant isolation, traceable decisions, deterministic routing, and expert approval
+
+Testing
+
+Add Vertex/Gemini failure tests, model evaluation gates, and cost telemetry
+
+One important distinction
+Graph Safety's complete internal HLD, LLD, source code, and private implementation details aren't established by its public website. The revised prompt therefore adopts its publicly visible architectural direction without pretending to reproduce its exact private implementation.
+
+I’ve also retained your original milestone sequence—literature pilot, production literature and audit, cases, then on-demand capabilities—rather than forcing a costly rewrite of everything at once.
+
+The result is a revised engineering build prompt, not a claim that Vertex AI, Gemini, or the graph layer have already been integrated into your codebase.
+
+
+Vyom_OS_Milestone_Build_Prompts_v3_Vertex_Gemini.md
+Document
+# Vyom OS — milestone build prompts (v3: Vertex AI, Gemini & connected safety graph)
 
 **Audience:** the Vyom engineering team (and the coding agents they drive).
+
 **Purpose:** take `vyom-os` + `vyom-web` from today's working v2 foundation to a
+
 production pharmacovigilance platform, one paying customer at a time.
 
 Each phase below is a **self-contained prompt**. Copy one phase into a ticket or
+
 an agent session; it carries its own context, acceptance criteria and
+
 out-of-scope list. Phases are grouped into four **milestones**. Each milestone
+
 ends at a **gate**: an engineering result plus a business result. Do not start
+
 the next milestone until its gate is passed.
 
+Architecture decision update — v3: Graph-connected safety OS + Vertex AI/Gemini
+This section supersedes conflicting architecture/provider instructions elsewhere in this document. The existing milestone sequence, languages, infrastructure, HLD/LLD conventions, APIs, test approach, and acceptance-gate discipline remain in force unless explicitly changed below.
+
+Decision summary
+Vyom is adopting a Graph Safety–inspired product and system design: an AI-native patient-safety platform where safety evidence is connected across sources, products, batches, cases, literature, decisions, and regulatory workflows. Use Google Cloud Vertex AI as the managed AI service boundary and Gemini models for approved model tasks.
+
+This is an architectural direction, not permission to clone Graph Safety's proprietary implementation, copy its branding, or claim feature parity. Build Vyom's own implementation against its existing codebase and customer requirements.
+
+Preserve the existing stack
+Keep vyom-os and vyom-web as the current application boundaries and preserve their existing languages, frameworks, repositories, deployment assumptions, APIs, and coding conventions.
+Keep the existing Python/FastAPI service, Postgres data layer, Next.js web application, middleware, Docker/CI setup, and current infrastructure unless the repository proves a specific change is necessary.
+Keep the existing System One / System Two application pattern. Treat these as workflow roles, not names for particular model vendors:
+System One: fast, bounded classification/triage proposals with typed outputs.
+Deterministic code and SQL: own policy evaluation, thresholds, routing, permissions, idempotency, and persistence.
+System Two: optional deeper drafting or summarisation for eligible items, with evidence references and human review.
+Human experts: own clinical/regulatory decisions, corrections, approvals, and any authorized closure.
+Add a Vertex AI/Gemini adapter behind the existing model-client boundary. Do not scatter direct Gemini SDK calls through route handlers or domain logic.
+Do not replace the existing database, hosting, queue, or deployment platform merely to imitate another vendor's architecture.
+Do not add a graph database, vector database, orchestration framework, or other dependency without documenting the need, trade-offs, operational impact, data-residency implications, and obtaining approval under the existing dependency rule.
+Vertex AI and Gemini integration
+Implement a provider abstraction compatible with the existing client interface. The Vertex AI implementation should:
+
+Use the Google Cloud Vertex AI service and supported Gemini model APIs through the approved SDK/API version.
+Use workload identity / application default credentials or the deployment's approved identity mechanism. Do not place service-account keys, API keys, or credentials in source code, fixtures, screenshots, or logs.
+Keep project, region, model ID, generation settings, timeouts, retry policy, and supported safety settings in validated configuration. Pin model identifiers and record the effective model/version metadata with every decision where the service exposes it.
+Request schema-constrained or otherwise validated structured outputs where supported. Validate all outputs against application-owned schemas before they can influence routing or reach a reviewer.
+Treat model output as an untrusted proposal. Models must not directly write to the database, change tenant policy, approve a case, enable auto-close, or submit anything to a regulator.
+Apply bounded timeouts, limited retries with backoff, rate-limit handling, and explicit error states. On timeout, invalid output, provider error, or uncertain result, route to human review; never convert a provider failure into a GREEN or auto-close decision.
+Record tenant, item, task, provider, model ID/version, prompt/schema versions, latency, token usage when available, estimated cost, outcome, and correlation ID. Never log patient data or full source documents.
+Use source-grounded prompting for extraction and summarisation. Each material field or assertion must link to a source record and source span/offset when available. If a source does not support a claim, return unknown/insufficient evidence rather than fabricate an answer.
+Separate provider-specific code from the domain model so approved models can be changed or evaluated without rewriting business logic.
+Keep provider/model selection configurable through versioned, auditable policy. A tenant cannot silently switch its data-processing route or model policy.
+Patient-data and residency boundary
+The existing privacy rules remain mandatory and take precedence over any convenience offered by hosted models:
+
+Public literature may use Vertex AI/Gemini only through the approved tenant and deployment policy.
+Identifiable patient data remains local-only by default under the existing pv_icsr policy.
+Patient data may be sent to Vertex AI only when the tenant's contract and versioned processing policy explicitly permit it, the approved region and applicable terms are configured, and the implementation has passed a data-flow/security review.
+Do not assume that a model's regional availability alone establishes compliance, zero retention, or suitability for regulated patient data. Verify the exact service, region, logging, retention, and contractual terms before enabling a route.
+If policy is absent, ambiguous, mismatched, or cannot be evaluated, fail closed and keep processing local or route to a human.
+hospital_rcm remains frozen and local-only until separately decided.
+Graph-connected safety intelligence without an infrastructure rewrite
+Adopt the unified evidence graph as a logical domain model first, using the existing Postgres infrastructure. Do not introduce a separate graph database by default.
+
+Represent graph entities and typed relationships in a normalized, tenant-scoped schema using existing SQL conventions. Reuse existing tables where appropriate and add explicit node/edge or relationship tables only where they materially improve traceability.
+
+Candidate entities include:
+
+Source record / source document
+Literature record and publication
+Product and active ingredient
+Manufacturer, distributor, and supplier
+Batch / lot
+Safety case and reported event
+Institution or site
+Regulatory alert or action
+Evidence span / extracted assertion
+Model proposal, reviewer decision, and audit event
+Candidate relationships include:
+
+EXTRACTED_FROM
+MENTIONS_PRODUCT
+IDENTIFIES_BATCH
+DISTRIBUTED_TO
+REPORTED_AT
+SUPPORTED_BY
+CONTRADICTED_BY
+POTENTIALLY_DUPLICATE_OF
+REVIEWED_BY
+SUPERSEDES
+These are illustrative domain terms, not a requirement to create every entity or relationship in the first milestone. Define the minimum model needed for each paying-customer workflow and document it in HLD/LLD before implementation.
+
+Graph rules:
+
+Every relationship must carry tenant scope, provenance, creation time, source reference, and an evidence/verification status appropriate to the relationship.
+Distinguish verified, reported, inferred, unverified, and ruled_out relationships. Never show inferred links as confirmed facts.
+Preserve source spans, original source records, and append-only decision history.
+Do not infer a batch match from a brand or ingredient match alone.
+Do not infer clinical causality from co-occurrence, geographic proximity, similar symptoms, or a shared investigation.
+Prevent cross-tenant graph traversal at the database and service layers.
+Use indexed relational queries and bounded recursive queries appropriate to the existing database. Measure performance before proposing a separate graph engine.
+Graph-derived summaries must retain paths back to the source records and evidence supporting each material edge.
+Product-design direction
+Use Graph Safety as inspiration for the system's connected evidence, expert-in-the-loop workflow, traceable case structure, and modular safety lifecycle. Vyom's own product and module names remain authoritative.
+
+Prioritize the current commercial wedge and milestone gates in this document. Do not attempt to build all future modules at once simply because the reference platform describes them.
+
+For public-facing historical safety examples, label records as historical/public-source data and link to the original source. Do not represent static demo data as a live feed or claim Vyom detected a historical incident. Separate public-source intelligence from private hospital-integrated data.
+
+HLD/LLD and implementation workflow
+For each architecture-affecting phase:
+
+Inspect the current code and existing HLD/LLD before proposing changes.
+Update the relevant HLD with component boundaries, data flows, trust boundaries, provider routing, tenant isolation, and failure paths.
+Update the LLD with schemas, API contracts, typed model outputs, provider adapter interfaces, state transitions, indexes, and test cases.
+Record important choices and rejected alternatives in an architecture decision record (ADR).
+Implement the smallest change that meets the phase's acceptance criteria.
+Add unit, integration, failure-mode, tenant-isolation, and regression tests.
+Run pytest for vyom-os and npm run check for vyom-web, plus the repository's existing build/test commands.
+Update documentation and the capability map so that shipped features, planned features, and demo-only features are clearly distinguished.
+Additional acceptance requirements for model-provider changes
+Unit tests exercise the provider adapter using mocked Vertex responses; CI must not require live paid model calls.
+A separate opt-in integration test can verify configured Vertex credentials and model access in a controlled environment.
+Tests cover malformed structured output, timeout, rate limit, provider 5xx, empty response, unsupported response shape, and retry exhaustion.
+Tests prove that model failure cannot bypass validation, auto-close, reviewer approval, or tenant routing policy.
+A provider/model change runs against the frozen gold set and cannot ship if recall falls below the existing release gate.
+Cost telemetry is recorded per item and tenant, with unavailable usage/cost values explicitly marked rather than fabricated.
+Every model-generated field displayed to a reviewer has a provenance path to source evidence or is explicitly labelled as an unsupported draft requiring review.
+No real patient/customer data is sent to a provider in tests, fixtures, logs, screenshots, or benchmark artefacts.
 ---
 
+v3 architecture direction
+Added a binding architecture decision for Vertex AI/Gemini behind the existing provider boundary.
+Adopted a Graph Safety–inspired, provenance-first safety evidence graph using the current Postgres infrastructure initially.
+Preserved existing languages, services, APIs, deployment assumptions, HLD/LLD conventions, milestone sequence, and safety/privacy gates.
+No automatic migration to a new graph database, orchestration framework, or replacement infrastructure.
+Existing System One/System Two are workflow roles; deterministic code and qualified experts retain control.
 ## What changed from v1
 
 - **Re-ordered around the first paid pilot.** The eight phases are regrouped into
-  four milestones: A (literature pilot), B (production literature + Audit),
-  C (Cases), D (on demand).
+
+four milestones: A (literature pilot), B (production literature + Audit),
+
+C (Cases), D (on demand).
+
 - **Pulled forward:** the benchmark runner (was Phase 8), the recall gate in CI
-  (was Phase 5), cost telemetry (was Phase 7), product-page accuracy (was Phase 8).
+
+(was Phase 5), cost telemetry (was Phase 7), product-page accuracy (was Phase 8).
+
 - **Added:** literature completeness (A2), Audit mode (B2), an auto-close policy,
-  a synthetic-data rule, AI context-of-use records, ISO 27001 and DPDP evidence.
+
+a synthetic-data rule, AI context-of-use records, ISO 27001 and DPDP evidence.
+
 - **Deferred:** enterprise SSO, OCR and email intake, gateway submission to
-  regulators, Temporal, signal detection, self-serve onboarding.
+
+regulators, Temporal, signal detection, self-serve onboarding.
+
 - **Resized:** the load test now targets 10x real pilot volume, not 50,000/day.
 
 ---
@@ -32,48 +1805,77 @@ the next milestone until its gate is passed.
 ### What the benchmark actually is
 
 The brief was "exactly like graphsafety.ai". Here is what that company actually
+
 ships today, taken from their own site on 2026-10-26:
 
 | Module | Their stated status | What it does |
+
 | --- | --- | --- |
+
 | `/intake` | **Available** | Ingest, classify and route safety cases from multiple sources |
+
 | `/nucleus` | **Available** | Structure, validate and connect case evidence into submission-ready cases |
+
 | `/report` | Planned — Aug '26 | E2B(R3) generation, multi-region alignment, gateway submission with ACK |
+
 | `/signal` | Planned — Nov '26 | Cross-case aggregation, pattern detection |
+
 | `/assure` | Planned — Jan '27 | Continuous validation during processing |
+
 | `/comply` | Planned — Jan '27 | Audit trails, regulatory clock, global compliance logic |
 
 They describe themselves as "the first AI-native operating system for patient
+
 safety", built on a unified knowledge graph with expert-in-the-loop review, on
+
 Google Vertex AI and Kubernetes. They raised a $3M seed and a $13.3M Series A
+
 led by Insight Partners with Bessemer participating. Target customers: global
+
 biopharma, mid-size pharma, CROs and patient-support-programme providers.
 
 **Three things follow from that table, and they should change how you plan.**
 
 1. **Four of six modules are unreleased.** "Exactly like graphsafety.ai" *today*
-   means intake plus case structuring. The other four are their roadmap. Build
-   to a roadmap and you are building to marketing, with none of the customer
-   feedback that shaped it. Treat report, signal, assure and comply as
-   *capability targets we have independently decided we need*, not as a feature
-   list to clone.
+
+means intake plus case structuring. The other four are their roadmap. Build
+
+to a roadmap and you are building to marketing, with none of the customer
+
+feedback that shaped it. Treat report, signal, assure and comply as
+
+*capability targets we have independently decided we need*, not as a feature
+
+list to clone.
 
 2. **Their headline results are unattributed vendor claims.** "90% reduction in
-   effort", "92% faster processing", "66% cost savings" appear on their homepage
-   with no named customer and no methodology. Do not put them in a Vyom spec, a
-   Vyom deck, or a Vyom acceptance criterion. Our own rule — every number is a
-   sourced fact, a labelled target, or sample data — applies to competitor
-   figures too. If we want numbers like those, we measure our own and publish
-   the method.
+
+effort", "92% faster processing", "66% cost savings" appear on their homepage
+
+with no named customer and no methodology. Do not put them in a Vyom spec, a
+
+Vyom deck, or a Vyom acceptance criterion. Our own rule — every number is a
+
+sourced fact, a labelled target, or sample data — applies to competitor
+
+figures too. If we want numbers like those, we measure our own and publish
+
+the method.
 
 3. **We do not win on breadth.** They have roughly $16M to build every module at
-   once. We win a narrow wedge first: literature screening for Indian generics
-   exporters, proven on each customer's own history, then vendor-neutral Audit.
-   Breadth comes after revenue.
+
+once. We win a narrow wedge first: literature screening for Indian generics
+
+exporters, proven on each customer's own history, then vendor-neutral Audit.
+
+Breadth comes after revenue.
 
 **Naming rule.** `CLAUDE.md` rule 4 — never name a competitor — governs **site
+
 copy**. This is an internal engineering document, so naming them here is fine.
+
 Nothing from this file goes into `src/content/`, a deck, or anything a customer
+
 sees.
 
 ### Where we actually are
@@ -81,52 +1883,87 @@ sees.
 `vyom-os` v2 already has, working and tested:
 
 - System One routing with domain-based client selection (hosted for
-  `pv_literature`, local for `pv_icsr` and `hospital_rcm`)
+
+`pv_literature`, local for `pv_icsr` and `hospital_rcm`)
+
 - An append-only decision ledger (`002_system_one_decision_ledger.sql`)
+
 - Public-literature sweep over PubMed + Europe PMC with dedup
+
 - Selective System Two drafting on Yellow/Red only
+
 - Reviewer queue and action APIs
+
 - Gold-set evaluation and a training export path
+
 - 8 endpoints: `/healthz`, `/v1/rcm/preflight`, `/v1/icsr/intake`,
-  `/v1/literature/sweep`, `/v1/review/queue`,
-  `/v1/review/states/{id}/actions`, `/v1/reports/gold/{version}`,
-  `/v1/reports/screening-log`
+
+`/v1/literature/sweep`, `/v1/review/queue`,
+
+`/v1/review/states/{id}/actions`, `/v1/reports/gold/{version}`,
+
+`/v1/reports/screening-log`
 
 `vyom-os/README.md` is explicit about what is **not** built: OCR/PDF extraction,
+
 a browser workbench, FHIR NHCX and E2B(R3) serializers, automated scheduling,
+
 enterprise identity, production authorization.
 
 `vyom-web` has the marketing site, a login route, `/{tenant_slug}` app shell and
+
 `/ops`, with middleware as the edge gateway.
 
 ### Decisions needed before Milestone A
 
 1. **`hospital_rcm`.** Hospital claims (NHCX, TPAs) is a different business: a
-   different buyer, different regulation and much more patient data.
-   Recommendation: move it to a separate service and repo, or drop it. Until
-   decided, it is **frozen**: no new work, and it keeps local-only routing.
+
+different buyer, different regulation and much more patient data.
+
+Recommendation: move it to a separate service and repo, or drop it. Until
+
+decided, it is **frozen**: no new work, and it keeps local-only routing.
+
 2. **Reviewer throughput unit.** The BRD assumes one reviewer clears 500+
-   pre-scored items a day. That may hold for literature abstracts. For case
-   reports, industry productivity runs at roughly 300–2,000 cases per person per
-   *year* at scale (Deloitte, 2019). Re-check the unit economics per item type;
-   A3 and C2 measure the real number.
+
+pre-scored items a day. That may hold for literature abstracts. For case
+
+reports, industry productivity runs at roughly 300–2,000 cases per person per
+
+*year* at scale (Deloitte, 2019). Re-check the unit economics per item type;
+
+A3 and C2 measure the real number.
+
 3. **Hosted processing of patient data.** Default is local-only. A tenant may
-   allow hosted processing only by contract (see ground rule 1). Decide what we
-   offer before the first Cases conversation.
+
+allow hosted processing only by contract (see ground rule 1). Decide what we
+
+offer before the first Cases conversation.
 
 ### Capability map
 
 | Target capability | Vyom equivalent | Status today | Milestone |
+
 | --- | --- | --- | --- |
+
 | Literature screening | Sweep + System One/Two + review APIs | Working for PubMed and Europe PMC | A2, A3 complete it |
+
 | Benchmark on a prospect's data | Gold-set evaluation | Batch evaluation on our labels only | A4 |
+
 | Multi-tenancy | `x-tenant-id` in middleware | Header only, no isolation | A1 |
+
 | Reviewer console | `/v1/review/*` API only | API only, no UI | A3 (literature), C2 (cases) |
+
 | Compliance evidence | Decision ledger | Ledger exists; no inspection pack | B1 |
+
 | Vendor-neutral audit | — | Not built | B2 |
+
 | Multi-source intake | `/v1/icsr/intake` + sweep | Partial: no OCR, email or E2B-in | B2 (E2B-in), C1 |
+
 | Regulatory output | — | Not built | C3 (export), D1 (gateway) |
+
 | Regulatory clock | — | Not built | C4 |
+
 | Signal detection | — | Not built | D2 |
 
 ---
@@ -136,62 +1973,95 @@ enterprise identity, production authorization.
 Paste this block with any phase prompt you hand to an agent.
 
 ```
+
 NON-NEGOTIABLE CONSTRAINTS
 
 1. PATIENT DATA ISOLATION. Public literature (pv_literature) may use the hosted
-   System One client. pv_icsr routes to the local endpoint by default. Hosted
-   processing of identifiable patient data is allowed only where the tenant's
-   contract explicitly permits it (zero-retention terms, a data-processing
-   agreement, a pinned region), recorded as a versioned tenant policy. If a code
-   path could send patient data to a hosted endpoint without that policy, it is
-   a bug even if no patient data has flowed through it yet. hospital_rcm is
-   frozen and stays local-only.
+
+System One client. pv_icsr routes to the local endpoint by default. Hosted
+
+processing of identifiable patient data is allowed only where the tenant's
+
+contract explicitly permits it (zero-retention terms, a data-processing
+
+agreement, a pinned region), recorded as a versioned tenant policy. If a code
+
+path could send patient data to a hosted endpoint without that policy, it is
+
+a bug even if no patient data has flowed through it yet. hospital_rcm is
+
+frozen and stays local-only.
 
 2. APPEND-ONLY LEDGER. Never UPDATE or DELETE a decision or a human label.
-   Corrections insert a new row. Any migration that mutates historical
-   decisions is rejected.
+
+Corrections insert a new row. Any migration that mutates historical
+
+decisions is rejected.
 
 3. MODEL PINNING. Every decision row records model_id, sampler_version,
-   state_sha256, question_schema_version and threshold_policy_version. A
-   decision you cannot reproduce is not evidence.
+
+state_sha256, question_schema_version and threshold_policy_version. A
+
+decision you cannot reproduce is not evidence.
 
 4. MedDRA LICENCE BOUNDARY. Store event_verbatim with character offsets into
-   the source. Without a tenant MedDRA licence, Choice routes only to public
-   top-level SOCs. Licensed dictionary access activates per tenant, never
-   globally.
+
+the source. Without a tenant MedDRA licence, Choice routes only to public
+
+top-level SOCs. Licensed dictionary access activates per tenant, never
+
+globally.
 
 5. SYSTEM ONE PROPOSES, CODE ROUTES, SYSTEM TWO DRAFTS, EXPERTS DECIDE.
-   No model writes to the database or submits to a regulator directly.
-   Deterministic Python/SQL owns every threshold and every routing decision.
+
+No model writes to the database or submits to a regulator directly.
+
+Deterministic Python/SQL owns every threshold and every routing decision.
 
 6. AUTO-CLOSE IS OFF BY DEFAULT. No item is closed by System One alone unless
-   the tenant has enabled auto-close for that item type. Enabling it requires
-   measured recall at or above the tenant's agreed threshold on adjudicated
-   samples, signed off by the tenant's QPPV and recorded as a decision. Even
-   then, a random sample of auto-closed items (default 10%) goes to a human.
-   Any error routes to a human, never to auto-close.
+
+the tenant has enabled auto-close for that item type. Enabling it requires
+
+measured recall at or above the tenant's agreed threshold on adjudicated
+
+samples, signed off by the tenant's QPPV and recorded as a decision. Even
+
+then, a random sample of auto-closed items (default 10%) goes to a human.
+
+Any error routes to a human, never to auto-close.
 
 7. NUMBERS. Every figure in any artefact is a sourced fact (with source), a
-   labelled target, or sample data (with a SAMPLE DATA marker). Fictional
-   identifiers only in samples: VY-201, VY-305, VY-412, VY-CASE-xxxx,
-   Vendor A (FICTIONAL), demo-hospital, demo-tpa.
+
+labelled target, or sample data (with a SAMPLE DATA marker). Fictional
+
+identifiers only in samples: VY-201, VY-305, VY-412, VY-CASE-xxxx,
+
+Vendor A (FICTIONAL), demo-hospital, demo-tpa.
 
 8. SYNTHETIC DATA ONLY in tests, fixtures, demos, screenshots and logs. No real
-   patient data and no customer data ever enters the repo. Logs never contain
-   patient data or full article text.
+
+patient data and no customer data ever enters the repo. Logs never contain
+
+patient data or full article text.
 
 9. CONTEXT OF USE. Every System One question has a versioned context-of-use
-   record (purpose, risk if wrong, how it is evaluated, owner), stored beside
-   its question_schema_version. A question without one does not ship.
+
+record (purpose, risk if wrong, how it is evaluated, owner), stored beside
+
+its question_schema_version. A question without one does not ship.
 
 10. COST TELEMETRY. Every model call and OCR page records tenant, item, model
-    id, tokens or pages, and an estimated cost. We price per item; we must
-    measure per item.
+
+id, tokens or pages, and an estimated cost. We price per item; we must
+
+measure per item.
 
 11. TESTS. Every phase ships tests. vyom-os: pytest. vyom-web: npm run check
-    must pass with zero errors. No phase is done with a failing or skipped test.
+
+must pass with zero errors. No phase is done with a failing or skipped test.
 
 12. ASK BEFORE ADDING A DEPENDENCY.
+
 ```
 
 ---
@@ -199,15 +2069,19 @@ NON-NEGOTIABLE CONSTRAINTS
 # Milestone A — Literature pilot (public data)
 
 **Goal:** run a paid literature-screening pilot for an Indian generics exporter,
+
 and win it with a benchmark on the prospect's own history.
 
 **Order:** A0 → A1, then A2 and A3 in parallel, then A4. A5 runs alongside A3/A4.
 
 **Rough size (estimate):** 6–10 weeks for two engineers on top of v2; longer
+
 part-time.
 
 **Gate A:** all A-phase acceptance criteria pass, **and** two paid pilots are
+
 signed, **and** benchmark recall is at or above the agreed target on at least two
+
 prospects' data, adjudicated by a qualified safety physician.
 
 ---
@@ -215,50 +2089,87 @@ prospects' data, adjudicated by a qualified safety physician.
 ## A0 — Harden what exists
 
 **Why first:** everything below compounds on the v2 foundation. This phase adds
+
 no features.
 
 ```
+
 CONTEXT
+
 vyom-os v2 has System One routing, an append-only decision ledger, a public
+
 literature sweep, selective System Two drafting, reviewer APIs and gold-set
+
 evaluation. It has never run continuously against real volume.
 
 BUILD
+
 1. Load test the sweep at 10x pilot volume. Pilot assumption: about 1,000
-   records/day per tenant (a 200-molecule exporter reads roughly 300-900 a
-   day; estimate). Test at 10,000/day and record p50/p95/p99 latency for the
-   System One call, the dedup query and the ledger insert. Run 50,000/day once
-   as a stretch measurement; do not gate on it. Publish the numbers in
-   vyom-os/docs/baseline-performance.md as measurements, with the hardware and
-   date they were taken on.
+
+records/day per tenant (a 200-molecule exporter reads roughly 300-900 a
+
+day; estimate). Test at 10,000/day and record p50/p95/p99 latency for the
+
+System One call, the dedup query and the ledger insert. Run 50,000/day once
+
+as a stretch measurement; do not gate on it. Publish the numbers in
+
+vyom-os/docs/baseline-performance.md as measurements, with the hardware and
+
+date they were taken on.
+
 2. Structured logging (JSON, one event per decision) with correlation ids that
-   survive the whole pipeline: ingest -> sys1 -> route -> sys2 -> queue. No
-   patient data or full article text in logs.
+
+survive the whole pipeline: ingest -> sys1 -> route -> sys2 -> queue. No
+
+patient data or full article text in logs.
+
 3. /healthz depth: database reachable, both System One endpoints reachable,
-   last successful sweep timestamp, queue depth. Return 503 when any is unmet.
+
+last successful sweep timestamp, queue depth. Return 503 when any is unmet.
+
 4. Fail-closed on System One errors. A timeout or 5xx must route the state to
-   the human queue, never auto-close it. Add a test that proves a sys1 failure
-   cannot produce a GREEN auto-close.
+
+the human queue, never auto-close it. Add a test that proves a sys1 failure
+
+cannot produce a GREEN auto-close.
+
 5. Idempotency: re-running a sweep for the same day must not create duplicate
-   clinical_states or duplicate decisions. Add a test.
+
+clinical_states or duplicate decisions. Add a test.
+
 6. Cost telemetry per ground rule 10. Expose cost per screened record, per
-   tenant, per week.
+
+tenant, per week.
+
 7. Recall gate in CI: run the frozen gold set on every prompt, model or
-   threshold change. Recall below the last released value fails the build;
-   precision changes are reported. Never tune against the gold set.
+
+threshold change. Recall below the last released value fails the build;
+
+precision changes are reported. Never tune against the gold set.
+
 8. Fix any test that is currently skipped or flaky. Document why any remaining
-   skip exists.
+
+skip exists.
 
 ACCEPTANCE
+
 - 10,000-record day completes without manual intervention; numbers published.
+
 - A forced System One outage routes everything to the queue; test proves it.
+
 - Re-running a day is a no-op; test proves it.
+
 - Cost per screened record is computed for a test run; test.
+
 - A deliberate recall regression fails CI; test.
+
 - pytest green, no skips without a written reason.
 
 OUT OF SCOPE
+
 New endpoints, UI, OCR, serializers.
+
 ```
 
 ---
@@ -266,47 +2177,81 @@ New endpoints, UI, OCR, serializers.
 ## A1 — Tenancy and roles
 
 **Why now:** every later phase writes tenant-scoped data. Isolation is cheap now
+
 and very expensive to retrofit. Enterprise SSO is deferred to B4.
 
 ```
+
 CONTEXT
+
 vyom-web middleware already requires auth and an x-tenant-id header on tenant
+
 routes. vyom-os has no tenant model: data is global. Pharma customers will ask,
+
 in the first security review, how their data is separated from another
+
 customer's.
 
 BUILD
+
 1. Postgres: add tenant_id (uuid, not null) to every data table. Backfill
-   existing rows to a single bootstrap tenant. Add row-level security policies
-   so a connection scoped to a tenant physically cannot read another's rows.
-   Service-role connections that bypass RLS are allowed only in migration and
-   batch jobs, never in the request path.
+
+existing rows to a single bootstrap tenant. Add row-level security policies
+
+so a connection scoped to a tenant physically cannot read another's rows.
+
+Service-role connections that bypass RLS are allowed only in migration and
+
+batch jobs, never in the request path.
+
 2. Tenants table: slug, display name, data residency region, MedDRA licence
-   status, System One routing policy (which domains may use the hosted client),
-   auto-close policy per item type, feature flags.
+
+status, System One routing policy (which domains may use the hosted client),
+
+auto-close policy per item type, feature flags.
+
 3. FastAPI: resolve tenant from a validated JWT claim, not from a
-   client-supplied header. x-tenant-id may be used for routing but must be
-   cross-checked against the token; a mismatch is a 403.
+
+client-supplied header. x-tenant-id may be used for routing but must be
+
+cross-checked against the token; a mismatch is a 403.
+
 4. Replace API_BEARER_TOKEN and REVIEWER_TOKENS_JSON with local accounts:
-   hashed passwords, MFA, one account per person, no shared logins. Roles:
-   reviewer, safety_physician, qppv, admin, ops.
+
+hashed passwords, MFA, one account per person, no shared logins. Roles:
+
+reviewer, safety_physician, qppv, admin, ops.
+
 5. Authorization as a policy table, not if-statements scattered through
-   handlers. A safety_physician may approve; a reviewer may correct and
-   escalate but not approve a serious case; only a qppv may enable auto-close.
+
+handlers. A safety_physician may approve; a reviewer may correct and
+
+escalate but not approve a serious case; only a qppv may enable auto-close.
+
 6. vyom-web: wire the real session into (platform)/[tenant_slug] and
-   (internal)/ops. /ops is internal-only and must 404 — not 403 — for tenant
-   users.
+
+(internal)/ops. /ops is internal-only and must 404 — not 403 — for tenant
+
+users.
 
 ACCEPTANCE
+
 - A test proves tenant A's connection returns zero rows from tenant B's data,
-  at the database level, with RLS on.
+
+at the database level, with RLS on.
+
 - A forged x-tenant-id with a valid token for another tenant returns 403; test.
+
 - Role matrix test: every (role, action) pair asserted, allow and deny.
+
 - No shared credentials anywhere; every action attributable to one person.
+
 - npm run check passes; pytest green.
 
 OUT OF SCOPE
+
 OIDC/SSO (B4), SCIM, billing.
+
 ```
 
 ---
@@ -314,65 +2259,117 @@ OIDC/SSO (B4), SCIM, billing.
 ## A2 — Literature completeness
 
 **Why:** a paying literature customer needs their own search strategies, a
+
 weekly schedule they can show an inspector, sources beyond PubMed, and evidence
+
 of what was screened, when, and by which version.
 
 ```
+
 CONTEXT
+
 vyom-os sweeps PubMed and Europe PMC with dedup, scores records with System
+
 One, drafts Yellow/Red with System Two and exposes a screening-log endpoint.
+
 Strategies, scheduling, other sources and awareness dates do not exist yet.
 
 BUILD
+
 1. Search strategies as versioned data, per tenant and molecule: substance
-   name, synonyms, salts, brand names, and the query per source. Every
-   retrieved record stores the strategy version that found it. Strategy changes
-   are append-only and attributable.
+
+name, synonyms, salts, brand names, and the query per source. Every
+
+retrieved record stores the strategy version that found it. Strategy changes
+
+are append-only and attributable.
+
 2. Scheduler: weekly runs per tenant on a configurable day, with catch-up for
-   missed runs and idempotent re-runs (A0 rule). A missed run raises an alert.
-   Use a Postgres-backed job queue (SELECT ... FOR UPDATE SKIP LOCKED); no new
-   orchestration dependency.
+
+missed runs and idempotent re-runs (A0 rule). A missed run raises an alert.
+
+Use a Postgres-backed job queue (SELECT ... FOR UPDATE SKIP LOCKED); no new
+
+orchestration dependency.
+
 3. Sources:
-   - PubMed and Europe PMC (existing).
-   - Embase through the tenant's own licence and credentials, behind a tenant
-     flag. Never shared across tenants; never used without a licence.
-   - Local journals that PubMed does not index: per-tenant upload of digital
-     PDFs or issue files, parsed into records with page and character offsets.
-     Scanned issues wait for OCR in C1; until then they are logged as
-     "manual review".
+
+- PubMed and Europe PMC (existing).
+
+- Embase through the tenant's own licence and credentials, behind a tenant
+
+flag. Never shared across tenants; never used without a licence.
+
+- Local journals that PubMed does not index: per-tenant upload of digital
+
+PDFs or issue files, parsed into records with page and character offsets.
+
+Scanned issues wait for OCR in C1; until then they are logged as
+
+"manual review".
+
 4. Full text: open-access full text from Europe PMC; anything else only when
-   the tenant supplies it under its own licence. Never fetch from publisher
-   sites.
+
+the tenant supplies it under its own licence. Never fetch from publisher
+
+sites.
+
 5. Cross-source dedup: PMID, then DOI, then title + first author + journal +
-   year (fuzzy). Log which key matched.
+
+year (fuzzy). Log which key matched.
+
 6. Special situations as System One questions: pregnancy and breastfeeding,
-   paediatric or elderly use, overdose, abuse, misuse, off-label use,
-   medication error, occupational exposure, lack of efficacy.
+
+paediatric or elderly use, overdose, abuse, misuse, off-label use,
+
+medication error, occupational exposure, lack of efficacy.
+
 7. EMA literature monitoring: keep EMA's published substance and journal lists
-   as versioned reference data. Flag records that fall under them so the
-   customer's process can avoid duplicate EU submissions. Flag only; never
-   auto-decide.
+
+as versioned reference data. Flag records that fall under them so the
+
+customer's process can avoid duplicate EU submissions. Flag only; never
+
+auto-decide.
+
 8. Awareness date: record when a record meeting the four minimum criteria
-   (identifiable patient, reporter, suspect drug, event) was first seen by a
-   screener. The rule used is configurable per region and tenant, and the rule
-   version is stored with the date.
+
+(identifiable patient, reporter, suspect drug, event) was first seen by a
+
+screener. The rule used is configurable per region and tenant, and the rule
+
+version is stored with the date.
+
 9. Weekly deliverables: a screening log per run (retrieved, unique, screened,
-   flagged, confirmed, by strategy and model version) and a case-ready draft
-   per confirmed case, with every field linked to its source span.
+
+flagged, confirmed, by strategy and model version) and a case-ready draft
+
+per confirmed case, with every field linked to its source span.
 
 ACCEPTANCE
+
 - Two tenants with different strategies for the same molecule produce
-  separately versioned results; test.
+
+separately versioned results; test.
+
 - A missed weekly run alerts and catches up without duplicates; test.
+
 - Embase cannot run for a tenant without a licence flag; test.
+
 - An uploaded digital PDF issue produces records whose fields resolve to page
-  offsets; test.
+
+offsets; test.
+
 - The screening log for any run reconstructs exactly which records were seen,
-  by which strategy and model versions; test.
+
+by which strategy and model versions; test.
 
 OUT OF SCOPE
+
 OCR of scanned issues (C1), MedDRA coding (C3), the regulatory clock engine
+
 (C4).
+
 ```
 
 ---
@@ -380,46 +2377,79 @@ OCR of scanned issues (C1), MedDRA coding (C3), the regulatory clock engine
 ## A3 — Literature reviewer console
 
 **Target capability:** expert-in-the-loop, made real for literature. The unit
+
 economics rest on how fast a reviewer clears pre-scored items; this UI decides
+
 that number.
 
 ```
+
 CONTEXT
+
 vyom-os exposes /v1/review/queue and /v1/review/states/{id}/actions. There is
+
 no UI. vyom-web has (platform)/[tenant_slug]/console as a shell. DESIGN.md
+
 governs the look; read it before writing any component.
 
 BUILD
+
 1. Split-screen console at /{tenant_slug}/console: the abstract or full text on
-   the left with evidence spans highlighted (character offsets; page and region
-   for PDFs); System One output on the right as typed flags with calibrated
-   probabilities, including special situations.
+
+the left with evidence spans highlighted (character offsets; page and region
+
+for PDFs); System One output on the right as typed flags with calibrated
+
+probabilities, including special situations.
+
 2. Keyboard-first. J/K to move, A to approve, C to correct, E to escalate,
-   ? for help. No action requires the mouse. Focus states visible throughout.
+
+? for help. No action requires the mouse. Focus states visible throughout.
+
 3. Correction UI: inline field edit that writes a new labels row with a
-   field-level diff. Never mutates the original decision.
+
+field-level diff. Never mutates the original decision.
+
 4. Show model_id, sampler_version and question_schema_version on screen for the
-   decision being reviewed.
+
+decision being reviewed.
+
 5. Queue ordering in SQL, not the client: escalations, then likely valid cases,
-   then special situations, then oldest.
+
+then special situations, then oldest.
+
 6. Reviewer locking: two reviewers must not be handed the same state. Use
-   SELECT ... FOR UPDATE SKIP LOCKED with a lease timeout.
+
+SELECT ... FOR UPDATE SKIP LOCKED with a lease timeout.
+
 7. Sample-check queue: when a tenant has auto-close enabled, the random sample
-   of auto-closed items (ground rule 6) appears here, marked as a sample check.
+
+of auto-closed items (ground rule 6) appears here, marked as a sample check.
+
 8. Instrument time-to-decision per item and publish it on /ops by item type.
 
 ACCEPTANCE
+
 - A reviewer clears 50 sample items using only the keyboard.
+
 - Median time-to-decision measured and displayed. Report the real number
-  whatever it is; do not target one.
+
+whatever it is; do not target one.
+
 - Two browser sessions never receive the same state; test.
+
 - Every action produces exactly one append-only labels row; test.
+
 - Matches DESIGN.md at 1440px; no horizontal scroll at 375/768px.
+
 - npm run check passes.
 
 OUT OF SCOPE
+
 Case-report PDFs with bounding boxes and serious-case approval (C2), bulk
+
 actions, saved views.
+
 ```
 
 ---
@@ -427,45 +2457,77 @@ actions, saved views.
 ## A4 — Benchmark runner
 
 **Why now:** the free retrospective benchmark is the wedge that wins the first
+
 pilots. It runs as an operator tool first; self-serve comes in D3.
 
 ```
+
 CONTEXT
+
 Today the gold-set evaluation runs over our own labels. A prospect needs to see
+
 recall and precision on their own past decisions: re-screen one period of their
+
 literature and show what their process caught and missed.
 
 BUILD
+
 1. Input: the prospect's historical screening log for a period (record
-   identifiers such as PMID or DOI, screening date, their decision, whether a
-   case was raised) and their search strategy for that period. Loaded into a
-   dedicated benchmark tenant.
+
+identifiers such as PMID or DOI, screening date, their decision, whether a
+
+case was raised) and their search strategy for that period. Loaded into a
+
+dedicated benchmark tenant.
+
 2. Re-run the same window with their strategy, screen with pinned versions, and
-   compare decision by decision.
+
+compare decision by decision.
+
 3. Disagreements go to adjudication by a qualified safety physician.
-   Adjudication is a labelled, attributable decision in the ledger.
+
+Adjudication is a labelled, attributable decision in the ledger.
+
 4. Possible missed case: when adjudication confirms that a record Vyom flagged
-   was a valid case the prospect's process did not raise, report it to the
-   prospect's designated contact promptly, with evidence, because it may carry
-   a reporting obligation. Record the notification.
+
+was a valid case the prospect's process did not raise, report it to the
+
+prospect's designated contact promptly, with evidence, because it may carry
+
+a reporting obligation. Record the notification.
+
 5. Report: recall and precision against adjudicated truth, every disagreement
-   with its evidence, reviewer time per record, and a method section (period,
-   strategy, model versions, adjudicator role).
+
+with its evidence, reviewer time per record, and a method section (period,
+
+strategy, model versions, adjudicator role).
+
 6. Retention: benchmark data is deleted on the agreed date by one command; the
-   deletion is logged.
+
+deletion is logged.
+
 7. CLI first, for example `vyom benchmark run --tenant <slug> --period <range>`.
-   No UI in this milestone.
+
+No UI in this milestone.
 
 ACCEPTANCE
+
 - A benchmark on a public-data sample with planted misses reports recall and
-  precision correctly; show the arithmetic in the test.
+
+precision correctly; show the arithmetic in the test.
+
 - Benchmark tenant data is invisible to every other tenant (extend the A1 RLS
-  test).
+
+test).
+
 - A confirmed possible missed case creates a notification record; test.
+
 - Deletion removes the tenant's data and leaves a deletion record; test.
 
 OUT OF SCOPE
+
 Self-serve upload (D3), pricing, contracts.
+
 ```
 
 ---
@@ -473,35 +2535,57 @@ Self-serve upload (D3), pricing, contracts.
 ## A5 — Pilot-grade operations
 
 **Why:** a pilot runs on real schedules for a real customer. It needs backups,
+
 secrets and alerts, not the full production stack (that is B3).
 
 ```
+
 CONTEXT
+
 vyom-os has a Dockerfile and docker-compose. There is no deployed environment,
+
 no backup and no alerting.
 
 BUILD
+
 1. Deploy vyom-os workers and a managed Postgres in an Indian region. Daily
-   backups, plus point-in-time recovery where the provider offers it.
+
+backups, plus point-in-time recovery where the provider offers it.
+
 2. Rehearse one restore into a clean environment; time it; document it.
+
 3. Secrets in a managed store. Nothing in .env in deployed environments,
-   nothing in the repo; rotate anything ever pasted into a chat or a ticket.
-   Secret scanner in CI.
+
+nothing in the repo; rotate anything ever pasted into a chat or a ticket.
+
+Secret scanner in CI.
+
 4. Alerts that reach a named person: failed or missed sweep, queue depth over
-   threshold, a System One endpoint down.
+
+threshold, a System One endpoint down.
+
 5. vyom-web: product pages match what is live. Literature shows its real
-   status; everything else says roadmap or design partners. Audit every claim
-   on the site against shipped capability.
+
+status; everything else says roadmap or design partners. Audit every claim
+
+on the site against shipped capability.
 
 ACCEPTANCE
+
 - A restore from backup into a clean environment, timed and documented.
+
 - A forced sweep failure raises an alert; test or rehearsal recorded.
+
 - No secret in the repo; scanner in CI.
+
 - Every product-page claim maps to a shipped capability or is labelled
-  roadmap; audit recorded.
+
+roadmap; audit recorded.
 
 OUT OF SCOPE
+
 SLO dashboards, DR beyond a rehearsed restore, multi-region (B3).
+
 ```
 
 ---
@@ -513,7 +2597,9 @@ SLO dashboards, DR beyond a rehearsed restore, multi-region (B3).
 **Rough size (estimate):** 2–3 months.
 
 **Gate B:** all B-phase acceptance criteria pass, **and** the first production
+
 contract is signed, **and** the customer's QA accepts the validation pack, **and**
+
 an ISO 27001 certification audit is booked.
 
 ---
@@ -521,43 +2607,73 @@ an ISO 27001 certification audit is booked.
 ## B1 — Compliance evidence
 
 **Target capability:** the comply equivalent for what we already run. This is
+
 what a QPPV and an inspector ask about.
 
 ```
+
 CONTEXT
+
 We have an append-only ledger, a recall gate in CI (A0) and literature runs
+
 with versioned strategies (A2). We have no inspection pack, no release
+
 validation pack and no Part 11 alignment record.
 
 BUILD
+
 1. Inspection evidence pack: given a case id, a run or a date range, produce a
-   bundle with every decision, every model and prompt version, every human
-   action with actor and timestamp, the strategy versions and the source
-   documents. One command, reproducible.
+
+bundle with every decision, every model and prompt version, every human
+
+action with actor and timestamp, the strategy versions and the source
+
+documents. One command, reproducible.
+
 2. 21 CFR Part 11 alignment: unique attributable identities (A1), signature
-   meaning recorded on approvals, time source documented, record retention
-   policy enforced in code.
+
+meaning recorded on approvals, time source documented, record retention
+
+policy enforced in code.
+
 3. Release validation pack: model and prompt changes ship on a fixed schedule
-   (for example quarterly) with locked versions. Each release produces test
-   results on the frozen gold set, a change log and a risk assessment, so a
-   customer's QA can approve it in days.
+
+(for example quarterly) with locked versions. Each release produces test
+
+results on the frozen gold set, a change log and a risk assessment, so a
+
+customer's QA can approve it in days.
+
 4. Validation documentation (IQ/OQ/PQ) generated from the test suite rather
-   than written by hand, so it cannot drift from the system.
+
+than written by hand, so it cannot drift from the system.
+
 5. Auto-close enablement workflow: a qppv reviews measured recall on
-   adjudicated samples and enables auto-close for an item type; the approval is
-   a ledger decision with signature meaning.
+
+adjudicated samples and enables auto-close for an item type; the approval is
+
+a ledger decision with signature meaning.
+
 6. A CI check that every System One question has a context-of-use record
-   (ground rule 9).
+
+(ground rule 9).
 
 ACCEPTANCE
+
 - The inspection pack for any case reconstructs the full decision history,
-  including model and strategy versions; test.
+
+including model and strategy versions; test.
+
 - A release produces its validation pack automatically; test.
+
 - Auto-close cannot be enabled without a recorded qppv approval; test.
+
 - A System One question without a context-of-use record fails CI; test.
 
 OUT OF SCOPE
+
 Formal computer-system-validation sign-off (a QA activity), SOP writing.
+
 ```
 
 ---
@@ -565,43 +2681,73 @@ Formal computer-system-validation sign-off (a QA activity), SOP writing.
 ## B2 — Audit mode
 
 **Target capability:** Vyom Audit — checks on 100% of a customer's processed
+
 cases, whoever processed them. It needs no submission capability: customers
+
 export cases from their existing safety database as E2B(R3) files, and we check
+
 them.
 
 ```
+
 CONTEXT
+
 Nothing reads a customer's existing case data today. Audit reuses the ledger,
+
 tenancy, evidence pack and console primitives already built.
 
 BUILD
+
 1. E2B(R3) inbound parser into clinical_states, validated against the official
-   schema. A file that fails validation is quarantined with a readable error,
-   not silently dropped.
+
+schema. A file that fails validation is quarantined with a readable error,
+
+not silently dropped.
+
 2. Rules engine, with rules as versioned data per tenant: coding vs narrative
-   consistency, seriousness vs outcome, missing mandatory fields, duplicates,
-   date logic, late submission against the receipt date in the file. Each
-   finding records rule id and version, evidence and severity.
+
+consistency, seriousness vs outcome, missing mandatory fields, duplicates,
+
+date logic, late submission against the receipt date in the file. Each
+
+finding records rule id and version, evidence and severity.
+
 3. System One questions only where rules cannot decide (for example, a
-   narrative mentions an event that is not coded). Proposals are reviewed like
-   any other.
+
+narrative mentions an event that is not coded). Proposals are reviewed like
+
+any other.
+
 4. Vendor scorecard per period: findings by type and rate, trend, top findings.
-   Corrective-action export as CSV.
+
+Corrective-action export as CSV.
+
 5. An evidence pack per audit run (B1 machinery).
+
 6. MedDRA: Vyom holds its own subscription before Audit ships, and licence
-   terms are checked for processing customers' coded data. Without the right
-   licence, checks that need dictionary look-ups are skipped and marked.
+
+terms are checked for processing customers' coded data. Without the right
+
+licence, checks that need dictionary look-ups are skipped and marked.
 
 ACCEPTANCE
+
 - A malformed E2B file quarantines with a readable error; test.
+
 - On a synthetic set of 500 cases with seeded defects, each rule's detection is
-  reported (found and missed); results published as measurements.
+
+reported (found and missed); results published as measurements.
+
 - A scorecard is reproducible from the ledger for any past run; test.
+
 - Licence boundary test: a tenant without MedDRA cannot get dictionary-based
-  checks.
+
+checks.
 
 OUT OF SCOPE
+
 Fixing cases in the customer's system, submission to regulators.
+
 ```
 
 ---
@@ -609,32 +2755,53 @@ Fixing cases in the customer's system, submission to regulators.
 ## B3 — Production operations
 
 ```
+
 CONTEXT
+
 A5 gave us a deployed environment, backups, secrets and alerts. A production
+
 contract needs service levels, recovery, residency and security evidence.
 
 BUILD
+
 1. Data residency enforced per tenant, including which region the local System
-   One worker runs in. This is a contractual commitment for Indian pharma, not
-   a preference.
+
+One worker runs in. This is a contractual commitment for Indian pharma, not
+
+a preference.
+
 2. SLOs with alerting: intake availability, sweep completion, queue depth,
-   time-to-decision. Page on breach.
+
+time-to-decision. Page on breach.
+
 3. Disaster recovery: documented recovery time and point objectives; a full
-   restore rehearsed and timed each quarter.
+
+restore rehearsed and timed each quarter.
+
 4. Per-tenant, per-item cost visible in /ops (from A0 telemetry).
+
 5. ISO 27001 control evidence collected from the system where possible (access
-   reviews, change logs, backup tests, vulnerability scans).
+
+reviews, change logs, backup tests, vulnerability scans).
+
 6. DPDP processor duties: retention limits, tenant data deletion on request,
-   a breach-notification procedure, and a record of processing per tenant.
+
+a breach-notification procedure, and a record of processing per tenant.
 
 ACCEPTANCE
+
 - SLO dashboard live; a deliberate breach pages someone.
+
 - A quarterly restore rehearsal is recorded and timed.
+
 - Tenant data deletion completes and is logged; test.
+
 - Per-tenant per-item cost visible in /ops.
 
 OUT OF SCOPE
+
 Multi-region active-active.
+
 ```
 
 ---
@@ -642,23 +2809,35 @@ Multi-region active-active.
 ## B4 — Enterprise identity (when a customer requires it)
 
 ```
+
 CONTEXT
+
 A1 uses local accounts with MFA. Larger customers will require sign-in through
+
 their own identity provider.
 
 BUILD
+
 1. OIDC against the tenant's identity provider where configured; local accounts
-   remain for tenants without one.
+
+remain for tenants without one.
+
 2. Map identity-provider groups to Vyom roles; the policy table from A1 is
-   unchanged.
+
+unchanged.
+
 3. Session and token lifetimes configurable per tenant.
 
 ACCEPTANCE
+
 - Sign-in through a test identity provider works end to end; test.
+
 - The A1 role-matrix test passes unchanged for OIDC users.
 
 OUT OF SCOPE
+
 SCIM provisioning, SSO admin UI.
+
 ```
 
 ---
@@ -670,7 +2849,9 @@ SCIM provisioning, SSO admin UI.
 **Rough size (estimate):** 4–6 months.
 
 **Gate C:** all C-phase acceptance criteria pass, **and** the first Cases
+
 customer is live, **and** hosted-vs-local processing of patient data is written
+
 into that customer's contract.
 
 ---
@@ -678,46 +2859,79 @@ into that customer's contract.
 ## C1 — Multi-source intake
 
 **Target capability:** the intake equivalent. This decides whether we can take a
+
 customer's real case traffic.
 
 ```
+
 CONTEXT
+
 Today vyom-os ingests literature, a structured /v1/icsr/intake endpoint and
+
 (from B2) E2B(R3) files. Real case intake also arrives as PDFs (scanned and
+
 digital), email with attachments, call-centre transcripts, CIOMS forms and web
+
 forms.
 
 BUILD
+
 1. Synthetic test corpus first: 200 realistic, fictional documents (scanned
-   PDF, digital PDF, email, E2B XML, call-centre notes) with known answers. No
-   real patient data (ground rule 8).
+
+PDF, digital PDF, email, E2B XML, call-centre notes) with known answers. No
+
+real patient data (ground rule 8).
+
 2. OCR/PDF extraction service. Digital-text PDFs parse directly; scanned ones go
-   through OCR. Preserve character offsets back to page and bounding box. Store
-   the original immutably; never overwrite it with the extracted text. OCR runs
-   in the patient-data path for pv_icsr per ground rule 1.
+
+through OCR. Preserve character offsets back to page and bounding box. Store
+
+the original immutably; never overwrite it with the extracted text. OCR runs
+
+in the patient-data path for pv_icsr per ground rule 1.
+
 3. Email intake: a per-tenant mailbox, attachment extraction, thread dedup.
-   Record the sender and received-at time; they feed the regulatory clock (C4).
+
+Record the sender and received-at time; they feed the regulatory clock (C4).
+
 4. Router as a System One Choice: adverse event vs product complaint vs medical
-   enquiry vs none-of-these. Route accordingly.
+
+enquiry vs none-of-these. Route accordingly.
+
 5. Cross-source dedup: the same case arriving by email and in an E2B file
-   collapses to one clinical_state, with both source_records retained. Key
-   order: case identifier -> (patient + drug + event + date) fuzzy -> content
-   hash. Log which matched.
+
+collapses to one clinical_state, with both source_records retained. Key
+
+order: case identifier -> (patient + drug + event + date) fuzzy -> content
+
+hash. Log which matched.
+
 6. Intake API: POST /v1/intake with a declared source type, returning a receipt
-   id immediately and processing asynchronously. Customers will integrate
-   against this; design it once.
+
+id immediately and processing asynchronously. Customers will integrate
+
+against this; design it once.
 
 ACCEPTANCE
+
 - The 200-document synthetic corpus ingests end to end with zero manual steps.
+
 - Every extracted field carries offsets that resolve to a page and region in
-  the stored original; test with a scanned PDF.
+
+the stored original; test with a scanned PDF.
+
 - Cross-source dedup test: same case via email and E2B -> one clinical_state,
-  two source_records.
+
+two source_records.
+
 - With a local-only tenant policy, no request reaches a hosted endpoint during
-  intake; test with a network guard.
+
+intake; test with a network guard.
 
 OUT OF SCOPE
+
 MedDRA coding and output (C3), the clock engine (C4).
+
 ```
 
 ---
@@ -725,28 +2939,45 @@ MedDRA coding and output (C3), the clock engine (C4).
 ## C2 — Case console
 
 ```
+
 CONTEXT
+
 A3 built the literature console. Cases add scanned source documents, serious
+
 cases that only a physician may approve, and narratives.
 
 BUILD
+
 1. Extend the console to case documents: the source PDF on the left with the
-   evidence span highlighted at its bounding box.
+
+evidence span highlighted at its bounding box.
+
 2. Serious-case approval restricted to safety_physician (A1 policy table).
+
 3. Narrative drafts where every sentence links to its source span. A sentence
-   with no source cannot be approved.
+
+with no source cannot be approved.
+
 4. Queue ordering in SQL: escalations, then serious, then regulatory clock
-   soonest, then oldest.
+
+soonest, then oldest.
+
 5. Time-to-decision measured for cases separately from literature items.
 
 ACCEPTANCE
+
 - A reviewer cannot approve a serious case; test.
+
 - A narrative sentence without a source link blocks approval; test.
+
 - Case time-to-decision measured and shown on /ops; report the real number.
+
 - Keyboard-only flow works for 50 sample cases.
 
 OUT OF SCOPE
+
 Bulk actions, reviewer analytics beyond time-to-decision.
+
 ```
 
 ---
@@ -754,37 +2985,61 @@ Bulk actions, reviewer analytics beyond time-to-decision.
 ## C3 — Regulatory output (export)
 
 **Target capability:** the report equivalent, as export. Vyom produces
+
 submission-ready files; the customer's safety database submits them. Vyom does
+
 not transmit to regulators in this milestone (that is D1).
 
 ```
+
 CONTEXT
+
 Nothing in vyom-os produces a regulator-ready artefact today.
 
 BUILD
+
 1. E2B(R3) serializer: clinical_state + approved decisions -> valid R3 XML.
-   Validate against the official schema in CI, not only at runtime.
+
+Validate against the official schema in CI, not only at runtime.
+
 2. Regional profiles: EMA, FDA and CDSCO differ in required fields and
-   vocabularies. Profiles are data (a versioned table), not branches in code.
+
+vocabularies. Profiles are data (a versioned table), not branches in code.
+
 3. MedDRA coding behind the licence boundary: with a tenant licence, map
-   event_verbatim -> LLT/PT and record the dictionary version used. Without
-   one, emit the verbatim term and SOC only, and mark the file as requiring
-   coding before submission.
+
+event_verbatim -> LLT/PT and record the dictionary version used. Without
+
+one, emit the verbatim term and SOC only, and mark the file as requiring
+
+coding before submission.
+
 4. Export for import into the customer's safety database, with an export
-   ledger: every export appended with payload hash, profile version,
-   timestamp, operator and outcome.
+
+ledger: every export appended with payload hash, profile version,
+
+timestamp, operator and outcome.
+
 5. Aggregate data exports: line listings and summary tabulations for periodic
-   reports, as data first; formatted documents later.
+
+reports, as data first; formatted documents later.
 
 ACCEPTANCE
+
 - Generated R3 XML validates against the official schema in CI.
+
 - A regional-profile change is a data change only; test.
+
 - Licence boundary test: a tenant without MedDRA cannot emit coded terms.
+
 - The export ledger is append-only and reconstructs the full export history of
-  a case.
+
+a case.
 
 OUT OF SCOPE
+
 Gateway transmission and acknowledgements (D1), formatted PSUR documents.
+
 ```
 
 ---
@@ -794,27 +3049,43 @@ Gateway transmission and acknowledgements (D1), formatted PSUR documents.
 **Target capability:** the assure equivalent, inside our own pipeline.
 
 ```
+
 CONTEXT
+
 A2 records awareness dates for literature; B2 runs validation rules on
+
 imported cases. Cases now need a live clock and checks while they are being
+
 processed.
 
 BUILD
+
 1. Regulatory clock: day-zero determination per case, per region, per
-   seriousness. 15-day and 90-day tracks. Alert before breach; record every
-   breach with its cause. Day zero is a decision with provenance like any
-   other.
+
+seriousness. 15-day and 90-day tracks. Alert before breach; record every
+
+breach with its cause. Day zero is a decision with provenance like any
+
+other.
+
 2. Inline validation: run the B2 rules continuously during processing, not only
-   at the end, and surface findings in the console as they appear.
+
+at the end, and surface findings in the console as they appear.
 
 ACCEPTANCE
+
 - The clock computes correctly across regions and seriousness; test the edges
-  (day zero on a weekend, follow-up resetting, retrospective information).
+
+(day zero on a weekend, follow-up resetting, retrospective information).
+
 - Inline findings appear in the console before approval; test.
+
 - A deliberate near-breach raises an alert; test.
 
 OUT OF SCOPE
+
 Gateway submission (D1).
+
 ```
 
 ---
@@ -828,27 +3099,43 @@ Start a D phase only when a customer needs it or pays for it.
 ## D1 — Gateway submission
 
 ```
+
 CONTEXT
+
 C3 produces validated E2B(R3) files that customers import into their own
+
 safety database. Some customers may contract Vyom as their system of record for
+
 submission. This multiplies validation work and liability; build it only under
+
 such a contract.
 
 BUILD
+
 1. Gateway submission with acknowledgement handling: transmit, store ACK1/ACK2,
-   reconcile, surface failures in the console. A submission with no recorded
-   ACK is not complete and must not display as submitted.
+
+reconcile, surface failures in the console. A submission with no recorded
+
+ACK is not complete and must not display as submitted.
+
 2. Submission ledger: every transmission attempt appended with payload hash,
-   endpoint, timestamp, operator and outcome.
+
+endpoint, timestamp, operator and outcome.
 
 ACCEPTANCE
+
 - A full round trip against a regulator test gateway, ACKs stored and
-  reconciled.
+
+reconciled.
+
 - The submission ledger is append-only and reconstructs the full history of a
-  case.
+
+case.
 
 OUT OF SCOPE
+
 Regulator onboarding paperwork (a customer and QA activity).
+
 ```
 
 ---
@@ -856,34 +3143,55 @@ Regulator onboarding paperwork (a customer and QA activity).
 ## D2 — Signal detection
 
 **Last, deliberately:** it is worth little until the case data underneath it is
+
 complete and trustworthy, and it is the capability a customer is least likely to
+
 buy first.
 
 ```
+
 CONTEXT
+
 Vyom Signal is on the public site as a roadmap item. Nothing is built.
 
 BUILD
+
 1. Case aggregation across products, sources and time, tenant-scoped.
+
 2. Disproportionality: PRR and ROR with confidence intervals, on tenant data and
-   on public FAERS separately — never silently pooled.
+
+on public FAERS separately — never silently pooled.
+
 3. Thresholds as versioned policy, per tenant, with the same append-only
-   discipline as every other decision.
+
+discipline as every other decision.
+
 4. Evaluation workflow: a crossing becomes a tracked item with an owner, not an
-   inbox entry. It closes with a decision record stating what was found, what
-   was decided and why.
+
+inbox entry. It closes with a decision record stating what was found, what
+
+was decided and why.
+
 5. Literature alerting into the same evaluation workflow.
+
 6. Signal console view reusing the A3/C2 primitives.
 
 ACCEPTANCE
+
 - Statistics verified against a worked reference example; show the arithmetic
-  in the test.
+
+in the test.
+
 - Tenant data and FAERS results are never combined in one statistic; test.
+
 - Every evaluation closes with a decision record; no silent closures.
+
 - Thresholds are versioned and auditable.
 
 OUT OF SCOPE
+
 Automated causality assessment, regulatory signal submissions.
+
 ```
 
 ---
@@ -891,27 +3199,43 @@ Automated causality assessment, regulatory signal submissions.
 ## D3 — Self-serve commercial surface
 
 ```
+
 CONTEXT
+
 A4 runs benchmarks as an operator tool. Scaling sales needs prospects and
+
 customers to do more without an engineer.
 
 BUILD
+
 1. Self-serve benchmark: a prospect uploads a historical sample and receives a
-   recall and precision report on their own data, with the A4 safeguards
-   (adjudication, possible-missed-case notification, deletion) intact.
+
+recall and precision report on their own data, with the A4 safeguards
+
+(adjudication, possible-missed-case notification, deletion) intact.
+
 2. Tenant onboarding: provision, configure strategies, set thresholds, import
-   historical data.
+
+historical data.
+
 3. In-product reporting: weekly screening log, recall report, vendor scorecard.
+
 4. Usage and billing data export per the per-item pricing model.
 
 ACCEPTANCE
+
 - A prospect completes a benchmark with no engineer involved.
+
 - Every product-page claim maps to a shipped capability; audit it.
+
 - Content rules hold: npm run check passes; every number sourced, targeted or
-  sample-marked.
+
+sample-marked.
 
 OUT OF SCOPE
+
 Payment processing, contract management.
+
 ```
 
 ---
@@ -919,40 +3243,61 @@ Payment processing, contract management.
 ## Sequencing
 
 ```
-Milestone A  Literature pilot
-  A0 Harden -> A1 Tenancy + roles -> A2 Literature   -> A4 Benchmark
-                                  -> A3 Console
-                                     A5 Pilot ops (alongside A3/A4)
-  GATE A: 2 paid pilots signed; adjudicated benchmark recall at target
 
-Milestone B  Production literature + Audit
-  B1 Compliance evidence | B2 Audit mode | B3 Production ops | B4 SSO (on request)
-  GATE B: production contract; customer QA accepts validation pack;
-          ISO 27001 audit booked
+Milestone A Literature pilot
 
-Milestone C  Cases
-  C1 Intake -> C2 Case console -> C3 E2B export -> C4 Clock + inline validation
-  GATE C: first Cases customer live; patient-data processing terms in contract
+A0 Harden -> A1 Tenancy + roles -> A2 Literature -> A4 Benchmark
 
-Milestone D  On demand
-  D1 Gateway submission | D2 Signal | D3 Self-serve commercial
+-> A3 Console
+
+A5 Pilot ops (alongside A3/A4)
+
+GATE A: 2 paid pilots signed; adjudicated benchmark recall at target
+
+Milestone B Production literature + Audit
+
+B1 Compliance evidence | B2 Audit mode | B3 Production ops | B4 SSO (on request)
+
+GATE B: production contract; customer QA accepts validation pack;
+
+ISO 27001 audit booked
+
+Milestone C Cases
+
+C1 Intake -> C2 Case console -> C3 E2B export -> C4 Clock + inline validation
+
+GATE C: first Cases customer live; patient-data processing terms in contract
+
+Milestone D On demand
+
+D1 Gateway submission | D2 Signal | D3 Self-serve commercial
+
 ```
 
 **A1 is the one not to defer.** Retrofitting tenant isolation after months of
+
 accumulated data is the most expensive reordering available in this plan, and it
+
 is the first thing a pharma security review will test.
 
 **A4 is the one not to delay.** The benchmark is what turns a conversation into
+
 a paid pilot. Everything in Milestone A exists to make it credible.
 
 **D2 is the one to defer.** Signal detection on incomplete case data produces
+
 confident nonsense.
 
 | Milestone | Rough size (estimate, not a commitment) |
+
 | --- | --- |
+
 | A | 6–10 weeks for two engineers on top of v2; longer part-time |
+
 | B | 2–3 months |
+
 | C | 4–6 months |
+
 | D | Per customer demand |
 
 ---
@@ -962,30 +3307,59 @@ confident nonsense.
 Hold these in every phase; they are not a phase of their own.
 
 | Area | Requirement |
+
 | --- | --- |
+
 | Evidence | Every model assertion quotes its source span with offsets resolving to the stored original |
+
 | Reproducibility | Any decision replayable from `state_sha256` + pinned versions |
+
 | Failure mode | Uncertainty routes to a human. Never auto-close on error |
+
 | Auto-close | Off by default per tenant; enabled only with qppv sign-off; sampled checks continue |
+
 | Latency | System One stays synchronous. Only System Two may be async |
+
 | Data | Originals immutable. Extractions derived and re-derivable |
+
 | Testing | Gold set frozen, separate from the correction pool. Never tune against gold |
+
 | Test data | Synthetic only. No real patient or customer data in repo, fixtures, logs or screenshots |
+
 | Governance | Every System One question has a versioned context-of-use record |
+
 | Cost | Every model call and OCR page carries tenant, item and estimated cost |
+
 | Accessibility | WCAG AA in the console; reviewers use it for eight hours a day |
+
 | Indian English | "hospitalised", "programme", "licence" — in UI copy and in docs |
 
 ## Appendix — what we are deliberately not copying
 
 - **Their published performance numbers.** We measure our own and state the
-  method. Our own content rules forbid anything else.
+
+method. Our own content rules forbid anything else.
+
 - **Their module naming.** `/intake`, `/nucleus` and so on are their vocabulary.
-  Vyom Cases, Literature, Audit, Reports, Signal and OS are already defined in
-  `vyom-web/src/content/products.ts` and already on the site.
+
+Vyom Cases, Literature, Audit, Reports, Signal and OS are already defined in
+
+`vyom-web/src/content/products.ts` and already on the site.
+
 - **Their breadth and build order.** They build every module at once with
-  venture funding. We build what the next paying customer needs, behind a gate.
+
+venture funding. We build what the next paying customer needs, behind a gate.
+
 - **A knowledge graph for its own sake.** They lead with one; our architecture
-  leads with calibrated System One primitives and an append-only ledger. If a
-  graph earns its place for cross-case linking in D2, adopt it there on merit —
-  not because a competitor's homepage mentions it.
+
+leads with calibrated System One primitives and an append-only ledger. If a
+
+graph earns its place for cross-case linking in D2, adopt it there on merit —
+
+not because a competitor's homepage mentions it.
+
+
+
+⋮⋮⋮⋮
+⋮⋮⋮⋮
+⋮⋮⋮⋮
