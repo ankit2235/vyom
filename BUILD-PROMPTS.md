@@ -56,6 +56,39 @@ copy**. This is an internal engineering document, so naming them here is fine.
 Nothing from this file goes into `src/content/`, a deck, or anything a customer
 sees.
 
+### Scope: pharmacovigilance only
+
+**Decided 2026-10-26.** These phases cover pharmacovigilance alone. Hospital RCM
+— Module A in BRD-v2 — is **out of scope for this plan**, not cancelled.
+
+What that means in practice:
+
+- **Do not delete RCM.** `POST /v1/rcm/preflight`, the `hospital_rcm` domain in
+  the ledger, the `cpc_coder` and `tpa_auditor` roles, the RCM branches in
+  `review.py` and `system_two.py`, and their tests all stay exactly as they are.
+  They keep passing CI. Nobody builds on them.
+- **Keep the three-domain enum.** `pv_literature`, `pv_icsr`, `hospital_rcm`
+  stays. Collapsing it to two is a migration that has to be undone later, and
+  the PHI routing rule is domain-keyed.
+- **Every phase below applies to `pv_literature` and `pv_icsr` only.** Where a
+  phase says "every data table" or "every domain", read it as the PV domains.
+  An RCM row may exist; no phase is accountable for it.
+- **The dual-engine thesis is not disproven, just deferred.** BRD-v2 argues RCM
+  and PV are the same computational problem on one core, and the architecture
+  already reflects that. Nothing here forecloses picking RCM back up; Phase 1's
+  tenancy work in particular should not assume a single vertical.
+
+**One open item this creates.** `vyom-web/src/content/home.ts` currently leads
+with *"The AI-native decision engine for **Hospital RCM** & Drug Safety."* — RCM
+is the accented, underlined phrase in the homepage hero, and `/book-demo` is
+addressed to "hospital TPA desks and pharmacovigilance teams". If the build is
+PV-only, the most prominent copy on the site is selling a capability no phase
+below delivers. Under content rule 1 that needs resolving: either narrow the
+hero to drug safety, or keep the dual-engine positioning as a deliberate
+forward-looking claim and accept it is ahead of the build. **This is a
+positioning decision, not an engineering one — it is flagged here, not
+actioned.**
+
 ### Where we actually are
 
 `vyom-os` v2 already has, working and tested:
@@ -91,6 +124,7 @@ enterprise identity, production authorization. Those are Phases 1–6 below.
 | Continuous validation | Gold-set eval | Batch only, not inline | 5 |
 | Compliance / audit | Decision ledger | Ledger exists; no clock, no Part 11 pack | 5 |
 | Multi-tenancy | `x-tenant-id` in middleware | Header only, no isolation | 1 |
+| Hospital RCM | `/v1/rcm/preflight` + `hospital_rcm` domain | Working, **out of scope** — see above | — |
 
 ---
 
