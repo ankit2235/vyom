@@ -1,20 +1,19 @@
 import type { Metadata } from 'next';
+import { homeMeta } from '@/content/home';
 import {
-  AuditSection,
   CallToAction,
-  Comparison,
   Hero,
-  HowWeStart,
+  HowItWorks,
   Platform,
   Problem,
-  ProductSuite,
   Standards,
+  Trust,
+  WhyAiNative,
 } from '@/components/home';
 
 export const metadata: Metadata = {
-  title: 'Vyom — The AI-native engine for drug safety',
-  description:
-    'Vyom runs pharmacovigilance with AI agents and qualified safety physicians. Pay per case, not per head, and see the proof on your own data before you commit.',
+  title: { absolute: homeMeta.title },
+  description: homeMeta.description,
 };
 
 export default function HomePage() {
@@ -23,11 +22,10 @@ export default function HomePage() {
       <Hero />
       <Standards />
       <Problem />
-      <ProductSuite />
       <Platform />
-      <AuditSection />
-      <HowWeStart />
-      <Comparison />
+      <HowItWorks />
+      <WhyAiNative />
+      <Trust />
       <CallToAction />
     </>
   );

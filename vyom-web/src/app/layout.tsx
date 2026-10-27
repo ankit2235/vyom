@@ -20,11 +20,11 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'Vyom — AI-native pharmacovigilance',
+    default: 'Vyom — The AI-native operating system for patient safety',
     template: '%s — Vyom',
   },
   description:
-    'Vyom runs pharmacovigilance with AI agents and qualified safety physicians. Pay per case, not per head, and see the proof on your own data before you commit.',
+    'Connect fragmented safety evidence, trace products across the supply chain and support faster, accountable safety review.',
   // Stays noindex until site.config.ts flips indexable to true.
   robots: siteConfig.indexable
     ? { index: true, follow: true }

@@ -1,81 +1,85 @@
-import { platformSection } from '@/content/home';
-import { ArrowRightIcon, assuranceIcons } from '@/components/icons';
-import { Eyebrow, Section } from '@/components/ui';
+import Link from 'next/link';
+import { platformModules } from '@/content/home';
+import { getProduct, statusLabel, type ProductSlug } from '@/content/products';
+import { ArrowRightIcon, CheckIcon, moduleIcons } from '@/components/icons';
+import { Chip, Section, SectionHeading } from '@/components/ui';
 import { cn } from '@/lib/cn';
+
+/** A module's status comes from its product, so the two cannot disagree. */
+function moduleStatus(product: ProductSlug | null) {
+  const status = product ? getProduct(product).status : 'roadmap';
+  return { label: statusLabel[status], tone: status === 'roadmap' ? 'dashed' : 'default' } as const;
+}
 
 export function Platform() {
   return (
-    <Section id="platform">
+    <Section id="platform" alt>
       <div className="flex flex-col gap-14">
-        <div data-reveal className="flex max-w-[760px] flex-col gap-4">
-          <Eyebrow>{platformSection.eyebrow}</Eyebrow>
-          <h2 className="m-0 text-[clamp(32px,3.3vw,46px)] leading-[1.08] font-semibold tracking-[-0.025em] text-balance text-primary">
-            {platformSection.heading}
-          </h2>
-          <p className="m-0 text-[18px] leading-[1.6] text-pretty text-muted">
-            {platformSection.lead}
-          </p>
-        </div>
+        <SectionHeading
+          eyebrow={platformModules.eyebrow}
+          heading={platformModules.heading}
+          lead={platformModules.lead}
+        />
 
-        <div className="flex flex-col gap-4">
-          <ol data-reveal className="m-0 flex list-none flex-wrap gap-4 p-0">
-            {platformSection.steps.map((step, index) => (
+        <ul
+          data-reveal
+          className="m-0 grid list-none grid-cols-1 gap-4 p-0 md:grid-cols-2 lg:grid-cols-3"
+        >
+          {platformModules.modules.map((module) => {
+            const Icon = moduleIcons[module.icon];
+            const status = moduleStatus(module.product);
+            const product = module.product ? getProduct(module.product) : null;
+
+            return (
               <li
-                key={step.title}
+                key={module.name}
                 className={cn(
-                  'flex min-w-0 flex-[1_1_200px] flex-col gap-3.5 rounded-card border bg-surface p-6',
-                  step.tone === 'accent'
-                    ? 'border-accent-line'
-                    : step.tone === 'amber'
-                      ? 'border-amber-line'
-                      : 'border-line',
+                  'flex min-w-0 flex-col gap-[18px] rounded-panel border p-7',
+                  module.featured ? 'border-accent-line bg-raised' : 'border-line bg-surface',
                 )}
               >
-                <div className="flex items-center justify-between gap-2">
-                  <span
-                    className={cn(
-                      'font-mono text-[12px] font-medium tracking-[0.1em]',
-                      step.tone === 'accent'
-                        ? 'text-accent'
-                        : step.tone === 'amber'
-                          ? 'text-amber'
-                          : 'text-meta',
-                    )}
-                  >
-                    {step.index}
-                  </span>
-                  {index < platformSection.steps.length - 1 ? (
-                    <ArrowRightIcon size={16} className="text-dash" />
-                  ) : null}
-                </div>
-                <span className="text-[19px] font-semibold text-primary">{step.title}</span>
-                <p className="m-0 text-[15px] leading-[1.6] text-muted">{step.body}</p>
-              </li>
-            ))}
-          </ol>
-
-          <ul
-            data-reveal
-            className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(260px,100%),1fr))] gap-px overflow-hidden rounded-card border border-line bg-line p-0"
-          >
-            {platformSection.assurances.map((assurance) => {
-              const Icon = assuranceIcons[assurance.icon];
-              return (
-                <li
-                  key={assurance.text}
-                  className="flex items-center gap-3.5 bg-alt px-[22px] py-5"
-                >
-                  <span className="flex shrink-0 text-accent">
+                <div className="flex items-center gap-3">
+                  <span className="flex size-[42px] shrink-0 items-center justify-center rounded-button border border-strong bg-raised text-accent">
                     <Icon />
                   </span>
-                  <span className="text-[14.5px] leading-[1.5] text-secondary">
-                    {assurance.text}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+                  <h3 className="m-0 text-[17px] leading-[1.3] font-semibold text-primary">{module.name}</h3>
+                </div>
+
+                <ul className="m-0 flex list-none flex-col gap-2 p-0">
+                  {module.points.map((point) => (
+                    <li key={point} className="flex items-start gap-2.5 text-[14.5px] leading-[1.5] text-muted">
+                      <CheckIcon size={16} className="mt-[3px] shrink-0 text-meta" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+                  <Chip tone={status.tone} size="sm">
+                    {status.label}
+                  </Chip>
+                  {product ? (
+                    <Link
+                      href={`/products/${product.slug}`}
+                      className="inline-flex min-h-[44px] items-center gap-1.5 text-[14px] font-medium text-accent hover:underline"
+                    >
+                      {platformModules.productLinkPrefix} {product.name}
+                      <ArrowRightIcon size={14} />
+                    </Link>
+                  ) : (
+                    <Link
+                      href={platformModules.intelligenceLink.href}
+                      className="inline-flex min-h-[44px] items-center gap-1.5 text-[14px] font-medium text-accent hover:underline"
+                    >
+                      {platformModules.intelligenceLink.label}
+                      <ArrowRightIcon size={14} />
+                    </Link>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </Section>
   );

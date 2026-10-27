@@ -8,5 +8,6 @@ export { FlaggedArticles } from './FlaggedArticles';
 export { LiteratureFunnel } from './LiteratureFunnel';
 export { MockPanel } from './MockPanel';
 export { ReportOutline } from './ReportOutline';
+export { SafetyWorkspace } from './SafetyWorkspace';
 export { SignalBoard } from './SignalBoard';
 export { VendorScorecard } from './VendorScorecard';

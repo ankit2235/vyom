@@ -20,7 +20,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="flex min-h-[44px] items-center px-3.5 text-[15px] font-medium text-secondary transition-colors hover:text-primary"
+                className="flex min-h-[44px] items-center px-2 text-[14px] font-medium whitespace-nowrap text-secondary transition-colors hover:text-primary xl:px-3.5 xl:text-[15px]"
               >
                 {link.label}
               </Link>
@@ -30,11 +30,11 @@ export function Header() {
           <div className="hidden items-center gap-2 lg:flex">
             <Link
               href={headerActions.secondary.href}
-              className="flex min-h-[44px] items-center px-3.5 text-[15px] font-medium text-secondary transition-colors hover:text-primary"
+              className="flex min-h-[44px] items-center px-2 text-[14px] font-medium whitespace-nowrap text-secondary transition-colors hover:text-primary xl:px-3.5 xl:text-[15px]"
             >
               {headerActions.secondary.label}
             </Link>
-            <ButtonLink href={headerActions.primary.href}>{headerActions.primary.label}</ButtonLink>
+            <ButtonLink href={headerActions.primary.href} className="whitespace-nowrap">{headerActions.primary.label}</ButtonLink>
           </div>
 
           <MobileNav />

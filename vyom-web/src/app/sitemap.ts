@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { records } from '@/content/intelligence/records';
 import { products } from '@/content/products';
 import { siteConfig } from '~/site.config';
 
@@ -10,6 +11,9 @@ const routes = [
   '/products',
   ...products.map((product) => `/products/${product.slug}`),
   '/platform',
+  '/intelligence',
+  '/intelligence/alerts',
+  ...records.map((record) => `/intelligence/cases/${record.slug}`),
   '/pricing',
   '/book-demo',
   '/how-we-start',
