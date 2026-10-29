@@ -262,3 +262,122 @@ export const assuranceIcons = {
   lock: LockIcon,
   pin: PinIcon,
 } as const;
+
+/* --- Home page: problem, module and trust icons --------------------------- */
+
+export function InboxIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M4 13.5l2.4-7.2A1.5 1.5 0 0 1 7.8 5.3h8.4a1.5 1.5 0 0 1 1.4 1l2.4 7.2" />
+      <path d="M4 13.5v4.7a1.5 1.5 0 0 0 1.5 1.5h13a1.5 1.5 0 0 0 1.5-1.5v-4.7h-4.6l-1.4 2.4h-4l-1.4-2.4H4z" />
+    </Icon>
+  );
+}
+
+export function PencilIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M15.5 5.5l3 3L9 18l-4 1 1-4 9.5-9.5z" />
+      <path d="M13.5 7.5l3 3" />
+    </Icon>
+  );
+}
+
+export function RepeatIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M17 3.5l3 3-3 3" />
+      <path d="M4 11.5v-1a4 4 0 0 1 4-4h12" />
+      <path d="M7 20.5l-3-3 3-3" />
+      <path d="M20 12.5v1a4 4 0 0 1-4 4H4" />
+    </Icon>
+  );
+}
+
+export function UnlinkIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M9.5 14.5l-1.8 1.8a3 3 0 0 1-4.2-4.2l2.8-2.8a3 3 0 0 1 3.6-.5" />
+      <path d="M14.5 9.5l1.8-1.8a3 3 0 0 1 4.2 4.2l-2.8 2.8a3 3 0 0 1-3.6.5" />
+      <path d="M8 4v2.5M4 8h2.5M16 20v-2.5M20 16h-2.5" />
+    </Icon>
+  );
+}
+
+/** Arrow into a tray: the intake module, distinct from the cases tray. */
+export function IntakeIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M12 3.5v10M8 9.5l4 4 4-4" />
+      <path d="M4 14.5v3.5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3.5" />
+    </Icon>
+  );
+}
+
+/** Connected nodes: the Live Safety Intelligence module. */
+export function NetworkIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <circle cx="6" cy="6.5" r="2.2" />
+      <circle cx="18" cy="6.5" r="2.2" />
+      <circle cx="12" cy="17.5" r="2.2" />
+      <path d="M8.2 6.5h7.6M7.2 8.4l3.7 7.2M16.8 8.4l-3.7 7.2" />
+    </Icon>
+  );
+}
+
+export function LinkIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M10 14a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1 1" />
+      <path d="M14 10a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1-1" />
+    </Icon>
+  );
+}
+
+export function UsersIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <circle cx="9" cy="8.5" r="3.2" />
+      <path d="M3.5 19.5a5.5 5.5 0 0 1 11 0" />
+      <path d="M15.5 5.6a3.2 3.2 0 0 1 0 5.8M17.5 14.6a5.5 5.5 0 0 1 3 4.9" />
+    </Icon>
+  );
+}
+
+export function SlidersIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon size={size} {...props}>
+      <path d="M4 7h9M17 7h3M4 17h3M11 17h9" />
+      <circle cx="15" cy="7" r="2" />
+      <circle cx="9" cy="17" r="2" />
+    </Icon>
+  );
+}
+
+export const problemIcons = {
+  inbox: InboxIcon,
+  pencil: PencilIcon,
+  repeat: RepeatIcon,
+  unlink: UnlinkIcon,
+  clock: ClockIcon,
+  pin: PinIcon,
+} as const;
+
+export const moduleIcons = {
+  intake: IntakeIcon,
+  cases: CasesIcon,
+  reports: ReportsIcon,
+  network: NetworkIcon,
+  signal: SignalIcon,
+  audit: AuditIcon,
+} as const;
+
+export const trustIcons = {
+  link: LinkIcon,
+  users: UsersIcon,
+  list: ListIcon,
+  sliders: SlidersIcon,
+  lock: LockIcon,
+  shield: ShieldIcon,
+} as const;

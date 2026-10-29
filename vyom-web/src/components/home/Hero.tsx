@@ -1,6 +1,6 @@
 import { hero } from '@/content/home';
 import { ArrowRightIcon } from '@/components/icons';
-import { CaseRunPanel } from '@/components/mocks';
+import { SafetyWorkspace } from '@/components/mocks';
 import { StarfieldBackground } from '@/components/site';
 import { ButtonLink, Container } from '@/components/ui';
 
@@ -23,7 +23,7 @@ export function Hero() {
             One sentence, wrapping naturally. `text-balance` keeps the last
             line from stranding a single word.
           */}
-          <h1 className="m-0 text-[clamp(44px,6vw,88px)] leading-[0.98] font-semibold tracking-[-0.042em] text-balance text-primary">
+          <h1 className="m-0 text-[clamp(34px,6vw,84px)] leading-[0.98] font-semibold tracking-[-0.042em] text-balance text-primary">
             {before}
             <span className="text-accent underline decoration-accent-line decoration-[0.055em] underline-offset-[0.16em] [text-decoration-skip-ink:none]">
               {highlight}
@@ -50,9 +50,9 @@ export function Hero() {
           </p>
         </div>
 
-        {/* Case-run panel, below the text */}
-        <div className="w-full max-w-[980px]">
-          <CaseRunPanel />
+        {/* Workspace preview, below the text */}
+        <div className="w-full max-w-[1080px]">
+          <SafetyWorkspace />
         </div>
       </Container>
     </section>

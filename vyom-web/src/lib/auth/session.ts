@@ -15,6 +15,7 @@ export const RESERVED_PATHS = [
   'terms',
   'pricing',
   'book-demo',
+  'intelligence',
   'login',
   'ops',
 ] as const;
@@ -25,6 +26,7 @@ const PUBLIC_EXACT = new Set([
   '/login',
   '/pricing',
   '/book-demo',
+  '/intelligence',
   '/products',
   '/platform',
   '/how-we-start',
@@ -32,6 +34,9 @@ const PUBLIC_EXACT = new Set([
   '/contact',
   '/privacy',
   '/terms',
+  // Crawler files: the edge gateway must never send these to /login.
+  '/robots.txt',
+  '/sitemap.xml',
 ]);
 
 const PUBLIC_PREFIXES = [
@@ -44,6 +49,7 @@ const PUBLIC_PREFIXES = [
   '/terms/',
   '/pricing/',
   '/book-demo/',
+  '/intelligence/',
   '/login/',
 ] as const;
 

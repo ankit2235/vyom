@@ -7,12 +7,13 @@ export type NavLink = {
 
 export const notice = {
   label: 'CONCEPT PREVIEW',
-  text: 'Product screens show sample data. Figures marked as targets are goals we will prove in pilots.',
+  text: 'Product screens show sample data, except Safety Intelligence, which shows public-source records. Figures marked as targets are goals we will prove in pilots.',
 } as const;
 
 export const primaryNav: readonly NavLink[] = [
   { label: 'Products', href: '/products' },
   { label: 'Platform', href: '/platform' },
+  { label: 'Safety Intelligence', href: '/intelligence' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'How we start', href: '/how-we-start' },
   { label: 'Company', href: '/company' },
@@ -41,6 +42,8 @@ export const footer = {
       title: 'PLATFORM',
       links: [
         { label: 'How it works', href: '/platform' },
+        { label: 'Safety Intelligence', href: '/intelligence' },
+        { label: 'Official alerts', href: '/intelligence/alerts' },
         { label: 'Evaluation', href: '/platform#evaluation' },
         { label: 'Security and data', href: '/platform#security' },
         { label: 'How we start', href: '/how-we-start' },
@@ -62,7 +65,8 @@ export const footer = {
     { label: 'Privacy', href: '/privacy' },
     { label: 'Terms', href: '/terms' },
   ],
-  copyright: '© 2026 Vyom. Concept preview: product screens show sample data.',
+  copyright:
+    '© 2026 Vyom. Concept preview: product screens show sample data; Safety Intelligence shows public-source records.',
   meaning: 'Vyom (व्योम) is Sanskrit for sky.',
 } as const satisfies {
   tagline: string;

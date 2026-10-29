@@ -90,6 +90,10 @@ site.config.ts
 3. **Sample screens use only fictional identifiers**: drug codes `VY-201`, `VY-305`,
    `VY-412`, case ids `VY-CASE-xxxx`, and `Vendor A`. Vendor A is marked `(FICTIONAL)`.
    Sample tenants are `demo-hospital` and `demo-tpa`, marked `(FICTIONAL)`.
+   **Exception (agreed 2026-10-27):** `/intelligence` shows real public-source
+   incidents. Every statement there cites a source that was actually read, the
+   content carries a `PUBLIC SOURCE` chip, and a company is named only as the
+   cited source names it. Sample screens everywhere else stay fictional.
 4. **Never name a competitor.** Compare against "services firms" and
    "software platforms" only.
 5. **The Concept preview notice bar** is controlled by one flag in `site.config.ts`

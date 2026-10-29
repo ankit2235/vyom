@@ -17,7 +17,7 @@ export function MegaMenu() {
     <NavigationMenu.Root aria-label="Products" className="relative" delayDuration={0}>
       <NavigationMenu.List className="m-0 flex list-none p-0">
         <NavigationMenu.Item>
-          <NavigationMenu.Trigger className="group flex min-h-[44px] cursor-pointer items-center gap-1.5 px-3.5 text-[15px] font-medium text-secondary transition-colors hover:text-primary data-[state=open]:text-primary">
+          <NavigationMenu.Trigger className="group flex min-h-[44px] cursor-pointer items-center gap-1.5 px-2 text-[14px] font-medium whitespace-nowrap text-secondary xl:px-3.5 xl:text-[15px] transition-colors hover:text-primary data-[state=open]:text-primary">
             Products
             <ChevronDownIcon className="transition-transform duration-200 group-data-[state=open]:rotate-180" />
           </NavigationMenu.Trigger>
