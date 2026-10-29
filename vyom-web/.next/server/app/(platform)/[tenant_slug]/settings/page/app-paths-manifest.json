@@ -1,0 +1,3 @@
+{
+  "/(platform)/[tenant_slug]/settings/page": "app/(platform)/[tenant_slug]/settings/page.js"
+}
