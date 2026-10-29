@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd vyom-web && npm run build",
+  "outputDirectory": "vyom-web/.next",
+  "installCommand": "cd vyom-web && npm install"
+}
