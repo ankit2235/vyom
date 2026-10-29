@@ -1,0 +1,1020 @@
+# Vyom --- 10-Year Business Plan
+
+**Version:** Generic Vertical AI Operating System\
+**Date:** 29 October 2026\
+**Status:** Strategic thesis and planning assumptions --- market,
+pricing and financials require validation
+
+------------------------------------------------------------------------
+
+## 1. Executive summary
+
+Vyom is an AI-native operating system for complex, document-heavy,
+rules-driven business workflows. It turns unstructured information into
+structured records, guided decisions, controlled workflows and auditable
+outcomes.
+
+The company is designed around a reusable platform rather than a single
+industry application. A common foundation handles ingestion, extraction,
+evidence, workflow state, rules, approvals, integrations, security and
+auditability. Industry-specific modules add the terminology, schemas,
+decision policies, forms, integrations and controls required by each
+market.
+
+**The thesis:** Many regulated and operationally complex industries
+still depend on people moving information between documents, email,
+spreadsheets and legacy systems. General-purpose AI can read and draft,
+but enterprises need more than a chatbot: they need predictable workflow
+execution, traceable evidence, permissioning, exception handling and
+accountable human decisions.
+
+Vyom aims to provide that missing operational layer.
+
+### The strategy in one page
+
+-   **Platform:** One reusable workflow and governance engine, with
+    industry-specific modules.
+-   **Initial market:** Select one narrow, high-cost workflow in a
+    single industry after customer discovery. Pharmacovigilance remains
+    a candidate wedge, not the definition of the entire company.
+-   **Expansion:** Prove one workflow, reuse the platform for adjacent
+    workflows in the same industry, then enter another vertical only
+    when the shared foundation creates a measurable cost or delivery
+    advantage.
+-   **Product principle:** AI interprets and proposes; deterministic
+    code and configured rules validate; authorized people approve
+    consequential decisions.
+-   **Business model:** Annual SaaS contracts, usage-based pricing,
+    enterprise plans and limited implementation services that improve
+    the core product.
+-   **Current stage:** No external funding assumed. Validate buyer
+    urgency, access to representative data, willingness to pay and
+    measurable workflow improvement before committing to a large build
+    or full-time transition.
+
+**Long-term ambition:** Build a durable enterprise software company
+whose defensibility comes from workflow orchestration, domain
+configurations, evaluation data, integrations, governance and customer
+trust---not from owning a single foundation model.
+
+A large outcome is possible but not guaranteed. The company should
+optimize first for repeatable customer value, retention, software gross
+margin and expansion revenue rather than a headline valuation target.
+
+------------------------------------------------------------------------
+
+## 2. The problem
+
+Across regulated and document-heavy industries, important work often
+follows the same pattern:
+
+1.  Information arrives in inconsistent formats.
+2.  Staff read, classify and re-enter information manually.
+3.  Facts must be matched to entities, policies, records or standards.
+4.  Rules and judgment are applied across several systems.
+5.  Exceptions require follow-up and approval.
+6.  A final decision, report, filing or transaction must be produced.
+7.  The organization must prove what happened, why it happened and who
+    approved it.
+
+This creates recurring problems:
+
+-   **Fragmented information:** Documents, email, spreadsheets, portals
+    and databases do not share a consistent data model.
+-   **Manual processing:** Trained employees spend time on extraction,
+    reconciliation, drafting and routing instead of judgment-heavy work.
+-   **Inconsistent decisions:** Policies are interpreted differently
+    across teams and vendors.
+-   **Weak traceability:** It can be difficult to reconstruct the
+    evidence, rules, model version and approvals behind an outcome.
+-   **Slow exception resolution:** Missing data and conflicting evidence
+    lead to long follow-up cycles.
+-   **Expensive change:** New rules, formats or business processes
+    require repeated manual updates and integration work.
+-   **Untrusted automation:** A generic AI assistant may produce a
+    plausible answer but cannot, by itself, guarantee completeness,
+    repeatability, access control or an auditable action history.
+
+Vyom is not intended to replace every enterprise system or automate
+every decision. It is designed to coordinate a well-defined workflow
+across existing systems, with the right degree of automation and human
+control.
+
+## 3. Why now
+
+Several technology and market changes make this approach more practical:
+
+-   **Models can work with mixed inputs.** Modern models can extract
+    information from documents, classify content, draft summaries and
+    reason over context.
+-   **Inference is becoming more accessible.** Multiple model providers
+    and open models make it possible to select an appropriate cost,
+    latency and privacy profile.
+-   **Agentic systems can use tools.** Models can call APIs and trigger
+    workflow steps, provided that execution is bounded by explicit
+    permissions and validation.
+-   **Enterprises still require control.** As AI adoption grows, buyers
+    need evaluation, monitoring, access control, audit trails, data
+    boundaries and human approval.
+-   **Integration remains difficult.** Enterprise value depends on
+    connecting AI to the actual systems and procedures where work
+    happens, not just generating text.
+-   **Industry-specific AI is emerging.** Specialized products can
+    outperform generic assistants when they encode domain workflows,
+    data structures and acceptance criteria.
+
+These are strategic observations, not proof that any particular customer
+segment is ready to buy. Vyom must validate demand and purchasing cycles
+through interviews and paid pilots.
+
+------------------------------------------------------------------------
+
+## 4. Product vision: one platform, multiple industry modules
+
+Vyom consists of a shared platform and configurable domain modules. It
+should not launch as a broad suite covering every industry at once.
+
+### 4.1 Shared platform capabilities
+
+**1. Universal ingestion** - Uploads, email intake, PDFs, scans,
+spreadsheets and structured files - API and webhook ingestion -
+Connectors to approved enterprise systems - File parsing, OCR where
+needed, deduplication and source metadata
+
+**2. AI understanding and extraction** - Classification and routing -
+Entity and field extraction - Normalization into typed schemas -
+Evidence spans linking extracted facts to source material - Confidence
+and uncertainty indicators - Model selection by task, sensitivity,
+latency and cost
+
+**3. Decision and workflow engine** - Explicit workflow states and
+transitions - Deterministic validation rules - Policy and criteria
+evaluation - Missing-information detection and follow-up - Idempotent
+actions, retries and exception queues - Human review and escalation -
+Versioned workflow configurations
+
+**4. Governance and trust layer** - Role-based access and tenant
+isolation - Immutable or tamper-evident audit history - Model, prompt,
+rule and workflow version tracking - Evaluation datasets and regression
+tests - Approval policies and segregation of duties - Monitoring,
+alerting and incident handling - Data retention and deletion controls
+
+**5. Execution and output** - Reports and structured exports - API calls
+and updates to approved systems - Notifications and task assignment -
+Document generation from controlled templates - Review queues and
+operational dashboards - Outcome measurement and feedback capture
+
+**6. Platform administration** - Tenant and workspace management -
+Configuration and template management - Usage and cost analytics -
+Integration health - User, role and permission administration -
+Operational service-level reporting
+
+### 4.2 Industry-specific modules
+
+Modules reuse the same platform but introduce the domain layer:
+terminology, schemas, decision criteria, templates, connectors, controls
+and specialist review.
+
+  -----------------------------------------------------------------------
+  Industry                Example module          Potential buyers
+                          opportunities           
+  ----------------------- ----------------------- -----------------------
+  Insurance               Claims intake, document Insurers, MGAs,
+                          verification,           brokers, TPAs
+                          underwriting workbench, 
+                          policy servicing        
+
+  Pharma and healthcare   Pharmacovigilance       Pharma companies, CROs,
+                          intake, case            healthcare operators
+                          processing, clinical    
+                          documents, safety       
+                          reporting               
+
+  Banking and finance     Loan-file processing,   Lenders, banks,
+                          reconciliation, KYC     fintechs, service
+                          operations, exception   providers
+                          handling                
+
+  Legal                   Contract intake, clause Legal teams, law firms,
+                          review, obligation      legal operations
+                          tracking,               providers
+                          matter-document         
+                          workflows               
+
+  Other regulated         Compliance evidence     Enterprises and
+  operations              collection, vendor due  specialist service
+                          diligence, audit        providers
+                          preparation             
+  -----------------------------------------------------------------------
+
+These are possible expansion markets, not a commitment to build all
+modules. Each requires separate validation of buyer demand, regulation,
+data access, competitive alternatives and willingness to pay.
+
+### 4.3 Product boundaries
+
+Vyom should not become: - A generic chatbot with no operational
+ownership - A foundation-model company competing to train the largest
+model - A services agency that rebuilds a different product for every
+client - A fully autonomous decision-maker for consequential regulated
+decisions - A universal replacement for customers' systems of record
+
+The product should integrate with systems of record and own the
+workflow, evidence, validation and orchestration layer where it can
+deliver measurable value.
+
+------------------------------------------------------------------------
+
+## 5. Workflow example: from unstructured input to auditable outcome
+
+The following is a reusable reference workflow. Exact controls vary by
+industry.
+
+1.  **Receive:** Ingest a document or event from an authorized source.
+2.  **Preserve:** Store source metadata and a retrievable reference to
+    the original input.
+3.  **Extract:** Use models and parsers to create structured candidate
+    fields with evidence.
+4.  **Validate:** Apply schema, consistency, completeness and
+    deterministic business rules.
+5.  **Resolve:** Match entities and compare against existing records;
+    flag duplicates and conflicts.
+6.  **Decide:** Apply configured criteria and present relevant evidence
+    to an authorized reviewer.
+7.  **Approve:** Record the reviewer, decision, rationale and any
+    override.
+8.  **Execute:** Generate the approved output or call an authorized
+    downstream API.
+9.  **Audit:** Record the inputs, versions, validation results,
+    approvals and output.
+10. **Measure:** Track processing time, rework, exception rate, error
+    rate, cost and outcome quality.
+
+AI should not silently bypass a failed validation or approval step.
+Every consequential action needs a defined authorization boundary, and
+each workflow needs an explicit failure path.
+
+------------------------------------------------------------------------
+
+## 6. Initial market strategy: choose a wedge, not every vertical
+
+An industry-agnostic architecture is not an industry-agnostic
+go-to-market plan. Selling to insurance, pharma, banks and legal teams
+simultaneously would multiply discovery, compliance, integrations and
+sales complexity before the platform is proven.
+
+### 6.1 Candidate wedge selection
+
+Score candidate workflows before committing. Suggested criteria:
+
+  -----------------------------------------------------------------------
+  Criterion                           What to test
+  ----------------------------------- -----------------------------------
+  Pain and frequency                  Is the workflow frequent,
+                                      expensive, slow or error-prone?
+
+  Buyer urgency                       Is there a budget owner and a
+                                      reason to act this year?
+
+  Measurable ROI                      Can time, cost, rework or quality
+                                      be measured before and after?
+
+  Data access                         Can a pilot use representative,
+                                      authorized data?
+
+  Repeatability                       Do multiple buyers follow
+                                      substantially similar workflows?
+
+  Risk and liability                  Can automation be introduced safely
+                                      with human review?
+
+  Sales cycle                         Can a small team reach a paid pilot
+                                      without a long procurement process?
+
+  Expansion path                      Are adjacent workflows bought by
+                                      the same buyer?
+
+  Competition                         Is there a credible opening against
+                                      incumbents and internal tools?
+
+  Reuse potential                     How much of the platform will the
+                                      next customer reuse?
+  -----------------------------------------------------------------------
+
+### 6.2 Recommended decision process
+
+-   Interview 15--20 buyers across two or three candidate workflow
+    categories.
+-   Select one workflow with a clear economic owner, accessible data and
+    a bounded pilot.
+-   Interview users and buyers separately; workflow pain does not
+    automatically mean budget.
+-   Build a prototype only after documenting the current process and
+    baseline metrics.
+-   Run a paid pilot with agreed acceptance criteria and a named
+    customer owner.
+-   Expand only after evidence of repeatability across at least two or
+    three customers.
+
+**Pharmacovigilance remains a credible candidate** because it involves
+document-heavy intake, structured case data, regulated outputs and
+expert review. However, it is now one potential first module---not the
+corporate identity or the only long-term market. Insurance claims,
+finance operations and legal document workflows should be compared using
+the same wedge scorecard rather than assumed to be easier.
+
+------------------------------------------------------------------------
+
+## 7. Market sizing and competitive landscape
+
+### 7.1 Market sizing approach
+
+Because Vyom is not yet committed to one launch vertical, a single
+top-down TAM figure would create false precision. The company should
+size the initial market from the bottom up.
+
+For the selected workflow:
+
+-   Identify the number of reachable organizations in the initial
+    geography.
+-   Estimate the number of eligible workflows or annual transactions per
+    organization.
+-   Validate the current cost per workflow and the budget owner.
+-   Estimate a realistic annual contract value based on customer ROI and
+    alternatives.
+-   Apply a realistic reachable-customer penetration over three to five
+    years.
+
+**Serviceable annual revenue = reachable target customers × validated
+annual contract value.**
+
+Only add adjacent modules or geographies to the model after there is
+evidence that the same platform and sales motion can support them.
+Market estimates for each candidate vertical must be independently
+sourced and dated before being used in investor materials.
+
+### 7.2 Competitive categories
+
+Vyom will compete with several kinds of products:
+
+-   **Industry-specific AI platforms:** Deep domain workflows,
+    established buyer relationships and industry-specific data models.
+-   **Incumbent enterprise software:** Systems of record with existing
+    integrations and procurement relationships.
+-   **BPOs and specialist service providers:** Human capacity,
+    operational experience and established delivery contracts.
+-   **Document AI and workflow automation vendors:** Extraction,
+    routing, rules and integration components.
+-   **General-purpose AI platforms:** Broad model capability and rapidly
+    expanding agent tooling.
+-   **Internal development teams:** Custom workflows built on cloud AI
+    services and existing enterprise systems.
+
+### 7.3 Positioning
+
+Vyom should position itself as an **AI-native workflow operating system
+for complex, auditable business operations**.
+
+The differentiated proposition is not simply "AI for every industry." It
+is the combination of: - A reusable workflow and governance foundation -
+Domain-specific modules with measurable acceptance criteria -
+Evidence-linked outputs and controlled execution - Model-agnostic
+orchestration and evaluation - Fast deployment through reusable
+integrations and templates - Clear operational metrics and a
+human-review path
+
+The platform will need to prove these advantages against customer
+alternatives. It should not claim a moat based only on prompts, model
+access or a generic agent framework.
+
+------------------------------------------------------------------------
+
+## 8. Business model and pricing
+
+Pricing should reflect the value and risk of the workflow, not simply
+the number of AI tokens or staff seats.
+
+### 8.1 Revenue streams
+
+1.  **Paid pilot:** Fixed scope, limited data and duration, explicit
+    baseline and success criteria.
+2.  **Annual SaaS subscription:** Platform access, workflow modules,
+    administration and support.
+3.  **Usage-based fees:** Per document, case, claim, file, transaction
+    or workflow run where volume is a fair proxy for value.
+4.  **Enterprise plan:** Security, SSO, custom retention, private
+    deployment options, SLAs, advanced audit and integration needs.
+5.  **Implementation services:** Paid setup and integrations,
+    constrained to reusable product capabilities.
+6.  **Partner or OEM licensing:** Later-stage option for service
+    providers that want to embed Vyom in their delivery model.
+
+### 8.2 Pricing principles
+
+-   Price against a customer-validated outcome, such as cost per
+    completed workflow, turnaround time or reduced rework.
+-   Avoid unlimited custom work under a low fixed subscription.
+-   Keep services revenue visible separately from recurring software
+    revenue.
+-   Set a minimum annual contract value that supports enterprise support
+    and validation costs.
+-   Offer usage tiers with clear overage rules.
+-   Do not finalize price points before buyer interviews and paid-pilot
+    negotiations.
+
+### 8.3 ROI model
+
+For each customer, calculate:
+
+**Annual net value = labor capacity released + avoided rework/errors +
+measurable cycle-time value − software fees − implementation cost −
+ongoing review cost.**
+
+Do not count the same benefit twice. Time saved is not automatically
+cash saved; validate whether the customer can redeploy capacity, reduce
+external spend, increase throughput or avoid a measurable loss.
+
+------------------------------------------------------------------------
+
+## 9. Go-to-market
+
+### Phase 1 --- Founder-led discovery and paid design partners
+
+-   Select one workflow and one buyer profile.
+-   Interview 15--20 target buyers and frontline users.
+-   Obtain authorized sample data and document baseline metrics.
+-   Secure one or two paid design partners.
+-   Build only the workflow needed to test the core value proposition.
+
+### Phase 2 --- Repeatability
+
+-   Turn pilot-specific configuration into reusable module capabilities.
+-   Demonstrate reliable performance across different datasets and
+    customer conditions.
+-   Document deployment, security, support and change-management
+    procedures.
+-   Convert pilots into annual contracts.
+-   Build a reference customer and a concise ROI case study, with
+    permission.
+
+### Phase 3 --- Focused vertical expansion
+
+-   Add adjacent workflows bought by the same department or
+    organization.
+-   Use the same identity, permissions, audit and integration
+    foundation.
+-   Partner with specialist consultancies, BPOs, systems integrators or
+    industry vendors where they provide distribution.
+-   Expand only when support and implementation are repeatable.
+
+### Phase 4 --- Second vertical
+
+-   Reuse the core platform but build a separate domain module and
+    validation pack.
+-   Assign a domain expert and buyer-specific go-to-market owner.
+-   Require evidence that a meaningful share of platform components can
+    be reused.
+-   Do not let second-vertical work slow down retention and product
+    quality in the first vertical.
+
+### Sales principles
+
+-   Start with a bounded operational pain, not a broad AI transformation
+    pitch.
+-   Sell to both the economic buyer and the people doing the work.
+-   Agree on data access, security, baseline and success criteria before
+    building.
+-   Expect enterprise procurement, security review and integration work
+    to extend sales cycles.
+-   Use channel partners only when their economics and customer access
+    are demonstrated.
+
+------------------------------------------------------------------------
+
+## 10. Technology and architecture
+
+### 10.1 Architecture principles
+
+-   **Model-agnostic:** A provider adapter separates business workflows
+    from any specific model vendor.
+-   **Deterministic where possible:** Use code for arithmetic, dates,
+    schemas, state transitions, permissions and hard business rules.
+-   **Evidence-linked:** Important extracted facts and generated
+    conclusions should link back to their source.
+-   **Versioned:** Version prompts, models, schemas, rules and workflow
+    definitions.
+-   **Evaluated before release:** Run regression and adversarial tests
+    before changing model or workflow versions.
+-   **Human-controlled:** Explicit approval thresholds and exception
+    queues for consequential decisions.
+-   **Secure by default:** Tenant isolation, least privilege,
+    encryption, secret management and data minimization.
+-   **Observable:** Trace each workflow from ingestion through output;
+    measure latency, failures, cost and quality.
+-   **Integration-first:** Use APIs and events to work with existing
+    systems rather than forcing rip-and-replace adoption.
+-   **Portable:** Avoid unnecessary dependence on one cloud, one model
+    or one vector database.
+
+### 10.2 Reference components
+
+-   Web application for configuration, review queues and analytics
+-   API and authentication layer
+-   Ingestion and parsing workers
+-   Relational database for tenants, workflow state, metadata, rules and
+    audit records
+-   Object storage for source files and generated artifacts
+-   Queue or event system for asynchronous workflows
+-   Model/provider adapter
+-   Rules and schema-validation service
+-   Workflow orchestrator
+-   Search and retrieval where justified by the use case
+-   Monitoring, evaluation and cost telemetry
+-   Integration connectors and webhooks
+
+The exact implementation stack should be selected based on the first
+workflow, team capability, deployment constraints and cost. The company
+should not introduce Kubernetes, complex multi-agent orchestration or
+dedicated model hosting before a concrete requirement justifies it.
+
+### 10.3 AI execution pattern
+
+For each task: 1. Define the typed input and expected output. 2. Select
+the model based on sensitivity, cost, latency and benchmark performance.
+3. Run extraction or reasoning with structured outputs. 4. Validate the
+output against schema and business rules. 5. Attach source evidence and
+confidence information. 6. Route low-confidence, conflicting or
+high-impact cases to a human. 7. Record the complete decision trace. 8.
+Measure the result against a labelled evaluation set.
+
+Agentic actions should be tool-scoped, permissioned, idempotent where
+possible and reversible when feasible. An agent must not receive broad
+credentials merely because it can reason about a workflow.
+
+------------------------------------------------------------------------
+
+## 11. Quality, security and governance
+
+Governance is a platform capability, but specific regulatory obligations
+differ by industry and geography. Vyom must not claim blanket compliance
+simply because it has audit logs or human review.
+
+### Baseline controls
+
+-   Tenant isolation and least-privilege access
+-   Encryption in transit and at rest
+-   Secure secrets and key management
+-   Documented retention, deletion and backup policies
+-   Data processing agreements and subprocessor transparency
+-   Access and action logs
+-   Incident response and breach notification procedures
+-   Model and workflow change control
+-   Evaluation and release records
+-   Human override, escalation and rollback paths
+-   Customer-specific data boundaries; no cross-customer training
+    without explicit authorization
+
+### Domain-specific controls
+
+Each module needs a separate regulatory and quality assessment
+covering: - Applicable laws, standards and record-retention
+obligations - Intended use and prohibited use - Validation requirements
+and acceptance criteria - Required qualifications and accountable
+approvers - Reporting formats and submission processes - Data residency
+and cross-border transfer - Audit, inspection and vendor qualification
+requirements
+
+Certifications such as ISO 27001 or SOC 2 may become commercial
+requirements, but timing should follow target-customer demands and
+budget. They are goals, not current claims.
+
+### Quality metrics
+
+-   Extraction precision and recall by field
+-   False-negative rate for high-impact items
+-   Rule-validation pass rate
+-   Human override and escalation rates
+-   Duplicate and conflict detection quality
+-   Workflow completion and exception rates
+-   Turnaround time and rework
+-   Cost per completed workflow
+-   Traceability and audit completeness
+-   Production incidents and customer-reported defects
+
+Accuracy must be reported with dataset size, labels, evaluation method,
+relevant error types and confidence intervals where appropriate. A
+single aggregate accuracy score is not sufficient for high-impact
+workflows.
+
+------------------------------------------------------------------------
+
+## 12. Team and operating model
+
+The company needs technical execution and domain credibility. The first
+domain expert depends on the chosen wedge.
+
+  -------------------------------------------------------------------------
+  Role                      Timing                  Purpose
+  ------------------------- ----------------------- -----------------------
+  Technical founder         Now                     Platform architecture,
+                                                    product, security and
+                                                    delivery
+
+  Domain co-founder or      Before paid pilot       Workflow expertise,
+  senior advisor                                    buyer trust, controls
+                                                    and acceptance criteria
+
+  Full-stack/backend        After initial           Product delivery and
+  engineer                  validation              integrations
+
+  Applied AI/evaluation     As workload requires    Model evaluation,
+  engineer                                          extraction quality and
+                                                    reliability
+
+  Implementation/customer   After initial customers Deployment, workflow
+  success lead                                      adoption and customer
+                                                    outcomes
+
+  Security/quality          As enterprise           Controls, validation,
+  specialist                requirements emerge     vendor reviews and
+                                                    incident readiness
+
+  Sales lead with vertical  After repeatable sales  Pipeline and channel
+  relationships             evidence                development
+  -------------------------------------------------------------------------
+
+Early hiring should be gated by paid demand. A domain expert should have
+real responsibility for workflow design and risk controls, not just an
+advisory title. Use outside legal, security and compliance specialists
+where required rather than hiring every function prematurely.
+
+------------------------------------------------------------------------
+
+## 13. Ten-year roadmap: 2026--2036
+
+The roadmap is milestone-based, not calendar-guaranteed. A failed gate
+extends the phase.
+
+### Phase 0 --- Validate the wedge (first 90 days)
+
+-   Compare two or three candidate industries and workflows.
+-   Interview 15--20 buyers and frontline users.
+-   Select one workflow using the scorecard.
+-   Secure authorized data and a domain expert.
+-   Define baseline metrics and pilot acceptance criteria.
+-   Target one or two paid pilots before major investment.
+
+**Gate 0:** Evidence of a buyer, budget, accessible data, measurable
+value and a credible path to paid deployment.
+
+### Phase 1 --- Deliver one reliable workflow (months 4--12)
+
+-   Build ingestion, extraction, validation, human review, audit and
+    output.
+-   Run a bounded pilot and compare with baseline.
+-   Validate performance on representative data.
+-   Convert at least one pilot to recurring revenue.
+-   Document security, deployment and support processes.
+
+**Gate 1:** Customer-accepted performance, a referenceable outcome and
+evidence that the workflow can be deployed again.
+
+### Phase 2 --- Productize the first module (years 2--3)
+
+-   Replace one-off code with reusable configurations.
+-   Add required integrations and administration.
+-   Improve onboarding, monitoring and unit economics.
+-   Win multiple customers with substantially similar workflows.
+-   Establish a repeatable sales and implementation playbook.
+
+**Gate 2:** Repeatable deployments, retention evidence, healthy
+gross-margin direction and a product-led share of delivery.
+
+### Phase 3 --- Expand within the first vertical (years 3--5)
+
+-   Add adjacent workflows that share buyers, data and controls.
+-   Expand through referrals and carefully selected channel partners.
+-   Establish enterprise security and quality capabilities.
+-   Reduce custom implementation effort per customer.
+
+**Gate 3:** The first vertical is a durable business with strong
+retention and an expansion path.
+
+### Phase 4 --- Launch a second vertical (years 5--7)
+
+-   Select a second industry based on validated demand and platform
+    reuse.
+-   Build a separate domain module, evaluation pack and compliance map.
+-   Run paid design partnerships before broad launch.
+-   Keep vertical-specific assumptions and unit economics distinct.
+
+**Gate 4:** Evidence that the second module can sell and deploy without
+materially weakening the first vertical.
+
+### Phase 5 --- Multi-vertical platform (years 7--10)
+
+-   Offer shared administration, integration and governance across
+    modules.
+-   Establish partner distribution and enterprise account expansion.
+-   Develop a module marketplace or partner ecosystem only if demand
+    supports it.
+-   Expand internationally when compliance, support and sales economics
+    justify it.
+-   Invest in deeper workflow analytics and bounded autonomous
+    execution.
+
+**2036 ambition:** A multi-vertical enterprise AI company with recurring
+revenue, strong retention and repeatable module economics. The exact
+scale depends on customer evidence, not on the roadmap alone.
+
+------------------------------------------------------------------------
+
+## 14. Financial plan: scenarios, not promises
+
+The previous pharma-only revenue model should not be carried forward
+unchanged. A generic platform has a different customer mix, sales cycle,
+contract value, implementation burden and expansion pattern. The figures
+below are **illustrative planning targets**, not a forecast backed by
+validated pricing or a bottom-up market model. Replace them after the
+first paid pilots and a clear initial vertical are chosen.
+
+### Illustrative 2036 scenarios
+
+  -----------------------------------------------------------------------
+  Metric               Conservative               Base          Ambitious
+  -------------- ------------------ ------------------ ------------------
+  Revenue in                  \$10M              \$30M              \$75M
+  2036                                                 
+
+  EBITDA margin             10--15%            20--25%            25--30%
+  target                                               
+
+  EBITDA in                 \$1.25M            \$6.75M            \$20.6M
+  2036, at                                             
+  midpoint                                             
+  margin                                               
+
+  Break-even             Years 6--8         Years 5--7         Years 5--7
+  target                                               
+
+  Business shape         One strong  Multiple modules,     Multi-vertical
+                           vertical     2--3 verticals         enterprise
+                                                                 platform
+  -----------------------------------------------------------------------
+
+These scenarios are not probability-weighted and should not be presented
+as commitments. They are placeholders for testing the scale of business
+required under different execution outcomes.
+
+### Revenue drivers to model
+
+Revenue should be calculated from: - Number of paying customers by
+vertical - Average recurring contract value by module - Usage revenue
+per customer - Expansion and cross-sell - Pilot-to-contract conversion -
+Churn and net revenue retention - Services and implementation revenue,
+shown separately
+
+### Cost drivers
+
+-   Engineering, AI evaluation and product development
+-   Model inference and document processing
+-   Cloud infrastructure and storage
+-   Implementation and customer support
+-   Security, quality, legal and compliance
+-   Sales, partnerships and customer acquisition
+-   Insurance and professional services
+-   International expansion, if pursued
+
+### Financial discipline
+
+-   Keep the first prototype within the existing low-cost target of
+    approximately ₹0--₹5,000 per month where feasible, using synthetic
+    or authorized de-identified data and startup credits if obtained.
+-   Avoid expensive infrastructure until workload, customer commitments
+    or reliability needs justify it.
+-   Measure gross margin by workflow and customer, including human
+    review and implementation effort.
+-   Do not treat services-heavy revenue as pure software revenue.
+-   Do not assume a valuation multiple. Valuation depends on growth,
+    retention, gross margin, concentration, product defensibility and
+    market conditions.
+-   Build a detailed 10-year financial model only after selecting the
+    first vertical and validating contract values, sales cycles and
+    delivery costs.
+
+### Funding strategy
+
+Raise capital in stages against evidence: 1. **Founder-funded
+validation:** customer discovery, prototype and benchmark. 2.
+**Pre-seed/angel:** only after a credible domain partner, paid pilots
+and measurable workflow improvement. 3. **Seed:** after repeatable
+deployment and evidence of recurring demand. 4. **Series A:** after a
+repeatable sales motion, retention and credible unit economics. 5.
+**Later rounds:** to accelerate proven verticals, distribution or
+international expansion---not to finance unvalidated breadth.
+
+Funding amounts and timing should be set after a cash runway model is
+built. The company should not raise for a second vertical before the
+first has demonstrated repeatability unless there is unusually strong
+evidence and sufficient capital.
+
+------------------------------------------------------------------------
+
+## 15. Risks and mitigations
+
+  -----------------------------------------------------------------------
+  Risk                    Severity                Mitigation
+  ----------------------- ----------------------- -----------------------
+  Trying to serve every   Critical                One initial workflow
+  industry at once                                and vertical; gate
+                                                  every expansion
+
+  No buyer with budget    Critical                Interview economic
+                                                  buyers, require paid
+                                                  pilots and validate
+                                                  procurement path
+
+  Poor performance on     High                    Representative
+  real data                                       evaluation sets, error
+                                                  analysis, expert review
+                                                  and explicit acceptance
+                                                  criteria
+
+  Hallucinations or       High                    Evidence-linked
+  missed information                              extraction,
+                                                  deterministic checks,
+                                                  thresholds and human
+                                                  review
+
+  Data breach or          Severe                  Tenant isolation, least
+  cross-tenant leakage                            privilege, encryption,
+                                                  security testing and
+                                                  incident response
+
+  Long enterprise sales   High                    Bounded pilot,
+  cycles                                          low-friction initial
+                                                  deployment, keep burn
+                                                  low
+
+  Becoming a              High                    Reuse-first product
+  custom-services firm                            rules, separate service
+                                                  revenue and monitor
+                                                  deployment effort
+
+  Model vendor dependence Medium                  Provider abstraction,
+                                                  benchmark before
+                                                  changes and portable
+                                                  data/workflows
+
+  Platform complexity     High                    Build only components
+  before product-market                           needed for the first
+  fit                                             workflow; defer complex
+                                                  infrastructure
+
+  Weak differentiation    High                    Win on workflow
+                                                  outcomes, integrations,
+                                                  evidence, controls and
+                                                  repeatability
+
+  Domain-specific         High                    Domain expert,
+  regulation                                      legal/compliance review
+  misunderstood                                   and module-specific
+                                                  control mapping
+
+  Incumbents bundle       High                    Focus on underserved
+  similar capabilities                            workflow, faster
+                                                  implementation and
+                                                  measurable ROI
+
+  Poor economics from     High                    Track review minutes
+  human review                                    and exception rates;
+                                                  automate only after
+                                                  quality is proven
+
+  Expansion damages focus High                    Explicit gates,
+                                                  separate vertical
+                                                  economics and owner
+                                                  accountability
+  -----------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## 16. First 90 days: validation plan
+
+The objective is not to build the entire platform. It is to discover one
+workflow that buyers will pay to improve.
+
+### Days 1--30: discover
+
+-   [ ] Select two or three candidate workflow categories.
+-   [ ] Interview 15--20 buyers and frontline users.
+-   [ ] Map the current workflow, tools, handoffs, exceptions and
+    approval points.
+-   [ ] Estimate current cost, turnaround time, rework and error impact.
+-   [ ] Identify data access, security and procurement requirements.
+-   [ ] Score candidate workflows and choose one initial wedge.
+
+### Days 31--60: test
+
+-   [ ] Obtain written authorization for representative pilot data.
+-   [ ] Build a narrow prototype: ingestion → extraction → validation →
+    review → output → audit.
+-   [ ] Create an expert-reviewed evaluation set.
+-   [ ] Measure quality, false negatives, processing time, human review
+    and cost.
+-   [ ] Demonstrate the prototype to the economic buyer and actual
+    users.
+-   [ ] Present a priced pilot with explicit acceptance criteria.
+
+### Days 61--90: sell and decide
+
+-   [ ] Secure one or two paid pilots, or a clearly documented
+    procurement path with a committed buyer.
+-   [ ] Agree on scope, data processing, ownership, evaluation and exit
+    criteria.
+-   [ ] Review the results against the original baseline.
+-   [ ] Decide to proceed, revise the wedge or stop.
+-   [ ] Do not expand to a second industry before the first workflow has
+    passed its gate.
+
+### Day-90 decision criteria
+
+  -----------------------------------------------------------------------
+  Test                    Pass condition          If it fails
+  ----------------------- ----------------------- -----------------------
+  Buyer urgency           Multiple buyers         Revisit the workflow
+                          independently confirm a 
+                          costly, recurring       
+                          problem                 
+
+  Budget                  A named economic buyer  Do not confuse interest
+                          accepts a credible      with demand
+                          price range             
+
+  Data access             Authorized              Choose a workflow with
+                          representative data can a viable data path
+                          be used                 
+
+  Quality                 Agreed metrics meet the Narrow scope or change
+                          pilot's acceptance      the approach
+                          criteria                
+
+  ROI                     The pilot shows         Rework pricing or stop
+                          measurable benefit      
+                          after review and        
+                          implementation costs    
+
+  Repeatability           Another customer has a  Avoid premature
+                          substantially similar   platform expansion
+                          workflow                
+
+  Paid commitment         At least one paid pilot Extend discovery only
+                          or strong               with a specific new
+                          procurement-backed      hypothesis
+                          commitment              
+  -----------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## 17. Strategic principles
+
+1.  **Generic foundation, focused entry.** Build reusable
+    infrastructure; sell one specific outcome first.
+2.  **Workflow before agent.** Start from the customer's process,
+    controls and metrics---not from a multi-agent demo.
+3.  **Evidence over confidence.** Important outputs should be traceable
+    to source material and validated against explicit rules.
+4.  **Human accountability.** Keep consequential judgments with
+    authorized people until a particular use is validated and approved
+    for more automation.
+5.  **Measure unit economics early.** Include inference, infrastructure,
+    implementation and human review in cost per workflow.
+6.  **Reuse must be real.** A second module should reuse code, controls,
+    integrations and deployment patterns---not merely share a brand.
+7.  **Services must productize.** Customer work should create reusable
+    capabilities or be priced as a separate service.
+8.  **Expansion follows proof.** Each vertical and major capability must
+    pass a commercial and quality gate.
+9.  **Be honest about compliance.** Map applicable requirements per
+    customer, geography and intended use; do not make blanket compliance
+    claims.
+10. **Build trust as product functionality.** Security, auditability,
+    evaluation and exception handling are part of the product, not later
+    add-ons.
+
+## 18. Conclusion
+
+Vyom's long-term opportunity is to become a reusable operating layer for
+complex enterprise workflows. Its platform can support insurance, pharma
+and healthcare, finance, legal and other regulated operations---but only
+through carefully designed domain modules and evidence-led expansion.
+
+The immediate priority is deliberately narrower: select one workflow,
+validate buyer demand, secure authorized data, measure a real baseline,
+and win a paid pilot. If that workflow produces reliable outcomes and
+can be deployed repeatedly, Vyom can expand into adjacent workflows and
+eventually additional verticals.
+
+**The operating principle remains:** AI interprets and proposes; rules
+validate; authorized people decide; the system records and measures the
+outcome.
