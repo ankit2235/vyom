@@ -20,7 +20,7 @@ export const hero = {
    */
   headline: {
     before: 'The operating system for ',
-    highlight: 'modern pharmacovigilance',
+    highlight: 'modern drug safety and quality',
     after: '.',
   },
   subline:
